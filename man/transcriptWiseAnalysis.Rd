@@ -6,7 +6,8 @@
 \usage{
 transcriptWiseAnalysis(kexp, design, p.cutoff = 0.05, fold.cutoff = 1,
   coef = 2, read.cutoff = 1, tx_biotype = NULL, gene_biotype = NULL,
-  biotype_class = NULL, ...)
+  biotype_class = NULL, adjustBy = "holm", species = c("Homo.sapiens",
+  "Mus.musculus"))
 }
 \arguments{
 \item{kexp}{a KallistoExperiment or SummarizedExperiment-like object}
@@ -26,6 +27,8 @@ transcriptWiseAnalysis(kexp, design, p.cutoff = 0.05, fold.cutoff = 1,
 \item{gene_biotype}{optionally restrict to one or more gene_biotype classes}
 
 \item{biotype_class}{optionally restrict to one or more biotype_class ...es}
+
+\item{adjustBy}{either none , BH, BY, holm for limma adjust type}
 }
 \description{
 Analysis of raw transcript abundance estimates.

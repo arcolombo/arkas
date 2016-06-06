@@ -15,8 +15,8 @@ ruvNormalization <- function(kexp, k=1, spikeIns=FALSE, p.cutoff=1,
                              inSilico=NULL, read.cutoff=1, 
                              byLevel=c("gene_id", "tx_id")) {
 
-  if(!is(kexp, "SummarizedExperiment")) {
-    stop("This method only works with SummarizedExperiment-like objects.")
+  if(!is(kexp, "KallistoExperiment")) {
+    warning("This method only works with KallistoExperiment-like objects.")
   }
 
   byLevel <- match.arg(byLevel)
