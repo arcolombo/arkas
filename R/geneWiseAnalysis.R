@@ -53,15 +53,15 @@ geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
   initialRank<-ranked[which(ranked$type==adjustBy),2]
  
   res <- fitBundles(kexp, design, read.cutoff=read.cutoff)
-  message(paste0("fitting using FDR: ",adjustBy))
+ 
   while( initialRank <=4 ) {
-     #for loop for each ranked, starting with rank =1 for holm, and continues until first non-empty instance.
-  #  if user input is not holm  it finds the rank and continues until first non-zero instance j+1 <= 4
-     res$top <- with(res, topTable(fit, coef=2, p=p.cutoff,adjust.method=adjustBy, n=nrow(kexp)))
+      message(paste0("fitting using FDR: ",adjustBy))
+      res$top <- with(res, topTable(fit, coef=2, p=p.cutoff,adjust.method=adjustBy, n=nrow(kexp)))
 
       if(nrow(res$top)==0){
-       initialRank=initialRank + 1
-       adjustBy<-as.character(ranked$type[initialRank])
+     message(paste0("no DE found for using FDR: ",adjustBy))
+     initialRank=initialRank + 1
+     adjustBy<-as.character(ranked$type[initialRank])
        }
       else{ 
       message(paste0("found ", nrow(res$top), " DE genes using FDR procedure ", as.character(ranked$type[initialRank]) )) 
