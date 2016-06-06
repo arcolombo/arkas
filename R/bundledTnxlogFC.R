@@ -37,12 +37,8 @@ bundledTnxlogFC<-function(kexp,bundleID="gene_id",read.cutoff=1,discardjoined=TR
 
 #call twa  use holm filter
 twa<-transcriptWiseAnalysis(kexp,design)
-  test<-split.data.frame(sub,sub$gene.id)
+  bundled<-split.data.frame(twa$limmaWithMeta,twa$limmaWithMeta$gene.id)
 
-
-#bundled genes in a split data frame list where a bedGraph is created 
-
-
-
+return(bundled)
 
 } #{{{ main

@@ -60,7 +60,7 @@ geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
      res$top <- with(res, topTable(fit, coef=2, p=p.cutoff,adjust.method=adjustBy, n=nrow(kexp)))
 
       if(nrow(res$top)==0){
-       intialRank=initialRank + 1
+       initialRank=initialRank + 1
        adjustBy<-as.character(ranked$type[initialRank])
        }
       else{ 
