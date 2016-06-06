@@ -9,7 +9,7 @@
 #' @seealso collapseTranscripts
 #'
 #' @export 
-showTnxBundles<-function(kexp,design,species=c("Homo.sapiens","Mus.musculus"){
+showTnxBundles<-function(kexp,design,species=c("Homo.sapiens","Mus.musculus")){
 #check input
  if (!is(kexp, "KallistoExperiment")) {
     message("This function is optimized for KallistoExperiment objects.")
