@@ -34,7 +34,7 @@ The mds data will return 0 DE for repeat level analyses, and is a great example 
 Here users can input any adjust method, and it will run until it finds the selected fdr procedure or the next conservative one. 
 ```{r}
 
-load(""/home/arcolombo/Documents/MDS-RNA-Seq/MDS-arkas-files/sampleDir/mdsKexp.RData")
+load("/home/arcolombo/Documents/MDS-RNA-Seq/MDS-arkas-files/sampleDir/mdsKexp.RData")
 design<-metadata(mdsKexp)$design
  rwa<-repeatWiseAnalysis(mdsKexp,design=design,how="cpm",species="Homo.sapiens",adjustBy="holm")
 
