@@ -1,7 +1,7 @@
-dataIsInstalled <- suppressPackageStartupMessages(require(artemisData))
+dataIsInstalled <- suppressPackageStartupMessages(require(arkasData))
 if(!dataIsInstalled){ 
-  message("You need to install the artemisData package.")
-  message("Try biocLite(\"ramsinghlab/artemisData\") then come back.")
+  message("You need to install the arkasData package.")
+  message("Try biocLite(\"ramsinghlab/arkasData\") then come back.")
   stop("Go ahead, we'll wait!")
 } 
 library(matrixStats)
@@ -14,16 +14,15 @@ if(!file.exists(kallisto)) {
   message("Found it, proceeding...")
 }
 
-pathBase <- system.file("extdata", "", package="artemisData")
+pathBase <- system.file("extdata", "", package="arkasData")
 fastaPath <- paste0(pathBase, "/fasta")
 fastqPath <- paste0(pathBase, "/fastq")
 samples <- c(MrN="MrN", MrT="MrT") ## normally set by appSession
 fastaFiles <- c( "ERCC.fa.gz", ## spike-in controls  
-                 "Homo_sapiens.RepBase.20_05.humrep.fa.gz", ## repeats 
-                 "Homo_sapiens.RepBase.20_05.humsub.fa.gz")  ## ALUs and such
+                 "Homo_sapiens.RepBase.20_07.merged.fa.gz")
 
 ## build an index if it isn't already there (in artemisData, it is)
-indexName <- indexKallisto(fastaFiles=fastaFiles, fastaPath=fastaPath)$indexName
+indexName <- indexKallisto(fastaFiles=fastaFiles, fastaPath=fastaPath,makeUnique=TRUE)$indexName
 
 ## run pseudoalignments 
 library(parallel)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/sraFastqHeaderToIlluminaStandard.R
 \name{sraFastqHeaderToIlluminaStandard}
 \alias{sraFastqHeaderToIlluminaStandard}
-\title{this script prepares fastq files downloaded from SRADb R package, which have sra fastq headers, and changes the sra headers to illumina standard headers as a preparatory step for uploading fastq files into the  cloud system,into an open account , and to a project under an authorized user. we assume that the user can import files from SRA, and use fastq-dump to convert sra files into fastq files.  arkas does support fastq header conversions into BaseSpace standard nomenclature. this method will check the header of the fastq, if it is an sra header, then arkas will transform the header to illumina standard; further this script will also rename the fastq file itself to illumina standard, and prepare the fastq file for an upload to the basespace cloud using the script fastqFileUploadToBaseSpace.R}
+\title{this script prepares fastq files downloaded from SRADb R package, which have sra fastq headers, and changes the sra headers to illumina standard headers as a preparatory step for uploading fastq files into the  cloud system,into an open account , and to a project under an authorized user. we assume that the user can import files from SRA, and use fastq-dump to convert sra files into fastq files.  arkas does support fastq header conversions into BaseSpace standard nomenclature. this method will check the header of the fastq, if it is an sra header, then arkas will transform the header to illumina standard; further this script will also rename the fastq file itself to illumina standard, and prepare the fastq file for an upload to the basespace cloud using the script fastqFileUploadToBaseSpace.R , inputs must be gzipped.}
 \usage{
 sraFastqHeaderToIlluminaStandard(headerFormat = c("SRA", "Normal"), fastqPath,
   fastqFile, sraOutputDir, fastqReadNumber = 1)
@@ -12,6 +12,8 @@ sraFastqHeaderToIlluminaStandard(headerFormat = c("SRA", "Normal"), fastqPath,
 
 \item{fastqFile}{a vector of sample files downloaded from SRA to convert to illumina std}
 
+\item{sraOutputDir}{character vector where to spit out the converted fastq}
+
 \item{fastqReadNumber}{integer 1, or 2, this is the read number that will be written in the fastq file, for SRAdb defaults to 1, but we give the option to have 1 or 2 here.}
 
 \item{headerStyle}{,  character string, where SRA is the header style obtained from importing from SRAdb; the Normal header format is a standard two field record delimited by a space, with each field delimited by several colons.}
@@ -20,6 +22,6 @@ sraFastqHeaderToIlluminaStandard(headerFormat = c("SRA", "Normal"), fastqPath,
 a integer defining success or failure
 }
 \description{
-this script prepares fastq files downloaded from SRADb R package, which have sra fastq headers, and changes the sra headers to illumina standard headers as a preparatory step for uploading fastq files into the  cloud system,into an open account , and to a project under an authorized user. we assume that the user can import files from SRA, and use fastq-dump to convert sra files into fastq files.  arkas does support fastq header conversions into BaseSpace standard nomenclature. this method will check the header of the fastq, if it is an sra header, then arkas will transform the header to illumina standard; further this script will also rename the fastq file itself to illumina standard, and prepare the fastq file for an upload to the basespace cloud using the script fastqFileUploadToBaseSpace.R
+this script prepares fastq files downloaded from SRADb R package, which have sra fastq headers, and changes the sra headers to illumina standard headers as a preparatory step for uploading fastq files into the  cloud system,into an open account , and to a project under an authorized user. we assume that the user can import files from SRA, and use fastq-dump to convert sra files into fastq files.  arkas does support fastq header conversions into BaseSpace standard nomenclature. this method will check the header of the fastq, if it is an sra header, then arkas will transform the header to illumina standard; further this script will also rename the fastq file itself to illumina standard, and prepare the fastq file for an upload to the basespace cloud using the script fastqFileUploadToBaseSpace.R , inputs must be gzipped.
 }
 

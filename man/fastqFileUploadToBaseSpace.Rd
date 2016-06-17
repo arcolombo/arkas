@@ -21,6 +21,8 @@ fastqFileUploadToBaseSpace(illuminaDirPath = NULL, illuminafastqFile = NULL,
 }
 \value{
 nothing, a successful indication that the files were uploaded to basespace
+
+integer for success or failure
 }
 \description{
 once the sraFastqHeaderToIlluminaStandard has been ran on SRA imported samples, the basespace fileupload can be ran. this assumes that a user has a basespace account and has a project directory listed correctly.  We assume that the basespace CLI is installed please see (https://help.basespace.illumina.com/articles/descriptive/basespace-cli/).  this R interface to BaseSpace cloud system is mostly useful for numerous samples targeting the uses of single cell sequencing with samples ranging from upwards 800; thus making fastq uploading difficult; hence the automation of it within Arkas. Fastq Headers must be in illumina standards. FIX ME: we would also like to add the execution of arkas via the basespace CLI to run cloud applications via R.

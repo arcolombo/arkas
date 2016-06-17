@@ -43,7 +43,7 @@ ruvNormalization <- function(kexp, k=1, spikeIns=FALSE, p.cutoff=1,
     if(is.null(inSilico)) { 
       message("Did not detect a vector of in silico negative controls...")
       message("Checking for a design matrix in metadata(kexp)...")
-      if( is.null(metadata(kexp)$design) ) { # {{{ stop
+      if( is.null(metadata(kexp)$design)) { # {{{ stop
         stop("please include a vector of row names, or add a design matrix.")
       } # }}}
       message("Found design matrix, determining in silico negative controls...")
