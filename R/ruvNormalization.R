@@ -6,14 +6,15 @@
 #' @param inSilico for when spikeIns is flagged as FALSE, inSilcio must be a vector names of in silico genes which are constant across samples apriori. housekeeping genes will do fine.  the insilico vector can be derived here if it is unknown by taking the bottom quartile, bottom 10 percent ranked by P.Value, of significant genes after running a raw DE analysis.
 #' @param read.cutoff , integer here we employ a read cutoff that filters out any rows where the rowSums falls under this category.  
 #' @param byLevel a string character which must match the names of the meta-columns of the features(kexp), this collapses the count data by this feature term, and performs filtering
-#' 
+#' @param bottomSelected an integer for the amount of in silico elements to use for deriving negative controls, by default 100 are used, which is the same number of Ambion Spike Ins
 #' @import RUVSeq
 #' @export 
 #' @return return a list object with RUVg normalization
 
 ruvNormalization <- function(kexp, k=1, spikeIns=FALSE, p.cutoff=1, 
                              inSilico=NULL, read.cutoff=1, 
-                             byLevel=c("gene_id", "tx_id")) {
+                             byLevel=c("gene_id", "tx_id"),
+                             bottomSelected=100) {
 
   if(!is(kexp, "KallistoExperiment")) {
     warning("This method only works with KallistoExperiment-like objects.")
@@ -54,9 +55,9 @@ ruvNormalization <- function(kexp, k=1, spikeIns=FALSE, p.cutoff=1,
         GWA <- geneWiseAnalysis(kexp, design=metadata(kexp)$design, how="cpm",
                                 p.cutoff=p.cutoff, fold.cutoff=1, read.cutoff=1,
                                 fitOnly=TRUE)
-        bottomPercentile <- round(0.10 * nrow(GWA$top))
+        
         idx <- rev(order(GWA$top$adj.P.Val))
-        derived.inSilico <- rownames(GWA$top[idx,])[1:bottomPercentile]
+        derived.inSilico <- rownames(GWA$top[idx,])[1:bottomSelected]
         # }}}
         ruvOutput <- RUVg(exprs,derived.inSilico,k=k)
       }
@@ -68,9 +69,9 @@ ruvNormalization <- function(kexp, k=1, spikeIns=FALSE, p.cutoff=1,
         TWA<-transcriptWiseAnalysis(kexp, design=metadata(kexp)$design,
                                     p.cutoff=p.cutoff, fold.cutoff=1,
                                     read.cutoff=1)  
-        bottomPercentile <- round(0.10*nrow(TWA$top))
+        
         idx <- rev(order(TWA$top$P.Value))
-        derived.inSilico <- rownames(TWA$top[idx,])[1:bottomPercentile]
+        derived.inSilico <- rownames(TWA$top[idx,])[1:bottomSelected]
         trnxExprs <- collapseTranscripts(kexp,read.cutoff=read.cutoff)
         trnxExprs <- round(trnxExprs)
         # }}}
