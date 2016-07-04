@@ -15,7 +15,7 @@
 #' @importFrom matrixStats rowSds 
 #' 
 #' @details           If no design matrix is found, the function will look in 
-#'                    exptData(kexp)$design. If that too is empty it fails.
+#'                    metadata(kexp)$design. If that too is empty it fails.
 #'
 #' @return            a list w/items design, voomed, fit, top, enriched,
 #'                                   Figures, scaledExprs, clusts, species,
@@ -34,8 +34,8 @@ geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
   }
 
   if (is.null(design)) {
-    if (!is.null(exptData(kexp)$design)) {
-      design <- exptData(kexp)$design
+    if (!is.null(metadata(kexp)$design)) {
+      design <- metadata(kexp)$design
     } else { 
       stop("A design matrix must be supplied, or present in metadata.")
     }
