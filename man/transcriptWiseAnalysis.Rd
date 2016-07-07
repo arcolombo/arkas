@@ -26,6 +26,8 @@ transcriptWiseAnalysis(kexp, design, p.cutoff = 0.05, fold.cutoff = 1,
 \item{gene_biotype}{optionally restrict to one or more gene_biotype classes}
 
 \item{biotype_class}{optionally restrict to one or more biotype_class ...es}
+
+\item{adjustMethod}{either none , BH, BY, holm for limma adjust type}
 }
 \description{
 Analysis of raw transcript abundance estimates.

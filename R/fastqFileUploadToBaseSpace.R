@@ -5,7 +5,10 @@
 #' @param fastqFileSignaure character that is unique to the fastq file directory where upon grep'ing the desired files will get matched.  the default is the illumina standard suffix _001.fastq.gz which should pick out the illumina files in the case where the fastq directory has multiple raw files.
 #' @param illuminaDirs a vector of illumina sample directories which contain illumina fastqs
 #' @return nothing, a successful indication that the files were uploaded to basespace
-#' @examples fastqFileUploadToBaseSpace(illuminafastqPath,RNA-123456-1-N_S1_L002_R1_001.fastq.gz,basespaceProject)
+#' @examples 
+#' \dontrun{
+#' fastqFileUploadToBaseSpace(illuminafastqPath,RNA-123456-1-N_S1_L002_R1_001.fastq.gz,basespaceProject)
+#' }
 #' @export
 
 fastqFileUploadToBaseSpace<-function(illuminaDirPath=NULL, illuminafastqFile=NULL, basespaceProject=NULL,fastqFileSignature="_001.fastq.gz",illuminaDirs=NULL) {

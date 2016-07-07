@@ -7,19 +7,20 @@ Author: Tim Triche, Jr., Anthony Colombo, Harold Pimentel
 Depends:
     parallel,
     jsonlite,
-    GenomeInfoDb,
     qusage,
+    ggplot2,
+    edgeR,
     limma,
-    Biobase,
     TxDbLite,
     SummarizedExperiment,
+    Rsamtools,
     beeswarm,
+    biomaRt,
     tools
 Imports:
     rhdf5,
     matrixStats,
     GenomicRanges,
-    GenomicFeatures,
     SummarizedExperiment,
     nat.utils,
     Matrix,

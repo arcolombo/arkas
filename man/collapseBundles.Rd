@@ -37,8 +37,7 @@ but not always a 'gene', sometimes a biotype or a class of repeat elements).
 The default approach is to discard all rows where the maximum count is less 
 than the specified read.cutoff. Since the default cutoff is 1, this means 
 discarding transcripts (and bundles) that were not be detected in any sample.
-(Filtering tends to increase statistical power at a given false-positive rate
-per Bourgon et al, 2010, \link{http://www.pnas.org/content/107/21/9546.long})
+(Filtering tends to increase statistical power at given false-positive rate)
 }
 \seealso{
 collapseTranscripts
