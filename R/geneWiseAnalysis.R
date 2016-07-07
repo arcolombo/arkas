@@ -5,10 +5,9 @@
 #' @param p.cutoff    where to set the p-value cutoff for plots, etc. (0.05)
 #' @param fold.cutoff where to set the log2-FC cutoff for plots, etc. (1==2x)
 #' @param read.cutoff minimum read coverage (estimated) for a gene bundle 
-#' @param topheat     how many bundles to include in cluster heatmaps? (100)
 #' @param species     which species? (Homo.sapiens, Mus.musculus are two currently supported
 #' @param fitOnly     exit after fitting the EBayes linear model?  (FALSE)
-#' 
+#' @param adjustBy    character none, BH,BY, or holm for FDR procedures 
 #' @import edgeR 
 #' @import limma
 #' @import biomaRt
@@ -26,7 +25,7 @@
 geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"), 
                              p.cutoff=0.05, fold.cutoff=1, read.cutoff=1, 
                              species=c("Homo.sapiens", "Mus.musculus"),
-                             fitOnly=FALSE, ...) { 
+                             fitOnly=FALSE, adjustBy="holm") { 
 
   ## this is really only meant for a KallistoExperiment
   if (!is(kexp, "KallistoExperiment")) {
@@ -47,11 +46,33 @@ geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
   commonName <- switch(species, 
                        Mus.musculus="mouse", 
                        Homo.sapiens="human")
+  adjustBy<-match.arg(adjustBy, c("none","BH","BY","holm"))
+  choices<- c("holm", "BY", "BH","none") 
+  ranked<-data.frame(type=choices,rank=c(1,2,3,4))
   message("Fitting bundles...")
-  ## default to ensembl gene id (not entrez)
+  initialRank<-ranked[which(ranked$type==adjustBy),2]
+ 
   res <- fitBundles(kexp, design, read.cutoff=read.cutoff)
-  res$top <- with(res, topTable(fit, coef=2, p=p.cutoff, n=nrow(kexp)))
-  res$top <- res$top[ abs(res$top$logFC) >= fold.cutoff, ] ## per SEQC
+  message(paste0("fitting using FDR: ",adjustBy))
+  while( initialRank <=4 ) {
+     #for loop for each ranked, starting with rank =1 for holm, and continues until first non-empty instance.
+  #  if user input is not holm  it finds the rank and continues until first non-zero instance j+1 <= 4
+     res$top <- with(res, topTable(fit, coef=2, p=p.cutoff,adjust.method=adjustBy, n=nrow(kexp)))
+
+      if(nrow(res$top)==0){
+       intialRank=initialRank + 1
+       adjustBy<-as.character(ranked$type[initialRank])
+       }
+      else{ 
+      message(paste0("found ", nrow(res$top), " DE genes using FDR procedure ", as.character(ranked$type[initialRank]) )) 
+     initialRank<-5 #break the loop at first instance
+       }
+    }
+  if(nrow(res$top)==0) {
+   stop("Did not detect differential expressed genes from the input, please check the input quality and try again.") 
+     } 
+ 
+ res$top <- res$top[ abs(res$top$logFC) >= fold.cutoff, ] ## per SEQC
   topGenes <- rownames(res$top)
   res$topGenes <- topGenes
 
@@ -62,7 +83,8 @@ geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
   # commonName is important
   res$entrezID <- .convertEntrezID(res$topGenes,commonName)
   # grab all the entrez IDs that are not NA
-  converted <- res$entrezID[which(!is.na(res$entrezID[,which(colnames(res$entrezID) == "entrezgene")]) == TRUE),]
+#  converted <- res$entrezID[which(!is.na(res$entrezID[,which(colnames(res$entrezID) == "entrezgene")]) == TRUE),]
+   converted<-res$entrezID
   entrezVector <- as.vector(converted[,which(colnames(res$entrezID) == "entrezgene")])
 
   # grab all the ensembl associated with the non-NA entrez
@@ -92,7 +114,7 @@ geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
     speciesSymbol<-"hgnc_symbol"  #hugo nomenclature human only 
          message("finding entrez IDs of top ensembl genes...")
          convertedEntrezID<-getBM(filters="ensembl_gene_id",
-                    attributes=c("ensembl_gene_id","entrezgene",speciesSymbol),
+                    attributes=c("ensembl_gene_id","entrezgene",speciesSymbol,"description"),
                     values=resValues, #fitBundles ensembl Gene Ids
                     mart=speciesMart)
 
@@ -103,7 +125,7 @@ geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
    speciesSymbol<-"mgi_symbol"
         message("finding entrez IDs of top ensembl genes...")
         convertedEntrezID<-getBM(filters="ensembl_gene_id",
-                    attributes=c("ensembl_gene_id","entrezgene",speciesSymbol),
+                    attributes=c("ensembl_gene_id","entrezgene",speciesSymbol,"description"),
                     values=resValues, #fitBundles ensembl Gene Ids
                     mart=speciesMart)
         }#mouse
@@ -112,7 +134,7 @@ geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
     speciesSymbol<-"mgi_symbol"  # mgi supports rat and mouse http://www.informatics.jax.org/mgihome/nomen/gene.shtml
        message("finding entrez IDs of top ensembl genes...")
       convertedEntrezID<-getBM(filters="ensembl_gene_id",
-                    attributes=c("ensembl_gene_id","entrezgene",speciesSymbol),
+                    attributes=c("ensembl_gene_id","entrezgene",speciesSymbol,"description"),
                     values=resValues, #fitBundles ensembl Gene Ids
                     mart=speciesMart)
       }#rat
@@ -133,23 +155,24 @@ geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
   limmad <- cbind(limmad,
                   converted[, grep("entrezgene",colnames(converted))],
                   converted[, grep("_symbol",colnames(converted))], 
-                  converted[, grep("ensembl_gene_id",colnames(converted))])
+                  converted[, grep("ensembl_gene_id",colnames(converted))],
+                  converted[, grep("description",colnames(converted))] )
   colnames(limmad)[7]<-"entrez_id"
-  colnames(limmad)[8]<-"gene_name"
+  colnames(limmad)[8]<-"Gene.symbol" #supporting Advaita
   colnames(limmad)[9]<-"ensembl_id"
-
+  colnames(limmad)[10]<-"Gene.title" #supporting Advaita
   #grab the meta data matching the ensembl gene ids from limma
   Index <- mcols(features(kexp))$gene_id %in% limmad[,9] 
   newFeatures <- mcols(features(kexp))[Index,]
-  Features<-newFeatures[c(4,8:9)]
+  Features<-newFeatures[c(4,8:9)] #grabbing gene_id, gene_biotype and biotype_class
   uniqueFeatures<-Features[!duplicated(Features$gene_id),]
-  limmad[,10]<-NA
   limmad[,11]<-NA
-  colnames(limmad)[c(10:11)]<-c("gene_biotype","biotype_class")
+  limmad[,12]<-NA
+  colnames(limmad)[c(11:12)]<-c("gene_biotype","biotype_class")
 
   for(i in 1:nrow(limmad)) { # cbind biotype class to limma results
     indx <- which(rownames(limmad) == uniqueFeatures$gene_id[i])
-    limmad[indx,c(10:11)] <- cbind(uniqueFeatures$gene_biotype[i],
+    limmad[indx,c(11:12)] <- cbind(uniqueFeatures$gene_biotype[i],
                                    uniqueFeatures$biotype_class[i])
   }
 

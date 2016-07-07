@@ -9,20 +9,22 @@
 #' @param tx_biotype  optionally restrict to one or more tx_biotype classes 
 #' @param gene_biotype optionally restrict to one or more gene_biotype classes 
 #' @param biotype_class optionally restrict to one or more biotype_class ...es
-#'
+#' @param adjustMethod either none , BH, BY, holm for limma adjust type
 #' @import edgeR 
 #' @import limma
 #'
 #' @export
 transcriptWiseAnalysis <- function(kexp, design, p.cutoff=0.05, fold.cutoff=1, 
                                    coef=2,read.cutoff=1,tx_biotype=NULL, gene_biotype=NULL,
-                                   biotype_class=NULL, ...){ 
+                                   biotype_class=NULL,...){ 
 
   ## this is really only meant for a KallistoExperiment
   if (!is(kexp, "KallistoExperiment")) {
     message("This function is optimized for KallistoExperiment objects.")
     message("It may work for other classes, but we make no guarantees.")
   }
+
+
   
   if (all(sapply(c(tx_biotype, gene_biotype, biotype_class), is.null))) {
     res <- fitTranscripts(kexp, design, read.cutoff)
@@ -47,15 +49,18 @@ transcriptWiseAnalysis <- function(kexp, design, p.cutoff=0.05, fold.cutoff=1,
     res$top <- res$top[ abs(res$top$logFC) >= fold.cutoff, ] ## per SEQC
     topTranscripts <- rownames(res$top)
     res$topTranscripts <- topTranscripts
-
-    
-
-
-  }
+    }
  
   res$biotype_class <- biotype_class
   res$gene_biotype <- gene_biotype
   res$tx_biotype <- tx_biotype
-  return(res)
+
+#FIX ME: add the gene association to each transcript
+  res$limmaWithMeta<-cbind(res$top,features(kexp)[rownames(res$top)]$gene_name,features(kexp)[rownames(res$top)]$gene_id )
+  colnames(res$limmaWithMeta)[ncol(res$top)+1]<-"gene.name"
+  colnames(res$limmaWithMeta)[ncol(res$top)+2]<-"gene.id"
+
+ return(res)
+
 
 }
