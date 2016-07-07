@@ -1,9 +1,11 @@
-#' this script prepares fastq files downloaded from SRADb R package, which have sra fastq headers, and changes the sra headers to illumina standard headers as a preparatory step for uploading fastq files into the  cloud system,into an open account , and to a project under an authorized user. we assume that the user can import files from SRA, and use fastq-dump to convert sra files into fastq files.  arkas does support fastq header conversions into BaseSpace standard nomenclature. this method will check the header of the fastq, if it is an sra header, then arkas will transform the header to illumina standard; further this script will also rename the fastq file itself to illumina standard, and prepare the fastq file for an upload to the basespace cloud using the script fastqFileUploadToBaseSpace.R 
+#' this script prepares fastq files downloaded from SRADb R package or files downloaded from European Nucleic Acids ftp fastq downloads, which have sra fastq headers, and changes the sra headers to illumina standard headers as a preparatory step for uploading fastq files into the  cloud system,into an open account and to a project under an authorized user.  We assume that the user can import files from SRA or ENA, and use fastq-dump to convert SRA files into fastq files.  arkas does support fastq header conversions into BaseSpace standard nomenclature. this method will check the header of the fastq, if it is an sra header, then arkas will transform the header to illumina standard; further this script will also rename the fastq file itself to illumina standard, and prepare the fastq file for an upload to the basespace cloud using the script fastqFileUploadToBaseSpace.R , inputs must be gzipped.
 #' @param headerStyle ,  character string, where SRA is the header style obtained from importing from SRAdb; the Normal header format is a standard two field record delimited by a space, with each field delimited by several colons.
 #' @param fastqPath,  character string path to the fastq directory
 #' @param fastqFile a vector of sample files downloaded from SRA to convert to illumina std
+#' @param sraOutputDir character vector where to spit out the converted fastq
 #' @param fastqReadNumber  integer 1, or 2, this is the read number that will be written in the fastq file, for SRAdb defaults to 1, but we give the option to have 1 or 2 here.
 #' @importFrom nat.utils is.gzip
+#' @export
 #' @return a integer defining success or failure
 sraFastqHeaderToIlluminaStandard<-function(headerFormat=c("SRA","Normal"), fastqPath,fastqFile, sraOutputDir, fastqReadNumber=1  ) {
 #this function is not exported, and sraFastqHeaderToIlluminaStandard handles
@@ -35,9 +37,9 @@ command<-paste0(fastqHeaderConvert," ",fastqFile," ", fastqReadNumber," | ",fast
 system(command)
 
 #now to change the name to illumina std and upload to basespace
-command2<-paste0(convertFastqToIlluminaStandard," ",sraOutputDir,fastqFile)
+command2<-paste0(convertFastqToIlluminaStandard," ",paste0(sraOutputDir,"/"),fastqFile)
 system(command2) 
-message(paste0("converted ",fastqFiles," to illumina standard uploading to basespace")) 
+message(paste0("converted ",fastqFile," to illumina standard uploading to basespace")) 
 }
 
 if(hFormatted =="Normal") {

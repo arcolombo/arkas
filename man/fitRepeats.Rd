@@ -4,7 +4,7 @@
 \alias{fitRepeats}
 \title{repeat analysis is used for analysis of repeat regions from an annotated kexp}
 \usage{
-fitRepeats(kexp, design...)
+fitRepeats(kexp, design, ...)
 }
 \arguments{
 \item{kexp}{kallisto experiment object}
