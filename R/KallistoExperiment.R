@@ -43,10 +43,6 @@ KallistoExperiment <- function(est_counts=NULL,
                est_counts_mad=est_counts_mad)
   asys <- asys[!sapply(asys, is.null)]
 
-  ## add statically computed TPM estimates 
-  rate <- log(asys$est_counts) - log(asys$eff_length)
-  asys$tpm <- exp(rate - log(sum(exp(rate))) + log(1e6))  
-
   new("KallistoExperiment",
         SummarizedExperiment(
           assays=asys,
