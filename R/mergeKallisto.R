@@ -17,7 +17,9 @@
 #' @param collapse        string: collapsing string for indices ("_mergedWith_")
 #' @param transcriptomes  string: collapsing string for indices ("_mergedWith_")
 #' @param parallel        boolean: try to run the merge in parallel? (TRUE)
-#'
+#' @param summarize       boolean: summarize bootstraps if found? (FALSE) 
+#' @param ...             further arguments for KallistoExperiment constructor
+#' 
 #' @export
 mergeKallisto <- function(outputDirs=NULL,
                           outputPath=".",
@@ -26,6 +28,7 @@ mergeKallisto <- function(outputDirs=NULL,
                           collapse="_mergedWith_",
                           transcriptomes=NULL,
                           parallel=TRUE,
+                          summarize=FALSE,
                           ...) { 
 
   if (is.null(outputDirs) & is.null(covariates)) {
@@ -44,9 +47,13 @@ mergeKallisto <- function(outputDirs=NULL,
   names(targets) <- outputDirs
 
   if (parallel == TRUE) { 
-    res <- mclapply(targets, fetchKallisto, transcriptomes=transcriptomes)
+    res <- mclapply(targets, fetchKallisto, 
+                    transcriptomes=transcriptomes,
+                    summarize=summarize)
   } else {
-    res <- lapply(targets, fetchKallisto, transcriptomes=transcriptomes)
+    res <- lapply(targets, fetchKallisto, 
+                  transcriptomes=transcriptomes,
+                  summarize=summarize)
   }
  
   ## check and make sure all the results came from the same Kallisto version,

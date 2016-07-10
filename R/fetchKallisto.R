@@ -4,6 +4,7 @@
 #' @param h5file          character string: the file to read
 #' @param collapse        string: collapsing string for indices ("_mergedWith_")
 #' @param transcriptomes  string: if this is not NULL, many checks are skipped.
+#' @param summarize       boolean: summarize bootstraps if found? (FALSE) 
 #'
 #' @import rhdf5 
 #' @import Matrix
@@ -16,7 +17,7 @@ fetchKallisto <- function(sampleDir=".",
                           h5file="abundance.h5", 
                           collapse="_mergedWith_", 
                           transcriptomes=NULL,
-                          ...){
+                          summarize=FALSE) { 
 
   hdf5 <- paste0(path.expand(sampleDir), .Platform$file.sep, h5file) 
   if (!file.exists(hdf5)) { ## look for a named version of it... 
@@ -30,7 +31,7 @@ fetchKallisto <- function(sampleDir=".",
   bootstraps <- h5read(hdf5, "aux/num_bootstrap")
   ## if bootstraps are found, summarize them...
   
-  if (bootstraps > 0) { 
+  if (bootstraps > 0 && summarize == TRUE) { 
     message("Found ", sampleDir, " bootstraps, summarizing...")
     boots <- do.call(cbind, h5read(hdf5, "bootstrap"))
     colnames(boots) <- paste0("boot", 1:ncol(boots))
@@ -40,6 +41,12 @@ fetchKallisto <- function(sampleDir=".",
                         rowMads(boots)),
                   dimnames=list(transcript=h5read(hdf5, "aux/ids"),
                                 c("est_counts","eff_length","est_counts_mad")))
+  } else if (bootstraps > 0) {
+    message("Bootstraps ignored for ", sampleDir, ", set summarize=TRUE to use")
+    res <- Matrix(cbind(h5read(hdf5, "est_counts"),
+                        h5read(hdf5, "aux/eff_lengths")),
+                  dimnames=list(transcript=h5read(hdf5, "aux/ids"),
+                                c("est_counts", "eff_length")))
   } else {
     message("No bootstraps found for ", sampleDir, ", using est_counts...")
     res <- Matrix(cbind(h5read(hdf5, "est_counts"),
