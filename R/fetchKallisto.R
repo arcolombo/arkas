@@ -54,13 +54,18 @@ fetchKallisto <- function(sampleDir=".",
                   dimnames=list(transcript=h5read(hdf5, "aux/ids"),
                                 c("est_counts", "eff_length")))
   }
-
-  runinfo <- .extractRuninfo(hdf5, 
-                             collapse=collapse, 
-                             transcriptomes=transcriptomes)
+  message("Computing TPM (transcripts per million) for ", h5, "...")
+  res <- cbind(res, tpm=.tpm(res)) # add precomputed TPMs 
+  message("Extracting run information for ", h5, "...")
+  runinfo <- .extractRuninfo(hdf5, collapse=collapse, 
+                             transcriptomes=transcriptomes, ...)
   for (i in names(runinfo)) attr(res, i) <- runinfo[[i]]
   return(res)
+}
 
+.tpm <- function(res) {
+  rate <- log(res[, "est_counts"]) - log(res[, "eff_length"])
+  exp(rate - log(sum(exp(rate)))) * 1e6
 }
 
 #' @import TxDbLite
@@ -88,7 +93,12 @@ fetchKallisto <- function(sampleDir=".",
               "20_06"="RepBase2006",
               "20_07"="RepBase2007",
               "20_08"="RepBase2008",
-              "20_09"="RepBase2009")
+              "20_09"="RepBase2009",
+              "20_10"="RepBase2010",
+              "20_11"="RepBase2011",
+              "20_12"="RepBase2012",
+              "21_01"="RepBase2101",
+              "21_02"="RepBase2102")
     unsubs <- names(subs)
     names(unsubs) <- subs
     unsubs["EnsV"] <- "" ## for TARGET
