@@ -27,6 +27,7 @@ fetchKallisto <- function(sampleDir=".",
     if (!file.exists(h5alt)) stop(paste("Could not locate", hdf5))
     hdf5 <- h5alt
   }
+  h5 <- basename(hdf5)
 
   bootstraps <- h5read(hdf5, "aux/num_bootstrap")
   ## if bootstraps are found, summarize them...
