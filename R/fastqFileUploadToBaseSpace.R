@@ -2,46 +2,44 @@
 #' @param illuminaDirPath  a illumina directory path to illumina standard fastq files with illumina header and naming conventions.
 #' @param illuminafastqFile  fastq files with illumina headers and naming conventions, a vector of file names in illumina standard, this is optional parameter for large directories where hte names are numerious, in this case use the file signature for multi uploads
 #' @param basespaceProject   character string of the basespace project name, this must exist on basespace 
-#' @param fastqFileSignaure character that is unique to the fastq file directory where upon grep'ing the desired files will get matched.  the default is the illumina standard suffix _001.fastq.gz which should pick out the illumina files in the case where the fastq directory has multiple raw files.
+#' @param fastqFileSignature character that is unique to the fastq file directory where upon grep'ing the desired files will get matched.  the default is the illumina standard suffix _001.fastq.gz which should pick out the illumina files in the case where the fastq directory has multiple raw files.
 #' @param illuminaDirs a vector of illumina sample directories which contain illumina fastqs
 #' @param paired boolean   if the illuminaDirs contains a paired fastq pair
 #' @param dryRun boolena   if true then for bs CLI will simulate an upload, if false bs CLI will upload a fastq to the real account.
 #' @return nothing, a successful indication that the files were uploaded to basespace
 #' @examples 
 #' \dontrun{
-#' fastqFileUploadToBaseSpace(illuminafastqPath,RNA-123456-1-N_S1_L002_R1_001.fastq.gz,basespaceProject)
-#' }
+#' fastqFileUploadToBaseSpace(illuminaDirPath,
+#'                           illuminafastqFile=illuminaFastqFiles,
+#'                           basespaceProject=basespaceProject,
+#'                           illuminaDirs=illuminaDirs)
+#' } 
+#' @return integer for success or failure
+#' 
 #' @export
+fastqFileUploadToBaseSpace<-function(illuminaDirPath=NULL, illuminafastqFile=NULL, basespaceProject=NULL,fastqFileSignature="_001.fastq.gz",illuminaDirs=NULL,paired=FALSE, dryRun=FALSE) { # {{{
 
-fastqFileUploadToBaseSpace<-function(illuminaDirPath=NULL, illuminafastqFile=NULL, basespaceProject=NULL,fastqFileSignature="_001.fastq.gz",illuminaDirs=NULL) {
-
-
-#FIX ME check parameters
-##dependencies: https://help.basespace.illumina.com/articles/descriptive/basespace-cli/ must be installed
-
-
-
-for ( i in 1:length(illuminaDirs)){
+  # FIXME: check parameters
+  # dependencies: https://help.basespace.illumina.com/articles/descriptive/basespace-cli/ must be installed
+  for ( i in 1:length(illuminaDirs)){
     dirs<-paste0(illuminaDirPath,"/",illuminaDirs[i])
     illuminafastqFile<-dir(dirs)[grepl(fastqFileSignature,dir(dirs))]
     x0<-paste0(dirs,"/",illuminafastqFile[1])
-   stopifnot(file.exists(x0)==TRUE)
+    stopifnot(file.exists(x0)==TRUE)
     if(paired==TRUE){
-    for(j in 2:length(illuminafastqFile)){
-    x1<-paste0(dirs,"/",illuminafastqFile[j])
-    stopifnot(file.exists(x1)==TRUE)
-    x0<-paste(x0,x1)
-    } #loop over files
+      for(j in 2:length(illuminafastqFile)){
+        x1<-paste0(dirs,"/",illuminafastqFile[j])
+        stopifnot(file.exists(x1)==TRUE)
+        x0<-paste(x0,x1)
+      } # looping over files
     }
     if(dryRun==FALSE){
-     command<-paste0("bs upload sample ",x0," -p ",basespaceProject)
-     } 
-    if(dryRun==TRUE){
-          command<-paste0("bs upload sample --dry-run ",x0," -p ",basespaceProject)
-
-    }#simulated upload for unit testing
-    system(command)
-    } #loop over many dirs
-
-}#{{{main
+      command<-paste0("bs upload sample ",x0," -p ",basespaceProject)
+    } else { 
+      command<-paste0("bs upload sample --dry-run ",x0," -p ",basespaceProject)
+    } #simulated upload for unit testing
+    
+    system(command) # ugh
+  } # looping over many dirs
+}# }}} main
 

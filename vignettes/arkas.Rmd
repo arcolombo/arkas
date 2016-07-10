@@ -82,7 +82,7 @@ OutputPath<-"/data/output"
 fastqPath <- paste0(pathBase, "/fastq")
 samples <- c(MrN="MrN", MrT="MrT")
 FastaFiles <- c( "ERCC.fa", ## spike-in controls                    
-                  "Homo_sapiens.RepBase.20_05.merged.fa") #no duplicates
+                  "Homo_sapiens.RepBase.20_05.merged.fa.gz") #no duplicates
 indexName <- indexKallisto(fastaFiles=FastaFiles, fastaPath=FastaPath)$indexName
 indexName  #prints the full index Name
 Xtension<-"_*"

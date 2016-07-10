@@ -13,7 +13,6 @@ Depends:
     limma,
     TxDbLite,
     SummarizedExperiment,
-    HDF5Array,
     Rsamtools,
     beeswarm,
     biomaRt,
@@ -29,6 +28,7 @@ Imports:
 Suggests:
     knitr,
     roxygen2,
+    HDF5Array,
     EnsDbLite.Hsapiens.83,
     RepDbLite.Hsapiens.2012
 VignetteBuilder: knitr
