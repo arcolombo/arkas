@@ -64,13 +64,14 @@ mergeKallisto <- function(outputDirs=NULL,
     kallistoVersion <- unique(kversion)
   } 
 
-  cols <- do.call(rbind, lapply(res, colnames))
-  cnames <- apply(cols, 2, unique)
+  cnames <- Reduce(base::intersect, lapply(res, colnames))
   names(cnames) <- cnames
-  asys <- lapply(cnames, function(x) do.call(cbind, lapply(res, `[`, j=x)))
-
+  asys <- lapply(cnames, function(j) 
+                 do.call(cbind, lapply(res, function(x) x[,j])))
   stopifnot(all(sapply(asys, is, "matrix")))
   stopifnot(identical(colnames(asys[[1]]), colnames(asys[[2]])))
+  if (!"est_counts_mad" %in% names(asys)) asys$est_counts_mad <- NULL
+
   coldat <- DataFrame(ID=outputDirs)
   rownames(coldat) <- coldat$ID
 
