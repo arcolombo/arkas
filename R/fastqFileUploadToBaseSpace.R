@@ -4,6 +4,8 @@
 #' @param basespaceProject   character string of the basespace project name, this must exist on basespace 
 #' @param fastqFileSignaure character that is unique to the fastq file directory where upon grep'ing the desired files will get matched.  the default is the illumina standard suffix _001.fastq.gz which should pick out the illumina files in the case where the fastq directory has multiple raw files.
 #' @param illuminaDirs a vector of illumina sample directories which contain illumina fastqs
+#' @param paired boolean   if the illuminaDirs contains a paired fastq pair
+#' @param dryRun boolena   if true then for bs CLI will simulate an upload, if false bs CLI will upload a fastq to the real account.
 #' @return nothing, a successful indication that the files were uploaded to basespace
 #' @examples 
 #' \dontrun{
@@ -24,12 +26,20 @@ for ( i in 1:length(illuminaDirs)){
     illuminafastqFile<-dir(dirs)[grepl(fastqFileSignature,dir(dirs))]
     x0<-paste0(dirs,"/",illuminafastqFile[1])
    stopifnot(file.exists(x0)==TRUE)
+    if(paired==TRUE){
     for(j in 2:length(illuminafastqFile)){
     x1<-paste0(dirs,"/",illuminafastqFile[j])
     stopifnot(file.exists(x1)==TRUE)
     x0<-paste(x0,x1)
     } #loop over files
+    }
+    if(dryRun==FALSE){
      command<-paste0("bs upload sample ",x0," -p ",basespaceProject)
+     } 
+    if(dryRun==TRUE){
+          command<-paste0("bs upload sample --dry-run ",x0," -p ",basespaceProject)
+
+    }#simulated upload for unit testing
     system(command)
     } #loop over many dirs
 

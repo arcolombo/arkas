@@ -1,3 +1,15 @@
+---
+title: "Arkas: Repetitive Elements Quantification In Much Less Time"
+author:  "Timothy J. Triche, Jr, Anthony R. Colombo, Harold Pimentel"
+output: 
+    html_document:
+      toc: true 
+      number_sections: true
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+---
+          
+
+
 ##GWA Safe Exit Unit Test
  the gwa by default uses benjami hochberg fdr adjusted procedure, but it is nice to have user input fdr adjustment to the first thing that works; so by default you can input holm, and if that is too conservative it will return the next best conservative list, ending at "none" , or stopping.  here we grab only the Normal samples so this should error out; thus getting no DE.
 this shows a custom adjust
@@ -23,19 +35,22 @@ NN_design <- with(as(colData(NN), "data.frame"),
 gwa<-geneWiseAnalysis(NN,design=NN_design,how="cpm",species="Homo.sapiens",adjustBy="BY",fitOnly=FALSE)
 
 rwa<-repeatWiseAnalysis(NN,design=NN_design,how="cpm",species="Homo.sapiens",adjustBy="holm")
-
 ```
 
 #Repeat testing
  Repeat elements usually have low signal, so testing safe exit would be useful here.
 
-the MDS data set had 0 DE returned from rwa.  FIX ME::: add an empty unit test
+the MDS data set had 0 DE returned from rwa.
 The mds data will return 0 DE for repeat level analyses, and is a great example of flexible FDR searching.
 Here users can input any adjust method, and it will run until it finds the selected fdr procedure or the next conservative one. 
 ```{r}
+library(arkas)
+library(TxDbLite)
+suppressPackageStartupMessages(library(arkasData))
+outputPath <- system.file("extdata", "annotatedKexp", package="arkasData")
 
-load(""/home/arcolombo/Documents/MDS-RNA-Seq/MDS-arkas-files/sampleDir/mdsKexp.RData")
-design<-metadata(mdsKexp)$design
- rwa<-repeatWiseAnalysis(mdsKexp,design=design,how="cpm",species="Homo.sapiens",adjustBy="holm")
+load(paste0(outputPath,"/mds.RData"))
+design<-metadata(mds)$design
+ rwa<-repeatWiseAnalysis(mds,design=design,how="cpm",species="Homo.sapiens",adjustBy="holm",p=0.01)
 
-
+```

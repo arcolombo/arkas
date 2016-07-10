@@ -6,7 +6,8 @@
 \usage{
 transcriptWiseAnalysis(kexp, design, p.cutoff = 0.05, fold.cutoff = 1,
   coef = 2, read.cutoff = 1, tx_biotype = NULL, gene_biotype = NULL,
-  biotype_class = NULL, ...)
+  biotype_class = NULL, adjustBy = "holm", species = c("Homo.sapiens",
+  "Mus.musculus"))
 }
 \arguments{
 \item{kexp}{a KallistoExperiment or SummarizedExperiment-like object}
