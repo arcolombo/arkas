@@ -7,6 +7,8 @@
 #' transcript or bundle from the total normalized count. Function SEtoKE(),
 #' which underlies as(SE, "KallistoExperiment"), does exactly that. 
 #'
+#' FIXME: add Harold's quasi-normalized TPM method for tx-level comparisons.
+#' 
 #' @param est_counts            matrix of estimated counts
 #' @param eff_length            matrix of effective transcript lengths 
 #' @param transcriptomes        string or strings naming the target txomes
@@ -38,9 +40,12 @@ KallistoExperiment <- function(est_counts=NULL,
   if (length(transcriptomes) > 1) {
     transcriptomes <- paste(transcriptomes, collapse=", ")
   }
+
+  # compute TPM at the last minute
   asys <- list(est_counts=est_counts, 
                eff_length=eff_length,
-               est_counts_mad=est_counts_mad)
+               est_counts_mad=est_counts_mad,
+               tpm=calcTpm(est_counts, eff_length))
   asys <- asys[!sapply(asys, is.null)]
 
   new("KallistoExperiment",

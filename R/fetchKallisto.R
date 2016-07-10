@@ -51,23 +51,10 @@ fetchKallisto <- function(sampleDir=".",
                  eff_length=h5read(hdf5, "aux/eff_lengths"))
     rownames(res) <- h5read(hdf5, "aux/ids")
   }
-  message("Computing TPM for ", h5, "...")
-  res <- cbind(res, tpm=.tpm(res)) # add precomputed TPMs 
-  message("Extracting run information for ", h5, "...")
   runinfo <- .extractRuninfo(hdf5, collapse=collapse, 
                              transcriptomes=transcriptomes)
   for (i in names(runinfo)) attr(res, i) <- runinfo[[i]]
   return(res)
-}
-
-.tpm <- function(res) .calcTpm(res[, "est_counts"], res[, "eff_length"])
-
-# excruciatingly explicit, but solves the goddamned problem
-.calcTpm <- function(est_counts, eff_len) { 
-  if(any(eff_len < 1)) message("You have transcripts with effective length < 1")
-  tpm <- (est_counts / eff_len)
-  totalMass <- sum(tpm)
-  (tpm / totalMass) * 1e6
 }
 
 #' @import TxDbLite

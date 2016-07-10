@@ -111,7 +111,6 @@ mergeKallisto <- function(outputDirs=NULL,
     features(kexp) <- feats
   }
   return(kexp)
-
 }
 
 .extractTranscriptomeFromCall <- function(x) extractIndexName(attr(x, "call"))

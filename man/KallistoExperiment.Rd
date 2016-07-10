@@ -32,14 +32,7 @@ KallistoExperiment(est_counts = NULL, eff_length = NULL,
 \item{est_counts_mad}{matrix of count MADs summarizing bootstrap runs}
 }
 \description{
-Initializes a KallistoExperiment and performs some rudimentary checks.
-Many of the arguments CAN be NULL; determination of which is required 
-is done at run-time.  A KallistoExperiment must contain at least the 
-est_counts and eff_length assays, because these are required for tpm 
-estimates.  HOWEVER, given raw counts along with informative lengths 
-for each feature (row), we can deduce the effective length of each 
-transcript or bundle from the total normalized count. Function SEtoKE(),
-which underlies as(SE, "KallistoExperiment"), does exactly that.
+FIXME: add Harold's quasi-normalized TPM method for tx-level comparisons.
 }
 \seealso{
 SEtoKE
