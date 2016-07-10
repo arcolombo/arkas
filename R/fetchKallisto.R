@@ -7,7 +7,6 @@
 #' @param summarize       boolean: summarize bootstraps if found? (FALSE) 
 #'
 #' @import rhdf5 
-#' @import Matrix
 #'
 #' @importFrom matrixStats rowMads
 #' @importFrom matrixStats rowMedians
@@ -37,23 +36,20 @@ fetchKallisto <- function(sampleDir=".",
     boots <- do.call(cbind, h5read(hdf5, "bootstrap"))
     colnames(boots) <- paste0("boot", 1:ncol(boots))
     rownames(boots) <- h5read(hdf5, "aux/ids")
-    res <- Matrix(cbind(rowMedians(boots),
-                        h5read(hdf5, "aux/eff_lengths"),
-                        rowMads(boots)),
-                  dimnames=list(transcript=h5read(hdf5, "aux/ids"),
-                                c("est_counts","eff_length","est_counts_mad")))
+    res <- cbind(est_counts=rowMedians(boots),
+                 eff_length=h5read(hdf5, "aux/eff_lengths"),
+                 est_counts_mad=rowMads(boots))
+    rownames(res) <- h5read(hdf5, "aux/ids")
   } else if (bootstraps > 0) {
     message("Bootstraps ignored for ", sampleDir, ", set summarize=TRUE to use")
-    res <- Matrix(cbind(h5read(hdf5, "est_counts"),
-                        h5read(hdf5, "aux/eff_lengths")),
-                  dimnames=list(transcript=h5read(hdf5, "aux/ids"),
-                                c("est_counts", "eff_length")))
+    res <- cbind(est_counts=h5read(hdf5, "est_counts"),
+                 eff_length=h5read(hdf5, "aux/eff_lengths"))
+    rownames(res) <- h5read(hdf5, "aux/ids")
   } else {
     message("No bootstraps found for ", sampleDir, ", using est_counts...")
-    res <- Matrix(cbind(h5read(hdf5, "est_counts"),
-                        h5read(hdf5, "aux/eff_lengths")),
-                  dimnames=list(transcript=h5read(hdf5, "aux/ids"),
-                                c("est_counts", "eff_length")))
+    res <- cbind(est_counts=h5read(hdf5, "est_counts"),
+                 eff_length=h5read(hdf5, "aux/eff_lengths"))
+    rownames(res) <- h5read(hdf5, "aux/ids")
   }
   message("Computing TPM for ", h5, "...")
   res <- cbind(res, tpm=.tpm(res)) # add precomputed TPMs 
@@ -66,6 +62,7 @@ fetchKallisto <- function(sampleDir=".",
 
 .tpm <- function(res) .calcTpm(res[, "est_counts"], res[, "eff_length"])
 
+# excruciatingly explicit, but solves the goddamned problem
 .calcTpm <- function(est_counts, eff_len) { 
   if(any(eff_len < 1)) message("You have transcripts with effective length < 1")
   tpm <- (est_counts / eff_len)
