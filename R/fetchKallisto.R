@@ -59,7 +59,7 @@ fetchKallisto <- function(sampleDir=".",
   res <- cbind(res, tpm=.tpm(res)) # add precomputed TPMs 
   message("Extracting run information for ", h5, "...")
   runinfo <- .extractRuninfo(hdf5, collapse=collapse, 
-                             transcriptomes=transcriptomes, ...)
+                             transcriptomes=transcriptomes)
   for (i in names(runinfo)) attr(res, i) <- runinfo[[i]]
   return(res)
 }
