@@ -1,6 +1,6 @@
 #' Collapse transcripts, discarding any with low reads (pointless to test them)
-#' Filtering usually increases statistical power for given false-positive rate;
-#' see Bourgon et al, 2010, \link{http://www.pnas.org/content/107/21/9546.long}.
+#' Filtering usually increases statistical power for given false-positive rate.
+#' per Bourgon et al, 2010, http://www.pnas.org/content/107/21/9546.long
 #'
 #' @param kexp          A KallistoExperiment (or something very much like it)
 #' @param read.cutoff   Discard transcripts and/or bundles w/ < this many reads

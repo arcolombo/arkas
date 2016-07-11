@@ -7,41 +7,39 @@
 #' @param paired boolean   if the illuminaDirs contains a paired fastq pair
 #' @param dryRun boolena   if true then for bs CLI will simulate an upload, if false bs CLI will upload a fastq to the real account.
 #' @return nothing, a successful indication that the files were uploaded to basespace
-#' @examples fastqFileUploadToBaseSpace(illuminaDirPath,
+#' @examples 
+#' \dontrun{
+#' fastqFileUploadToBaseSpace(illuminaDirPath,
 #'                           illuminafastqFile=illuminaFastqFiles,
 #'                           basespaceProject=basespaceProject,
 #'                           illuminaDirs=illuminaDirs)
-#' @export
+#' } 
 #' @return integer for success or failure
-fastqFileUploadToBaseSpace<-function(illuminaDirPath=NULL, illuminafastqFile=NULL, basespaceProject=NULL,fastqFileSignature="_001.fastq.gz",illuminaDirs=NULL,paired=FALSE, dryRun=FALSE) {
+#' 
+#' @export
+fastqFileUploadToBaseSpace<-function(illuminaDirPath=NULL, illuminafastqFile=NULL, basespaceProject=NULL,fastqFileSignature="_001.fastq.gz",illuminaDirs=NULL,paired=FALSE, dryRun=FALSE) { # {{{
 
-
-#FIX ME check parameters
-##dependencies: https://help.basespace.illumina.com/articles/descriptive/basespace-cli/ must be installed
-
-
-
-for ( i in 1:length(illuminaDirs)){
+  # FIXME: check parameters
+  # dependencies: https://help.basespace.illumina.com/articles/descriptive/basespace-cli/ must be installed
+  for ( i in 1:length(illuminaDirs)){
     dirs<-paste0(illuminaDirPath,"/",illuminaDirs[i])
     illuminafastqFile<-dir(dirs)[grepl(fastqFileSignature,dir(dirs))]
     x0<-paste0(dirs,"/",illuminafastqFile[1])
-   stopifnot(file.exists(x0)==TRUE)
+    stopifnot(file.exists(x0)==TRUE)
     if(paired==TRUE){
-    for(j in 2:length(illuminafastqFile)){
-    x1<-paste0(dirs,"/",illuminafastqFile[j])
-    stopifnot(file.exists(x1)==TRUE)
-    x0<-paste(x0,x1)
-    } #loop over files
+      for(j in 2:length(illuminafastqFile)){
+        x1<-paste0(dirs,"/",illuminafastqFile[j])
+        stopifnot(file.exists(x1)==TRUE)
+        x0<-paste(x0,x1)
+      } # looping over files
     }
     if(dryRun==FALSE){
-     command<-paste0("bs upload sample ",x0," -p ",basespaceProject)
-     } 
-    if(dryRun==TRUE){
-          command<-paste0("bs upload sample --dry-run ",x0," -p ",basespaceProject)
-
-    }#simulated upload for unit testing
-    system(command)
-    } #loop over many dirs
-
-}#{{{main
+      command<-paste0("bs upload sample ",x0," -p ",basespaceProject)
+    } else { 
+      command<-paste0("bs upload sample --dry-run ",x0," -p ",basespaceProject)
+    } #simulated upload for unit testing
+    
+    system(command) # ugh
+  } # looping over many dirs
+}# }}} main
 
