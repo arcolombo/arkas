@@ -19,8 +19,7 @@
 #' The default approach is to discard all rows where the maximum TPM is less 
 #' than the specified cutoff.  Since the default cutoff is 1TPM, this means 
 #' discarding bundles where the total transcripts per million estimate is < 1.
-#' (Filtering tends to increase statistical power at a given false-positive rate
-#' per Bourgon et al, 2010, \link{http://www.pnas.org/content/107/21/9546.long})
+#' (Filtering tends to increase statistical power at given false-positive rate)
 #'
 #' @import GenomicRanges
 #'

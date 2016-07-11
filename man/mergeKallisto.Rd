@@ -6,7 +6,7 @@
 \usage{
 mergeKallisto(outputDirs = NULL, outputPath = ".", covariates = NULL,
   annotate = FALSE, collapse = "_mergedWith_", transcriptomes = NULL,
-  parallel = TRUE, ...)
+  parallel = TRUE, summarize = FALSE, ...)
 }
 \arguments{
 \item{outputDirs}{character: directories holding Kallisto results (NULL)}
@@ -22,6 +22,10 @@ mergeKallisto(outputDirs = NULL, outputPath = ".", covariates = NULL,
 \item{transcriptomes}{string: collapsing string for indices ("_mergedWith_")}
 
 \item{parallel}{boolean: try to run the merge in parallel? (TRUE)}
+
+\item{summarize}{boolean: summarize bootstraps if found? (FALSE)}
+
+\item{...}{further arguments for KallistoExperiment constructor}
 }
 \description{
 If no transcriptomes are specified (or the ones specified are not found),
