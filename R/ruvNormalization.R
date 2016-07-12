@@ -59,7 +59,7 @@ ruvNormalization <- function(kexp, k=1, spikeIns=FALSE, p.cutoff=1,
         
         idx <- rev(order(GWA$top$adj.P.Val))
         master<-GWA$top[idx,]
-        rIdx<-which(GWA$top$adj.P.Val[idx]>=0.55)
+        rIdx<-which(GWA$top$adj.P.Val[idx]>=0.65)
              
         print(paste0("found ",length(rIdx), " with adj.P.Val greater than 0.55 used as negative in silico controls "))
         derived.inSilico <- rownames(master[rIdx,])
@@ -75,9 +75,10 @@ ruvNormalization <- function(kexp, k=1, spikeIns=FALSE, p.cutoff=1,
                                     read.cutoff=read.cutoff,adjustBy="BH")  
         
         idx <- rev(order(TWA$top$adj.P.Value))
-        rIdx<-which(TWA$top$adj.P.Val[idx]>0.5)
+         master<-TWA$top[idx,]
+        rIdx<-which(TWA$top$adj.P.Val[idx]>0.65)
         print(paste0("found ",length(rIdx), " with adj.P.Val greater than 0.50 used as negative in silico controls "))
-        derived.inSilico <- rownames(TWA$top[rIdx,])
+        derived.inSilico <- rownames(master[rIdx,])
         trnxExprs <- collapseTranscripts(kexp,read.cutoff=read.cutoff)
         trnxExprs <- round(trnxExprs)
         # }}}
