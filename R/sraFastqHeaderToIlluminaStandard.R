@@ -25,21 +25,22 @@ message("files appear gzipped .. O.K!, checking format")
 
 if(hFormatted =="SRA") {
 #CASE 1:  SRA headers  @SRR3173882.sra.1 HWI-ST1209-LAB:323:HA9TPADXX:1:1101:1408:2086 length=50
-message("running SRA fastq header conversion e.g.  @SRR3173882.sra.1 HWI-ST1209-LAB:323:HA9TPADXX:1:1101:1408:2086 length=50...")
-
 fastqHeaderConvert<-system.file("bin","fastqHeaderConvert.sh",package="arkas")
 fastqConvert2<-system.file("bin","fastqConvert2.sh",package="arkas")
-fastqConvert3<-system.file("bin","fastqConvert3.sh",package="arkas")
 convertFastqToIlluminaStandard<-system.file("bin","convertFastqFileToIlluminaStd.sh",package="arkas")
 sraSingleUpload<-system.file("bin","sraSingleFastqBaseSpaceUpload.sh", package="arkas")
 
 setwd(fastqPath)
     if(hasBarcode==TRUE){
+message("running SRA fastq header conversion e.g.  @SRR3173882.sra.1 HWI-ST1209-LAB:323:HA9TPADXX:1:1101:1408:2086 length=50...")
+fastqConvert3<-system.file("bin","fastqConvert3.sh",package="arkas")
 command<-paste0(fastqHeaderConvert," ",fastqFile," ", fastqReadNumber," | ",fastqConvert2," | ", fastqConvert3," | gzip -c > ",sraOutputDir,"/",fastqFile)
 system(command)
   } #has barcode like @SRR1564893.1 HWI-ST972:1180:D225DACXX:7:1101:1247:2104 length=50
 
    if(hasBarcode==FALSE){
+message("running SRA fastq header conversion e.g.  @SRR3173882.sra.1 HWI-ST1209-LAB:323:1:1101:1408:2086 length=50...")
+
 fastqConvert3<-system.file("bin","fastqConvert_NoRunId.sh",package="arkas")
 command<-paste0(fastqHeaderConvert," ",fastqFile," ", fastqReadNumber," | ",fastqConvert2," | ", fastqConvert3," | gzip -c > ",sraOutputDir,"/",fastqFile)
 system(command)
