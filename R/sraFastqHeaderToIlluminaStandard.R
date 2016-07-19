@@ -4,10 +4,11 @@
 #' @param fastqFile a vector of sample files downloaded from SRA to convert to illumina std
 #' @param sraOutputDir character vector where to spit out the converted fastq
 #' @param fastqReadNumber  integer 1, or 2, this is the read number that will be written in the fastq file, for SRAdb defaults to 1, but we give the option to have 1 or 2 here.
+#' @param hasBarcode   boolean , some SRA files have a barcode and some sra do not have a barcode, this flag specifies which case.  if the raw SRA fastq has a barcode (run ID) it looks like @SRR1564893.1 HWI-ST972:1180:D225DACXX:7:1101:1247:2104 length=50, if the run ID is missing the raw SRA header looks like @SRR892995.1 HWI-ST601:8:1101:1219:2076 length=100.  if the run ID is missing, we make a fake one up.
 #' @importFrom nat.utils is.gzip
 #' @export
 #' @return a integer defining success or failure
-sraFastqHeaderToIlluminaStandard<-function(headerFormat=c("SRA","Normal"), fastqPath,fastqFile, sraOutputDir, fastqReadNumber=1  ) {
+sraFastqHeaderToIlluminaStandard<-function(headerFormat=c("SRA","Normal"), fastqPath,fastqFile, sraOutputDir, fastqReadNumber=1,hasBarcode=FALSE  ) {
 #this function is not exported, and sraFastqHeaderToIlluminaStandard handles
 hFormatted <- match.arg(headerFormat, c("SRA", "Normal"))
 
@@ -33,8 +34,16 @@ convertFastqToIlluminaStandard<-system.file("bin","convertFastqFileToIlluminaStd
 sraSingleUpload<-system.file("bin","sraSingleFastqBaseSpaceUpload.sh", package="arkas")
 
 setwd(fastqPath)
+    if(hasBarcode==TRUE){
 command<-paste0(fastqHeaderConvert," ",fastqFile," ", fastqReadNumber," | ",fastqConvert2," | ", fastqConvert3," | gzip -c > ",sraOutputDir,"/",fastqFile)
 system(command)
+  } #has barcode like @SRR1564893.1 HWI-ST972:1180:D225DACXX:7:1101:1247:2104 length=50
+
+   if(hasBarcode==FALSE){
+fastqConvert3<-system.file("bin","fastqConvert_NoRunId.sh",package="arkas")
+command<-paste0(fastqHeaderConvert," ",fastqFile," ", fastqReadNumber," | ",fastqConvert2," | ", fastqConvert3," | gzip -c > ",sraOutputDir,"/",fastqFile)
+system(command)
+}
 
 #now to change the name to illumina std and upload to basespace
 command2<-paste0(convertFastqToIlluminaStandard," ",paste0(sraOutputDir,"/"),fastqFile)
