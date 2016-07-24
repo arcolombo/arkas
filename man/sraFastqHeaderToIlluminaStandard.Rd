@@ -16,7 +16,7 @@ sraFastqHeaderToIlluminaStandard(headerFormat = c("SRA", "Normal"), fastqPath,
 
 \item{fastqReadNumber}{integer 1, or 2, this is the read number that will be written in the fastq file, for SRAdb defaults to 1, but we give the option to have 1 or 2 here.}
 
-\item{hasBarcode}{boolean , some SRA files have a barcode and some sra do not have a barcode, this flag specifies which case.  if the raw SRA fastq has a barcode (run ID) it looks like @SRR1564893.1 HWI-ST972:1180:D225DACXX:7:1101:1247:2104 length=50, if the run ID is missing the raw SRA header looks like @SRR892995.1 HWI-ST601:8:1101:1219:2076 length=100.  if the run ID is missing, we make a fake one up.}
+\item{hasBarcode}{boolean , some SRA files have a barcode and some sra do not have a barcode, this flag specifies which case.  if the raw SRA fastq has a barcode (run ID) it looks like @SRR1564893.1 HWI-ST972:1180:D225DACXX:7:1101:1247:2104 length=50, if the run ID is missing the raw SRA header looks like @SRR892995.1 HWI-ST601:8:1101:1219:2076 length=100.  if the run ID is missing, we make a fake runIDNumber along with a runID tag as the 2nd and 3rd column.}
 
 \item{headerStyle}{,  character string, where SRA is the header style obtained from importing from SRAdb; the Normal header format is a standard two field record delimited by a space, with each field delimited by several colons.}
 }
