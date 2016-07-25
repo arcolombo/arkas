@@ -18,13 +18,20 @@
 #' @return returns several images plotted.
 crossModels<-function(kexp,crossLevel=c("tx_id","gene_id"),cutoffMax=3, dataType=c("normalized","unnormalized"), outputDir=".", design=NULL, p.val=0.05, adjustBy="BH",species=c("Homo.sapiens","Mus.musculus"),numberSelected=200){
   #FIX ME: have this output a single PDF of all the data at the end for each flag, you do not want to print out many PDFs. the pdf should have the EdgeR, limma, GWA/TWA, and RWA, with RUV/without RUV for a fixed cutoffMax.  then you can call this method for various cutoffMaxes.    perhaps do an overlap analysis with a beeSwarm of top Genes, top repeats all of this in 1 PDF. 
+ readkey<-function()
+{
+    cat ("Press [enter] to continue")
+    line <- readline()
+}
+
+#FIX ME: add a flag for doing a multiple group contrast
   dataType<-match.arg(dataType,c("normalized","unnormalized"))
-  crossLevel<-match.arg(crossLevel,c("tx_id","gn_id"))
+  crossLevel<-match.arg(crossLevel,c("tx_id","gene_id"))
   adjustBy<-match.arg(adjustBy,c("BH","none","BY","holm"))
   species<-match.arg(species,c("Homo.sapiens","Mus.musculus"))
   
- if(design==NULL){
- stopifnot(design!=NULL)
+ if(is.null(design)==TRUE){
+ stop("design must be input")
  }
 
   kexp<-annotateFeatures(kexp,"transcript")
@@ -63,7 +70,7 @@ crossModels<-function(kexp,crossLevel=c("tx_id","gene_id"),cutoffMax=3, dataType
                             fitOnly=FALSE,
                             adjustBy=adjustBy)
   #gwa RUV heatmap
-  write.csv(gwa.RUV,file=paste0(outputDir,"/gwaRUV_pval_",p.val,"_readCutoff_",cutoffMax,".csv"),
+  write.csv(gwa.RUV$limmaWithMeta[order(gwa.RUV$limmaWithMeta$adj.P.Val),],file=paste0(outputDir,"/gwaRUV_pval_",p.val,"_readCutoff_",cutoffMax,".csv"),
   row.names=FALSE)
   write.table(ruvDesign,
               file=paste0(outputDir,"./ruvDesign.txt"),
@@ -83,11 +90,11 @@ crossModels<-function(kexp,crossLevel=c("tx_id","gene_id"),cutoffMax=3, dataType
   for( i in 1:nrow(ruv.mt)){
  rg.idx<-which(rownames(ruv.mt)[i]==rownames(gwa.heat))
    replace<-as.character(gwa.heat$Gene.symbol[rg.idx])
-   
-    if(!is.na(replace)==TRUE){
+    if(replace==""){
+    replace<-rownames(gwa.heat)[rg.idx]
+    } else if(!is.na(replace)==TRUE){
     rownames(ruv.mt)[i]<-replace
-    }#if gene symbol exists
-   else {
+    } else {
    rownames(ruv.mt)[i]<-rownames(gwa.heat)[rg.idx]
    }
  }#for
@@ -99,10 +106,12 @@ crossModels<-function(kexp,crossLevel=c("tx_id","gene_id"),cutoffMax=3, dataType
                    name="log(1+tpm)",
                    cluster_rows=dend,
                    cluster_columns=x.pv$hclust,
-                   column_title=paste0("Limma Normalized P.Val ",p.val," cutoff ",cutoffMax),
-                   row_names_gp=gpar(fontsize=6))
-
-
+                   column_title=paste0("Limma Gene Normalized P.Val ",p.val," cutoff ",cutoffMax),
+                   row_names_gp=gpar(fontsize=6),
+                   column_names_gp=gpar(fontsize=8))
+     
+   print(ruv.gwa.heatmap)
+   readkey()
 
 
   #perform RWA with RUV limma
@@ -151,7 +160,8 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
                   cluster_rows=rpt.dend,
                   cluster_columns=rpt.pv$hclust,
                   column_title=paste0("RUV Repeats P.Val ",p.val," ",adjustBy," cut ",cutoffMax),
-                 row_names_gp=gpar(fontsize=6)) +
+                 row_names_gp=gpar(fontsize=6),
+                 column_names_gp=gpar(fontsize=8)) +
   Heatmap(features(kexp)[rownames(rpt.mt)]$tx_biotype,
           name="tx_biotype",
           width=unit(5,"mm")) +
@@ -171,15 +181,18 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
           width=unit(5,"mm"))
   }
 
-
+  print(rh.rpt)
+  readkey()
  
   #run edgeR GWA and RWA with RUV at gene level
   geneCounts<-collapseBundles(kexp,"gene_id",read.cutoff=cutoffMax)
+  #phenoDat object assumes the coeff of A.vs.B is the second column, may encounter some order issues with rownames and the group A or B
+  phenoDat<-data.frame(term=rownames(design),type=c(rep("A",nrow(design[design[,2]>0,])),rep("B",nrow(design[design[,2]<1,] ))))
   d2 <- DGEList(counts=geneCounts, group=phenoDat$type)
   d2 <- calcNormFactors(d2)
   d2 <- estimateGLMTrendedDisp(d2, ruvDesign)
   d2 <- estimateGLMTagwiseDisp(d2, ruvDesign)
-  d2 <- estimateGLMRobustDisp(d2, ruvDesign) # superb, but slow!
+  #d2 <- estimateGLMRobustDisp(d2, ruvDesign) # superb, but slow!
   #for repeat dispersions
   txCounts<-collapseTranscripts(kexp,read.cutoff=cutoffMax)
   idx<-!grepl("^ENS",rownames(txCounts))
@@ -193,13 +206,20 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
   d <- estimateGLMRobustDisp(d, ruvDesign) # superb, but slow!
   
   gn.fit<-glmFit(d2,ruvDesign)
-  gn.lrt<-glmLRT(gn.fit,coef=2)
+  gn.lrt<-glmLRT(gn.fit,coef=2) #assumes the coef is 2nd column, no multigroups supported yet
   gn.Tags<-topTags(gn.lrt,p=p.val,n=nrow(kexp),adjust.method=adjustBy)[[1]]
   gn.feats<-mcols(features(kexp)[features(kexp)$gene_id %in% rownames(gn.Tags)])
   gn.key<-gn.feats[,c(4,5)]
   gn.key<-gn.key[!duplicated(gn.key$gene_id),]
 
-  write.table(gn.Tags,file=paste0(outputDir,"/Normalized.edgeR.pval_",p.val,"_cut_",cutoffMax,"_",adjustBy),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
+  rpt.fit<-glmFit(d,ruvDesign)
+  rpt.lrt<-glmLRT(rpt.fit,coef=2)
+  rpt.Tags<-topTags(rpt.lrt,p=p.val,n=nrow(kexp))[[1]]
+
+  write.table(gn.Tags,file=paste0(outputDir,"/Normalized.gwa.edgeR.pval_",p.val,"_cut_",cutoffMax,"_",adjustBy),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
+   write.table(rpt.Tags,file=paste0(outputDir,"/Normalized.rwa.edgeR.pval_",p.val,"_cut_",cutoffMax,"_",adjustBy),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
+
+
   #edgeR heatmap
 
   ruv.targets<-rownames(gn.Tags)[1:numberSelected]
@@ -226,16 +246,59 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
                    name="log(1+tpm)",
                    cluster_rows=eg.dend,
                    cluster_columns=eg.x.pv$hclust,
-                   column_title=paste0("EdgeR Normalized P.Val ",p.val," cutoff ",cutoffMax," top ",numberSelected),
-                   row_names_gp=gpar(fontsize=6))
+                   column_title=paste0("EdgeR Gene Normalized P.Val ",p.val," cutoff ",cutoffMax," top ",numberSelected),
+                   row_names_gp=gpar(fontsize=6),
+                   column_names_gp=gpar(fontsize=8))
+
+  print(eg.ruv.gwa.heatmap)
+  readkey()
 
   ##edgeR rwa analysis csv and heatmap
+  rpt.targets<-rownames(rpt.Tags)
+  rpt.tpm<-collapseTpm(kexp,"tx_id")
+    
+  rpt.idx<-!grepl("^ENS",rownames(rpt.tpm))
+  eg.rpts.tpm<-rpt.tpm[rpt.idx,]
+  tpm.id<- !grepl("^ERCC",rownames(eg.rpts.tpm))
+  all.rpts.tpm<-eg.rpts.tpm[tpm.id,]
 
+  eg.df.rpt<-as.data.frame(rpt.tpm,stringsAsFactors=FALSE)
+  eg.df.rpt<-eg.df.rpt[rownames(eg.df.rpt) %in%rpt.targets,] 
+  eg.rpt.mt<-as.matrix(eg.df.rpt)
+
+  eg.rpt<-Heatmap(log(1+eg.rpt.mt),name="log(1+tpm)",
+                column_title=paste0("EdgeR Top Repeats TPM  P.Val ",p.val," cut ",cutoffMax),
+                row_names_gp=gpar(fontsize=8),
+                column_names_gp=gpar(fontsize=8)) +
+  Heatmap(features(kexp)[rownames(eg.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm")) +
+  Heatmap(features(kexp)[rownames(eg.rpt.mt)]$gene_biotype,name="rpt_family",width=unit(5,"mm"))
+
+  print(eg.rpt)
+  readkey()
+
+
+  ###all repeats TPM
+  all.rpt.mt<-as.matrix(all.rpts.tpm)
+  all.rpt.x.pv<-pvclust(log(1+all.rpt.mt),nboot=100)
+  all.rpt.dend<-dendsort(hclust(dist(log(1+all.rpt.mt))),isReverse=TRUE)
+
+
+  all.eg.rpt<-Heatmap(log(1+all.rpt.mt),name="log(1+tpm)",
+                cluster_rows=dend,
+                column_title=paste0("EdgeR All Repeats TPM  P.Val ",p.val," cut ",cutoffMax),
+                row_names_gp=gpar(fontsize=8),
+                column_names_gp=gpar(fontsize=8)) +
+  Heatmap(features(kexp)[rownames(all.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm")) +
+  Heatmap(features(kexp)[rownames(all.rpt.mt)]$gene_biotype,name="rpt_family",width=unit(5,"mm"))
   
+  print(all.eg.rpt)
+  readkey()
 
- 
+
+
+
   #print only 1 pdf with everything
-  pdf(paste0(outputDir,"./NormalizedGeneBundles_readcutoff_",cutoffMax,".pdf"))
+  pdf(paste0(outputDir,"./NormalizedBundles_readcutoff_",cutoffMax,".pdf"))
   plotRLE(normalizedCounts,outline=FALSE,ylim=c(-2,2))
   title(main="Normalized Gene Bundles CPM")
   plotPCA(normalizedCounts,cex=1.2)
@@ -243,14 +306,16 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
   volcanoplot(gwa.RUV$fit,coef=2,highlight=20,names=(gwa.RUV$limmaWithMeta$Gene.symbol))
    title("Top Normalized Limma Gene CPM")
   #plot heatmap
-   ruv.gwa.heatmap
-   rh.rpt
+   print(ruv.gwa.heatmap)
+   print(rh.rpt)
   #include edgeR RUV
    plotBCV(d2)
-   title("All Gene RUV Dispersions")
+   title("All Gene RUV EdgeR Dispersions")
    plotBCV(d)
-   title("All Repeat RUV Dispersions")
-   eg.ruv.gwa.heatmap
+   title("All Repeat RUV EdgeR Dispersions")
+   print(eg.ruv.gwa.heatmap)
+   print(eg.rpt)
+   print(all.eg.rpt)
   # include some beeswarm
   dev.off()
 
