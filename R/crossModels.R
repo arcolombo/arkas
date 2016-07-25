@@ -16,15 +16,25 @@
 #' @import EDASeq
 #' @export
 #' @return returns several images plotted.
-crossModels<-function(kexp,crossLevel=c("tx_id","gene_id"),cutoffMax=3, dataType=c("normalized","unnormalized"), outputDir=".", design=NULL, p.val=0.05, adjustBy="BH",species=c("Homo.sapiens","Mus.musculus"),numberSelected=200){
-  #FIX ME: have this output a single PDF of all the data at the end for each flag, you do not want to print out many PDFs. the pdf should have the EdgeR, limma, GWA/TWA, and RWA, with RUV/without RUV for a fixed cutoffMax.  then you can call this method for various cutoffMaxes.    perhaps do an overlap analysis with a beeSwarm of top Genes, top repeats all of this in 1 PDF. 
+crossModels<-function(kexp,
+                      crossLevel=c("tx_id","gene_id"),
+                      cutoffMax=3, 
+                      dataType=c("normalized","unnormalized"),
+                      outputDir=".",
+                      design=NULL, 
+                      p.val=0.05, 
+                      adjustBy="BH",
+                      species=c("Homo.sapiens","Mus.musculus"),
+                      numberSelected=200){
+   
  readkey<-function()
 {
     cat ("Press [enter] to continue")
     line <- readline()
 }
 
-#FIX ME: add a flag for doing a multiple group contrast
+#FIX ME: add a flag for doing a multiple group contrast. the user must input a good working contrast.matrix, then the output if flagged would go through each coefficient.
+
   dataType<-match.arg(dataType,c("normalized","unnormalized"))
   crossLevel<-match.arg(crossLevel,c("tx_id","gene_id"))
   adjustBy<-match.arg(adjustBy,c("BH","none","BY","holm"))
@@ -73,7 +83,7 @@ crossModels<-function(kexp,crossLevel=c("tx_id","gene_id"),cutoffMax=3, dataType
   write.csv(gwa.RUV$limmaWithMeta[order(gwa.RUV$limmaWithMeta$adj.P.Val),],file=paste0(outputDir,"/gwaRUV_pval_",p.val,"_readCutoff_",cutoffMax,".csv"),
   row.names=FALSE)
   write.table(ruvDesign,
-              file=paste0(outputDir,"./ruvDesign.txt"),
+              file=paste0(outputDir,"/ruvDesign_pval_",p.val,"_cut_",cutoffMax,".txt"),
               quote=FALSE,sep="\t")
   #prepare gwa.RUV into heatmap, by gene name
   gwa.heat<-gwa.RUV$limmaWithMeta
@@ -355,5 +365,7 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
   } 
 
  }
+
+
  
-} ###{{{ 
+} ###{{{ main
