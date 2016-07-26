@@ -80,6 +80,7 @@ crossModels<-function(kexp,
                             fitOnly=FALSE,
                             adjustBy=adjustBy)
   #gwa RUV heatmap
+  write.table(in.sili,file=paste0(outputDir,"/neg.insilico_",p.val,"_cut_",cutoffMax,".txt"),quote=FALSE,sep="\t")
   write.csv(gwa.RUV$limmaWithMeta[order(gwa.RUV$limmaWithMeta$adj.P.Val),],file=paste0(outputDir,"/gwaRUV_pval_",p.val,"_readCutoff_",cutoffMax,".csv"),
   row.names=FALSE)
   write.table(ruvDesign,
@@ -200,9 +201,12 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
   phenoDat<-data.frame(term=rownames(design),type=c(rep("A",nrow(design[design[,2]>0,])),rep("B",nrow(design[design[,2]<1,] ))))
   d2 <- DGEList(counts=geneCounts, group=phenoDat$type)
   d2 <- calcNormFactors(d2)
+  d2 <- estimateGLMCommonDisp(d2,ruvDesign)
   d2 <- estimateGLMTrendedDisp(d2, ruvDesign)
   d2 <- estimateGLMTagwiseDisp(d2, ruvDesign)
-  #d2 <- estimateGLMRobustDisp(d2, ruvDesign) # superb, but slow!
+  d2 <- estimateGLMRobustDisp(d2, ruvDesign) # superb, but slow!
+  
+
   #for repeat dispersions
   txCounts<-collapseTranscripts(kexp,read.cutoff=cutoffMax)
   idx<-!grepl("^ENS",rownames(txCounts))
@@ -211,10 +215,11 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
   rpts<-rpts[id,]
   d <- DGEList(counts=rpts, group=phenoDat$type)
   d <- calcNormFactors(d)
+  d<- estimateGLMCommonDisp(d,ruvDesign)
   d <- estimateGLMTrendedDisp(d, ruvDesign)
   d <- estimateGLMTagwiseDisp(d, ruvDesign)
   d <- estimateGLMRobustDisp(d, ruvDesign) # superb, but slow!
-  
+ 
   gn.fit<-glmFit(d2,ruvDesign)
   gn.lrt<-glmLRT(gn.fit,coef=2) #assumes the coef is 2nd column, no multigroups supported yet
   gn.Tags<-topTags(gn.lrt,p=p.val,n=nrow(kexp),adjust.method=adjustBy)[[1]]
@@ -226,8 +231,8 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
   rpt.lrt<-glmLRT(rpt.fit,coef=2)
   rpt.Tags<-topTags(rpt.lrt,p=p.val,n=nrow(kexp))[[1]]
 
-  write.table(gn.Tags,file=paste0(outputDir,"/Normalized.gwa.edgeR.pval_",p.val,"_cut_",cutoffMax,"_",adjustBy),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
-   write.table(rpt.Tags,file=paste0(outputDir,"/Normalized.rwa.edgeR.pval_",p.val,"_cut_",cutoffMax,"_",adjustBy),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
+  write.table(gn.Tags,file=paste0(outputDir,"/Normalized.gwa.edgeR.pval_",p.val,"_cut_",cutoffMax,"_",adjustBy,".txt"),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
+   write.table(rpt.Tags,file=paste0(outputDir,"/Normalized.rwa.edgeR.pval_",p.val,"_cut_",cutoffMax,"_",adjustBy,".txt"),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
 
 
   #edgeR heatmap
