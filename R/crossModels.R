@@ -9,11 +9,13 @@
 #' @param adjustBy character for FDR filters
 #' @import edgeR
 #' @import limma
-#' @import ComplexHeatmap
+#' @importFrom ComplexHeatmap Heatmap
 #' @import circlize
-#' @import pvclust
-#' @import dendsort
-#' @import EDASeq
+#' @importFrom pvclust pvclust
+#' @importFrom dendsort dendsort
+#' @importFrom EDASeq plotRLE
+#' @importFrom EDASeq plotPCA
+#' @importFrom RUVSeq RUVg
 #' @export
 #' @return returns several images plotted.
 crossModels<-function(kexp,

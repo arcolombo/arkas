@@ -17,7 +17,7 @@ fastqFileUploadToBaseSpace(illuminaDirPath = NULL, illuminafastqFile = NULL,
 
 \item{fastqFileSignature}{character that is unique to the fastq file directory where upon grep'ing the desired files will get matched.  the default is the illumina standard suffix _001.fastq.gz which should pick out the illumina files in the case where the fastq directory has multiple raw files.}
 
-\item{illuminaDirs}{a vector of illumina sample directories which contain illumina fastqs}
+\item{illuminaDirs}{a character of illumina sample directories which contain illumina fastqs, if SE, only 1 fastq in this dir, if PE, there should be 2 or more.}
 
 \item{paired}{boolean   if the illuminaDirs contains a paired fastq pair}
 

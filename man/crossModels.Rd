@@ -2,12 +2,12 @@
 % Please edit documentation in R/crossModels.R
 \name{crossModels}
 \alias{crossModels}
-\title{Often times it is needed to cross compare edgeR results, limma/voom results across various filtering criteria and comparing normalized results and unnormalized results, which is not a good idea.}
+\title{Often times it is needed to cross compare edgeR results, limma/voom results across various filtering criteria and comparing normalized results and unnormalized results. This function can run a cross model generation set across various filtering criteria. by default the design is a group-means factorization where the coeficient is the second column.}
 \usage{
 crossModels(kexp, crossLevel = c("tx_id", "gene_id"), cutoffMax = 3,
   dataType = c("normalized", "unnormalized"), outputDir = ".",
   design = NULL, p.val = 0.05, adjustBy = "BH",
-  species = c("Homo.sapiens", "Mus.musculus"))
+  species = c("Homo.sapiens", "Mus.musculus"), numberSelected = 200)
 }
 \arguments{
 \item{crossLevel}{character option of tx_id, or gene_id which will compare at the transcript or gene level collapse.}
@@ -23,11 +23,13 @@ crossModels(kexp, crossLevel = c("tx_id", "gene_id"), cutoffMax = 3,
 \item{p.val}{numeric pvalue used for linear fitting}
 
 \item{adjustBy}{character for FDR filters}
+
+\item{numberSelected}{integer, this is the number of the highest ranked adj.P.Val genes to print into a heatmap, the max amount is the number of genes returned from an analysis.}
 }
 \value{
-returns a data frame and several images to plot.
+returns several images plotted.
 }
 \description{
-Often times it is needed to cross compare edgeR results, limma/voom results across various filtering criteria and comparing normalized results and unnormalized results, which is not a good idea.
+Often times it is needed to cross compare edgeR results, limma/voom results across various filtering criteria and comparing normalized results and unnormalized results. This function can run a cross model generation set across various filtering criteria. by default the design is a group-means factorization where the coeficient is the second column.
 }
 
