@@ -33,9 +33,9 @@ fastqFileUploadToBaseSpace<-function(illuminaDirPath=NULL, illuminafastqFile=NUL
       } # looping over illuminafastqFile vector, should be 2 here if PE==TRUE
     }
     if(dryRun==FALSE){
-      command<-paste0("bs upload sample ",x0," -p ",basespaceProject)
+      command<-paste0("bs upload sample -p ",basespaceProject," ",dirs,"/*.fastq.gz")
     } else { 
-      command<-paste0("bs upload sample --dry-run ",x0," -p ",basespaceProject)
+      command<-paste0("bs upload sample --dry-run -p ",basespaceProject," ",dirs,"/*.fastq.gz")
     } #simulated upload for unit testing
     
     system(command) 
