@@ -3,17 +3,19 @@
 #' @param kexp kallisto Experiment object or something along its line
 #' @param k integer, this is the k value for number of unwanted variance
 #' @param spikeIns  boolean, whether ERCC spike-ins are to be used (FALSE) 
+#' @param p.cutoff  numeric  a p value cutoff it should be fixed at 1 or 2 becuaes you need to find insignificant negative controls
 #' @param inSilico for when spikeIns is flagged as FALSE, inSilcio must be a vector names of in silico genes which are constant across samples apriori. housekeeping genes will do fine.  the insilico vector can be derived here if it is unknown by taking the bottom quartile, bottom 10 percent ranked by P.Value, of significant genes after running a raw DE analysis.
 #' @param read.cutoff , integer here we employ a read cutoff that filters out any rows where the rowSums falls under this category.  
 #' @param byLevel a string character which must match the names of the meta-columns of the features(kexp), this collapses the count data by this feature term, and performs filtering
-#'
-#' @import RUVSeq
+#' @param controlNumber integer, this is the amount of negative controls to use to normalize; the higher the number the more stable your normalization but higher chance of including a false negative as a negative control; the lower the number the lower the chance of false negative, but not as stable normalization.
+#' @importFrom RUVSeq RUVg
 #' @export 
-#' @return return a list object with RUVg normalization
+#' @return return a list object of the selected negative controls, and RUVg normalization design matrix weights
 
 ruvNormalization <- function(kexp, k=1, spikeIns=FALSE, p.cutoff=1, 
                              inSilico=NULL, read.cutoff=1, 
-                             byLevel=c("gene_id", "tx_id")) {
+                             byLevel=c("gene_id", "tx_id"),
+                             controlNumber=100) {
 
   if(!is(kexp, "KallistoExperiment")) {
     warning("This method only works with KallistoExperiment-like objects.")
@@ -50,7 +52,7 @@ ruvNormalization <- function(kexp, k=1, spikeIns=FALSE, p.cutoff=1,
     
       if(byLevel=="gene_id") {
         # {{{ collapse by gene_id
-        message("performing gene-wise-analysis...")
+        message("performing gene-wise-analysis with higher cutoff to search for negative controls...")
         GWA <- geneWiseAnalysis(kexp, design=metadata(kexp)$design, how="cpm",
                                 p.cutoff=p.cutoff,
                                 fold.cutoff=1, 
@@ -63,6 +65,7 @@ ruvNormalization <- function(kexp, k=1, spikeIns=FALSE, p.cutoff=1,
              
         print(paste0("found ",length(rIdx), " with adj.P.Val greater than 0.60 used as negative in silico controls "))
         derived.inSilico <- rownames(master[rIdx,])
+        derived.inSilico<-derived.inSilico[1:controlNumber]
         ruvOutput <- RUVg(exprs,derived.inSilico,k=k)
       }
     
@@ -79,6 +82,7 @@ ruvNormalization <- function(kexp, k=1, spikeIns=FALSE, p.cutoff=1,
         rIdx<-which(TWA$top$adj.P.Val[idx]>0.60)
         print(paste0("found ",length(rIdx), " with adj.P.Val greater than 0.60 used as negative in silico controls "))
         derived.inSilico <- rownames(master[rIdx,])
+        derived.inSilico<-derived.inSilico[1:controlNumber]
         trnxExprs <- collapseTranscripts(kexp,read.cutoff=read.cutoff)
         trnxExprs <- round(trnxExprs)
         # }}}
@@ -95,5 +99,5 @@ ruvNormalization <- function(kexp, k=1, spikeIns=FALSE, p.cutoff=1,
     }
   }
 
-  return(ruvOutput)
+  return(list(negative.insilico.controls=derived.inSilico,RUV=ruvOutput))
 }
