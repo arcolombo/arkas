@@ -58,10 +58,11 @@ geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
       message(paste0("fitting using FDR: ",adjustBy))
       res$top <- with(res, topTable(fit, coef=2, p=p.cutoff,adjust.method=adjustBy, n=nrow(kexp)))
 
-      if(nrow(res$top)==0){
-     message(paste0("no DE found for using FDR: ",adjustBy))
+      if(nrow(res$top)<10 || any(abs(res$top$logFC) >=fold.cutoff)==FALSE ){
+      
      initialRank=initialRank + 1
      adjustBy<-as.character(ranked$type[initialRank])
+      fold.cutoff<-fold.cutoff/(2*initialRank)
        }
       else{ 
       message(paste0("found ", nrow(res$top), " DE genes using FDR procedure ", as.character(ranked$type[initialRank]) )) 

@@ -3,7 +3,7 @@
 #' @param illuminafastqFile  fastq files with illumina headers and naming conventions, a vector of file names in illumina standard, this is optional parameter for large directories where hte names are numerious, in this case use the file signature for multi uploads
 #' @param basespaceProject   character string of the basespace project name, this must exist on basespace 
 #' @param fastqFileSignature character that is unique to the fastq file directory where upon grep'ing the desired files will get matched.  the default is the illumina standard suffix _001.fastq.gz which should pick out the illumina files in the case where the fastq directory has multiple raw files.
-#' @param illuminaDirs a vector of illumina sample directories which contain illumina fastqs
+#' @param illuminaDirs a character of illumina sample directories which contain illumina fastqs, if SE, only 1 fastq in this dir, if PE, there should be 2 or more.
 #' @param paired boolean   if the illuminaDirs contains a paired fastq pair
 #' @param dryRun boolena   if true then for bs CLI will simulate an upload, if false bs CLI will upload a fastq to the real account.
 #' @return nothing, a successful indication that the files were uploaded to basespace
@@ -19,27 +19,26 @@
 #' @export
 fastqFileUploadToBaseSpace<-function(illuminaDirPath=NULL, illuminafastqFile=NULL, basespaceProject=NULL,fastqFileSignature="_001.fastq.gz",illuminaDirs=NULL,paired=FALSE, dryRun=FALSE) { # {{{
 
-  # FIXME: check parameters
+  # FIXME: if a directory of fastqs exist with multiple R1, and multiple R2, there may be errors.  This was designed for 1 R1 and 1 R2 (if PE)
   # dependencies: https://help.basespace.illumina.com/articles/descriptive/basespace-cli/ must be installed
-  for ( i in 1:length(illuminaDirs)){
-    dirs<-paste0(illuminaDirPath,"/",illuminaDirs[i])
+    dirs<-paste0(illuminaDirPath,"/",illuminaDirs,"/")
     illuminafastqFile<-dir(dirs)[grepl(fastqFileSignature,dir(dirs))]
-    x0<-paste0(dirs,"/",illuminafastqFile[1])
+    x0<-paste0(dirs,"/",dir(dirs)[grepl("R1",dir(dirs))]) #a vector , 2 entries if PE
     stopifnot(file.exists(x0)==TRUE)
     if(paired==TRUE){
       for(j in 2:length(illuminafastqFile)){
         x1<-paste0(dirs,"/",illuminafastqFile[j])
         stopifnot(file.exists(x1)==TRUE)
         x0<-paste(x0,x1)
-      } # looping over files
+      } # looping over illuminafastqFile vector, should be 2 here if PE==TRUE
     }
     if(dryRun==FALSE){
-      command<-paste0("bs upload sample ",x0," -p ",basespaceProject)
+      command<-paste0("bs upload sample -p ",basespaceProject," ",dirs,"/*.fastq.gz")
     } else { 
-      command<-paste0("bs upload sample --dry-run ",x0," -p ",basespaceProject)
+      command<-paste0("bs upload sample --dry-run -p ",basespaceProject," ",dirs,"/*.fastq.gz")
     } #simulated upload for unit testing
     
-    system(command) # ugh
-  } # looping over many dirs
+    system(command) 
+  
 }# }}} main
 

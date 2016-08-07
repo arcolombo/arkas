@@ -5,7 +5,7 @@
 \title{this script prepares fastq files downloaded from SRADb R package or files downloaded from European Nucleic Acids ftp fastq downloads, which have sra fastq headers, and changes the sra headers to illumina standard headers as a preparatory step for uploading fastq files into the  cloud system,into an open account and to a project under an authorized user.  We assume that the user can import files from SRA or ENA, and use fastq-dump to convert SRA files into fastq files.  arkas does support fastq header conversions into BaseSpace standard nomenclature. this method will check the header of the fastq, if it is an sra header, then arkas will transform the header to illumina standard; further this script will also rename the fastq file itself to illumina standard, and prepare the fastq file for an upload to the basespace cloud using the script fastqFileUploadToBaseSpace.R , inputs must be gzipped.}
 \usage{
 sraFastqHeaderToIlluminaStandard(headerFormat = c("SRA", "Normal"), fastqPath,
-  fastqFile, sraOutputDir, fastqReadNumber = 1)
+  fastqFile, sraOutputDir, fastqReadNumber = 1, hasBarcode = FALSE)
 }
 \arguments{
 \item{fastqPath, }{character string path to the fastq directory}
@@ -15,6 +15,8 @@ sraFastqHeaderToIlluminaStandard(headerFormat = c("SRA", "Normal"), fastqPath,
 \item{sraOutputDir}{character vector where to spit out the converted fastq}
 
 \item{fastqReadNumber}{integer 1, or 2, this is the read number that will be written in the fastq file, for SRAdb defaults to 1, but we give the option to have 1 or 2 here.}
+
+\item{hasBarcode}{boolean , some SRA files have a barcode and some sra do not have a barcode, this flag specifies which case.  if the raw SRA fastq has a barcode (run ID) it looks like @SRR1564893.1 HWI-ST972:1180:D225DACXX:7:1101:1247:2104 length=50, if the run ID is missing the raw SRA header looks like @SRR892995.1 HWI-ST601:8:1101:1219:2076 length=100.  if the run ID is missing, we make a fake runIDNumber along with a runID tag as the 2nd and 3rd column.}
 
 \item{headerStyle}{,  character string, where SRA is the header style obtained from importing from SRAdb; the Normal header format is a standard two field record delimited by a space, with each field delimited by several colons.}
 }

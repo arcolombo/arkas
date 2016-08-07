@@ -1,8 +1,8 @@
 Package: arkas
 Type: Package
 Title: A package that complements Kallisto for quick, informative *seq analysis
-Version: 0.44.4
-Date: 2016-07-10
+Version: 0.44.5
+Date: 2016-07-28
 Author: Tim Triche, Jr., Anthony Colombo, Harold Pimentel
 Depends:
     parallel,
@@ -24,11 +24,15 @@ Imports:
     SummarizedExperiment,
     nat.utils,
     Matrix,
-    RUVSeq
+    RUVSeq,
+    ComplexHeatmap,
+    circlize,
+    pvclust,
+    dendsort,
+    EDASeq
 Suggests:
     knitr,
     roxygen2,
-    HDF5Array,
     EnsDbLite.Hsapiens.83,
     RepDbLite.Hsapiens.2012
 VignetteBuilder: knitr

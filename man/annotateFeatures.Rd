@@ -6,7 +6,7 @@
 this is becoming the default dispatcher for almost all annotation}
 \usage{
 annotateFeatures(kexp, level = c(NA, "gene", "transcript"),
-  what = c("KallistoExperiment", "GRanges"), ...)
+  what = c("KallistoExperiment", "GRanges"), verbose = FALSE, ...)
 }
 \arguments{
 \item{kexp}{a kexp}
@@ -14,6 +14,8 @@ annotateFeatures(kexp, level = c(NA, "gene", "transcript"),
 \item{level}{at what level has the data been summarized? (guess)}
 
 \item{what}{what data structure to return? (KallistoExperiment)}
+
+\item{verbose}{boolean, whether to print messages to screen default is silent}
 }
 \value{
 a GRanges or a KallistoExperiment, depending on `what`
