@@ -7,7 +7,8 @@
 crossModels(kexp, crossLevel = c("tx_id", "gene_id"), cutoffMax = 3,
   dataType = c("normalized", "unnormalized"), outputDir = ".",
   design = NULL, p.val = 0.05, adjustBy = "BH",
-  species = c("Homo.sapiens", "Mus.musculus"), numberSelected = 200)
+  species = c("Homo.sapiens", "Mus.musculus"), numberSelected = 200,
+  saveReport = FALSE)
 }
 \arguments{
 \item{crossLevel}{character option of tx_id, or gene_id which will compare at the transcript or gene level collapse.}
@@ -27,6 +28,8 @@ crossModels(kexp, crossLevel = c("tx_id", "gene_id"), cutoffMax = 3,
 \item{species}{character Homo.sapiens or Mus.musculus}
 
 \item{numberSelected}{integer, this is the number of the highest ranked adj.P.Val genes to print into a heatmap, the max amount is the number of genes returned from an analysis.}
+
+\item{saveReport}{boolean, if true then a txt and csv files are printed out to file, if false, then no report is printed out}
 }
 \value{
 returns several images plotted.
