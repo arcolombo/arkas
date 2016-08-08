@@ -5,7 +5,8 @@
 \title{RUVSeq methods allow for proper normalization by using a GLM to find the linear space of unwanted variance; it uses factor analysis to find the span of unwanted variance using ERCC expression negative controls, or in silico negative controls.  the advantage is that it does not assume a constant global normalization correction for constant assumed technical noise.  RUVg instead determines the linear space where the negative controls span.}
 \usage{
 ruvNormalization(kexp, k = 1, spikeIns = FALSE, p.cutoff = 1,
-  inSilico = NULL, read.cutoff = 1, byLevel = c("gene_id", "tx_id"))
+  inSilico = NULL, read.cutoff = 1, byLevel = c("gene_id", "tx_id"),
+  controlNumber = 100)
 }
 \arguments{
 \item{kexp}{kallisto Experiment object or something along its line}
@@ -14,14 +15,18 @@ ruvNormalization(kexp, k = 1, spikeIns = FALSE, p.cutoff = 1,
 
 \item{spikeIns}{boolean, whether ERCC spike-ins are to be used (FALSE)}
 
+\item{p.cutoff}{numeric  a p value cutoff it should be fixed at 1 or 2 becuaes you need to find insignificant negative controls}
+
 \item{inSilico}{for when spikeIns is flagged as FALSE, inSilcio must be a vector names of in silico genes which are constant across samples apriori. housekeeping genes will do fine.  the insilico vector can be derived here if it is unknown by taking the bottom quartile, bottom 10 percent ranked by P.Value, of significant genes after running a raw DE analysis.}
 
 \item{read.cutoff}{, integer here we employ a read cutoff that filters out any rows where the rowSums falls under this category.}
 
 \item{byLevel}{a string character which must match the names of the meta-columns of the features(kexp), this collapses the count data by this feature term, and performs filtering}
+
+\item{controlNumber}{integer, this is the amount of negative controls to use to normalize; the higher the number the more stable your normalization but higher chance of including a false negative as a negative control; the lower the number the lower the chance of false negative, but not as stable normalization.}
 }
 \value{
-return a list object with RUVg normalization
+return a list object of the selected negative controls, and RUVg normalization design matrix weights
 }
 \description{
 RUVSeq methods allow for proper normalization by using a GLM to find the linear space of unwanted variance; it uses factor analysis to find the span of unwanted variance using ERCC expression negative controls, or in silico negative controls.  the advantage is that it does not assume a constant global normalization correction for constant assumed technical noise.  RUVg instead determines the linear space where the negative controls span.

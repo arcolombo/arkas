@@ -157,27 +157,27 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
                   cluster_columns=rpt.pv$hclust,
                   column_title=paste0("Top Repeats TMM P.Val ",p.val," ",adjustBy," cut ",cutoffMax),
                  row_names_gp=gpar(fontsize=6),
-                 column_names_gp=gpar(fontsize=8)) +
-  Heatmap(features(kexp)[rownames(rpt.mt)]$tx_biotype,
+                 column_names_gp=gpar(fontsize=8)) 
+ rh.rpt2<-Heatmap(features(kexp)[rownames(rpt.mt)]$tx_biotype,
           name="tx_biotype",
-          width=unit(5,"mm")) +
-  Heatmap(features(kexp)[rownames(rpt.mt)]$gene_biotype,
+          width=unit(5,"mm"))
+ rh.rpt3<- Heatmap(features(kexp)[rownames(rpt.mt)]$gene_biotype,
           name="rpt_family",
           width=unit(5,"mm"))
   } else {
   rh.rpt<-Heatmap(log(1+rpt.mt),
           name="log(1+tpm)",
           column_title=paste0("Top Repeats TMM P.Val ",p.val," cut at ",cutoffMax," ",adjustBy),
-          row_names_gp=gpar(fontsize=6)) +
-  Heatmap(features(kexp)[rownames(rpt.mt)]$tx_biotype,
+          row_names_gp=gpar(fontsize=6))
+  rh.rpt2<-Heatmap(features(kexp)[rownames(rpt.mt)]$tx_biotype,
           name="tx_biotype",
-          width=unit(5,"mm")) +
-  Heatmap(features(kexp)[rownames(rpt.mt)]$gene_biotype,
+          width=unit(5,"mm"))
+  rh.rpt3<-Heatmap(features(kexp)[rownames(rpt.mt)]$gene_biotype,
           name="rpt_family",
           width=unit(5,"mm"))
   }
 
-  print(rh.rpt)
+  print(rh.rpt+rh.rpt2+rh.rpt3)
   readkey()
 
 
@@ -271,11 +271,11 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
   eg.rwa.heatmap<-Heatmap(log(1+eg.rpt.mt),name="log(1+tpm)",
                 column_title=paste0("EdgeR Top TMM Repeats TPM  P.Val ",p.val," cut ",cutoffMax),
                 row_names_gp=gpar(fontsize=8),
-                column_names_gp=gpar(fontsize=8)) +
-  Heatmap(features(kexp)[rownames(eg.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm")) +
-  Heatmap(features(kexp)[rownames(eg.rpt.mt)]$gene_biotype,name="rpt_family",width=unit(5,"mm"))
+                column_names_gp=gpar(fontsize=8))
+  eg.rwa.heatmap2<-Heatmap(features(kexp)[rownames(eg.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm"))
+ eg.rwa.heatmap3<- Heatmap(features(kexp)[rownames(eg.rpt.mt)]$gene_biotype,name="rpt_family",width=unit(5,"mm"))
 
-  print(eg.rwa.heatmap)
+  print(eg.rwa.heatmap+eg.rwa.heatmap2+eg.rwa.heatmap3)
   readkey()
   #a single PDF with all images
   pdf(paste0(outputDir,"/GeneBundles_readCutoff_",cutoffMax,".pdf"))
@@ -407,27 +407,27 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
                   cluster_columns=rpt.pv$hclust,
                   column_title=paste0("RUV Repeats P.Val ",p.val," ",adjustBy," cut ",cutoffMax),
                  row_names_gp=gpar(fontsize=6),
-                 column_names_gp=gpar(fontsize=8)) +
-  Heatmap(features(kexp)[rownames(rpt.mt)]$tx_biotype,
+                 column_names_gp=gpar(fontsize=8))
+  rh.rpt2<-Heatmap(features(kexp)[rownames(rpt.mt)]$tx_biotype,
           name="tx_biotype",
-          width=unit(5,"mm")) +
-  Heatmap(features(kexp)[rownames(rpt.mt)]$gene_biotype,
+          width=unit(5,"mm"))
+  rh.rpt3<-Heatmap(features(kexp)[rownames(rpt.mt)]$gene_biotype,
           name="rpt_family",
           width=unit(5,"mm"))
   } else {
   rh.rpt<-Heatmap(log(1+rpt.mt),
           name="log(1+tpm)",
           column_title=paste0("RUV Repeats P.Val ",p.val," cut at ",cutoffMax," ",adjustBy),
-          row_names_gp=gpar(fontsize=6)) +
-  Heatmap(features(kexp)[rownames(rpt.mt)]$tx_biotype,
+          row_names_gp=gpar(fontsize=6))
+  rh.rpt2<-Heatmap(features(kexp)[rownames(rpt.mt)]$tx_biotype,
           name="tx_biotype",
-          width=unit(5,"mm")) +
-  Heatmap(features(kexp)[rownames(rpt.mt)]$gene_biotype,
+          width=unit(5,"mm"))
+  rh.rpt3<-Heatmap(features(kexp)[rownames(rpt.mt)]$gene_biotype,
           name="rpt_family",
           width=unit(5,"mm"))
   }
 
-  print(rh.rpt)
+  print(rh.rpt+rh.rpt2+rh.rpt3)
   readkey()
  
   #run edgeR GWA and RWA with RUV at gene level
@@ -519,11 +519,11 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
   eg.rpt<-Heatmap(log(1+eg.rpt.mt),name="log(1+tpm)",
                 column_title=paste0("EdgeR Top Repeats TPM  P.Val ",p.val," cut ",cutoffMax),
                 row_names_gp=gpar(fontsize=8),
-                column_names_gp=gpar(fontsize=8)) +
-  Heatmap(features(kexp)[rownames(eg.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm")) +
-  Heatmap(features(kexp)[rownames(eg.rpt.mt)]$gene_biotype,name="rpt_family",width=unit(5,"mm"))
+                column_names_gp=gpar(fontsize=8))
+  eg.rpt2<-Heatmap(features(kexp)[rownames(eg.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm")) 
+  eg.rpt3<-Heatmap(features(kexp)[rownames(eg.rpt.mt)]$gene_biotype,name="rpt_family",width=unit(5,"mm"))
 
-  print(eg.rpt)
+  print(eg.rpt+eg.rpt2+eg.rpt3)
   readkey()
   ###all repeats TPM
   all.rpt.mt<-as.matrix(all.rpts.tpm)
@@ -535,10 +535,10 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
                 cluster_rows=dend,
                 column_title=paste0("EdgeR All Repeats TPM  P.Val ",p.val," cut ",cutoffMax),
                 row_names_gp=gpar(fontsize=8),
-                column_names_gp=gpar(fontsize=8)) +
-  Heatmap(features(kexp)[rownames(all.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm")) +
-  Heatmap(features(kexp)[rownames(all.rpt.mt)]$gene_biotype,name="rpt_family",width=unit(5,"mm"))
-  print(all.eg.rpt)
+                column_names_gp=gpar(fontsize=8))
+  all.eg.rpt2<-Heatmap(features(kexp)[rownames(all.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm"))
+ all.eg.rpt3<-Heatmap(features(kexp)[rownames(all.rpt.mt)]$gene_biotype,name="rpt_family",width=unit(5,"mm"))
+  print(all.eg.rpt+all.eg.rpt2+all.eg.rpt3)
   readkey()
 
   #print only 1 pdf with everything
@@ -551,15 +551,15 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
    title("Top Normalized Limma Gene CPM")
   #plot heatmap
    print(ruv.gwa.heatmap)
-   print(rh.rpt)
+   print(rh.rpt+rh.rpt2+rh.rpt3)
   #include edgeR RUV
    plotBCV(d2)
    title("All Gene RUV EdgeR Dispersions")
    plotBCV(d)
    title("All Repeat RUV EdgeR Dispersions")
    print(eg.ruv.gwa.heatmap)
-   print(eg.rpt)
-   print(all.eg.rpt)
+   print(eg.rpt+eg.rpt2+eg.rpt3)
+   print(all.eg.rpt+all.eg.rpt2+all.eg.rpt3)
   # include some beeswarm
   dev.off()
 
