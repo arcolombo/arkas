@@ -1,0 +1,61 @@
+---
+title: "Crossing Experiments comparitively with limma/voom versus edgeR"
+author: "Anthony R. Colombo, Tim J. Triche, Jr."
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+#Introduction
+Often you want to look at various models at various thresholds, etc.  The crossModels function compares limma/voom and edgeR at various minimum CPM floor values, p.values, selected insilico Negative Controls, and FDR procedures.
+Cross Models supports treatment level contrasts, and for multi-group factorizations cross Models does not yet support.  Cross Models function is really designed for gene level analysis and repeat analysis and is not developed for transcript analyses.
+
+```{r load_stuffs,warning=FALSE}
+
+suppressPackageStartupMessages(library(arkas))
+
+jsonFile <- system.file("extdata", "NS.JSON", package="arkas")
+appSession <- fetchAppSession(jsonFile) ## autofill APPSESSION in paths
+
+## samples <- c("n1","n2","n4","s1","s2","s4") ## set by appSession
+names(appSession$samples) <- appSession$samples ## so column names get set 
+
+  appSession$outputPath <- system.file("extdata", "", package="arkasData")
+  NS <- mergeKallisto(appSession$samples, 
+                      outputPath=appSession$outputPath)
+
+
+
+NS$subject <- factor(substr(colnames(NS), 2, 2))
+NS$treatment <- substr(colnames(NS), 1, 1) == "s"
+NS$ID <- NULL
+
+## exptData(SE) == metaData(RSE), should be transparent?!
+design <- with(as(colData(NS), "data.frame"),
+                  model.matrix( ~ treatment + subject ))
+rownames(design) <- colnames(NS)
+metadata(NS)$design <- design
+
+```
+
+
+#Cross Models RUV Normalized
+The NS object design has patient specific effects, but by default only the second covariate is selected.  Here we first look at the normalized limma/voom edgeR comparison.
+In the case where RUV is selected, the detected negative controls are all printed out for reproducibility, and the RUV weighted design matrix is also printed out.  
+There are many ways to print a heatmap, here arkas has a parameter numberSelected which prints the top numberSelected Differentially expressed genes/repeats. 
+```{r normalized,warning=FALSE,fig.height=9,fig.width=7}
+crossModels(NS,crossLevel="gene_id",design=design,cutoffMax=3,dataType="normalized",species="Homo.sapiens",numberSelected=100,saveReport=FALSE)
+
+```
+
+#Cross Models without RUV Normalization, using TMM Normalization/Scaling Only
+If the user desires, RUV is not required, by default arkas always uses TMM Normalization, and RUV is optional.  
+
+```{r TMM_normalized,warning=FALSE,fig.height=9,fig.width=7}
+crossModels(NS,crossLevel="gene_id",design=design,cutoffMax=3,dataType="unnormalized",species="Homo.sapiens",numberSelected=100)
+```
+
+

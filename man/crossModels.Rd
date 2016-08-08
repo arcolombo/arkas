@@ -2,12 +2,13 @@
 % Please edit documentation in R/crossModels.R
 \name{crossModels}
 \alias{crossModels}
-\title{Often times it is needed to cross compare edgeR results, limma/voom results across various filtering criteria and comparing normalized results and unnormalized results. This function can run a cross model generation set across various filtering criteria. by default the design is a group-means factorization where the coeficient is the second column.}
+\title{Often times it is needed to cross compare edgeR results, limma/voom results across various filtering criteria and comparing normalized results and unnormalized results, comparing gene-level, and / or transcript level at various filtering criteria reproducibly. This function can run a cross model generation set across various filtering criteria. by default the design is a treatment factorization where the coeficient is the second column with an intercept term.}
 \usage{
 crossModels(kexp, crossLevel = c("tx_id", "gene_id"), cutoffMax = 3,
   dataType = c("normalized", "unnormalized"), outputDir = ".",
   design = NULL, p.val = 0.05, adjustBy = "BH",
-  species = c("Homo.sapiens", "Mus.musculus"), numberSelected = 200)
+  species = c("Homo.sapiens", "Mus.musculus"), numberSelected = 200,
+  saveReport = FALSE)
 }
 \arguments{
 \item{crossLevel}{character option of tx_id, or gene_id which will compare at the transcript or gene level collapse.}
@@ -18,18 +19,22 @@ crossModels(kexp, crossLevel = c("tx_id", "gene_id"), cutoffMax = 3,
 
 \item{outputDir}{a character path to save all the pdfs printed, includes limma volcano plots, heatmaps.}
 
-\item{design}{a matrix specifying contrasts to compare.}
+\item{design}{a matrix with a treatment level contrasts, does not yet support group-means factorization}
 
-\item{p.val}{numeric pvalue used for linear fitting}
+\item{p.val}{numeric for linear fitting}
 
-\item{adjustBy}{character for FDR filters}
+\item{adjustBy}{character either BH,none,BY,holm}
+
+\item{species}{character Homo.sapiens or Mus.musculus}
 
 \item{numberSelected}{integer, this is the number of the highest ranked adj.P.Val genes to print into a heatmap, the max amount is the number of genes returned from an analysis.}
+
+\item{saveReport}{boolean, if true then a txt and csv files are printed out to file, if false, then no report is printed out}
 }
 \value{
 returns several images plotted.
 }
 \description{
-Often times it is needed to cross compare edgeR results, limma/voom results across various filtering criteria and comparing normalized results and unnormalized results. This function can run a cross model generation set across various filtering criteria. by default the design is a group-means factorization where the coeficient is the second column.
+Often times it is needed to cross compare edgeR results, limma/voom results across various filtering criteria and comparing normalized results and unnormalized results, comparing gene-level, and / or transcript level at various filtering criteria reproducibly. This function can run a cross model generation set across various filtering criteria. by default the design is a treatment factorization where the coeficient is the second column with an intercept term.
 }
 
