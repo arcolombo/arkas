@@ -17,6 +17,7 @@
 #' @importFrom EDASeq plotRLE
 #' @importFrom EDASeq plotPCA
 #' @importFrom RUVSeq RUVg
+#' @importFrom grid gpar
 #' @export
 #' @return returns several images plotted.
 crossModels<-function(kexp,
