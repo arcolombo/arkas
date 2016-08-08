@@ -16,7 +16,8 @@ Depends:
     Rsamtools,
     beeswarm,
     biomaRt,
-    tools
+    tools,
+    ComplexHeatmap
 Imports:
     rhdf5,
     matrixStats,
@@ -25,7 +26,6 @@ Imports:
     nat.utils,
     Matrix,
     RUVSeq,
-    ComplexHeatmap,
     circlize,
     pvclust,
     dendsort,

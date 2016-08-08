@@ -46,15 +46,15 @@ metadata(NS)$design <- design
 The NS object design has patient specific effects, but by default only the second covariate is selected.  Here we first look at the normalized limma/voom edgeR comparison.
 In the case where RUV is selected, the detected negative controls are all printed out for reproducibility, and the RUV weighted design matrix is also printed out.  
 There are many ways to print a heatmap, here arkas has a parameter numberSelected which prints the top numberSelected Differentially expressed genes/repeats. 
-```{r normalized,warning=FALSE}
-crossModels(NS,crossLevel="gene_id",design=design,cutoffMax=3,dataType="normalized",species="Homo.sapiens",numberSelected=100)
+```{r normalized,warning=FALSE,fig.height=9,fig.width=7}
+crossModels(NS,crossLevel="gene_id",design=design,cutoffMax=3,dataType="normalized",species="Homo.sapiens",numberSelected=100,saveReport=FALSE)
 
 ```
 
 #Cross Models without RUV Normalization, using TMM Normalization/Scaling Only
 If the user desires, RUV is not required, by default arkas always uses TMM Normalization, and RUV is optional.  
 
-```{r TMM_normalized,warning=FALSE}
+```{r TMM_normalized,warning=FALSE,fig.height=9,fig.width=7}
 crossModels(NS,crossLevel="gene_id",design=design,cutoffMax=3,dataType="unnormalized",species="Homo.sapiens",numberSelected=100)
 ```
 
