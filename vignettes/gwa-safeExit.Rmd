@@ -1,10 +1,14 @@
 ---
-title: "Arkas: Repetitive Elements Quantification In Much Less Time"
-author:  "Timothy J. Triche, Jr, Anthony R. Colombo, Harold Pimentel"
+title: "Arkas: Rapid Gene Level Analysis"
+author:  "Anthony R. Colombo, Timothy Triche Jr., Harold Pimentel"
 output: 
-    html_document:
+    html_vignette:
       toc: true 
       number_sections: true
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Arkas: Rapid Gene Level Analysis}
+  \usepackage[utf8]{inputenc}
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 ---
           
