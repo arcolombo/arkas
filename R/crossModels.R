@@ -18,6 +18,7 @@
 #' @importFrom EDASeq plotPCA
 #' @importFrom RUVSeq RUVg
 #' @importFrom grid gpar
+#' @importFrom ComplexHeatmap draw
 #' @export
 #' @return returns several images plotted.
 crossModels<-function(kexp,
@@ -109,7 +110,7 @@ bySd <- function(x, k=500) {
                    row_names_gp=gpar(fontsize=6),
                    column_names_gp=gpar(fontsize=8))
 
-   print(gwa.heatmap)
+   draw(gwa.heatmap)
    readkey()
 
 
@@ -177,7 +178,7 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
           width=unit(5,"mm"))
   }
 
-  print(rh.rpt+rh.rpt2+rh.rpt3)
+  draw(rh.rpt+rh.rpt2+rh.rpt3)
   readkey()
 
 
@@ -249,7 +250,7 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
                    row_names_gp=gpar(fontsize=6),
                    column_names_gp=gpar(fontsize=8))
 
-  print(eg.gwa.heatmap)
+  draw(eg.gwa.heatmap)
   readkey()
 
 
@@ -275,7 +276,7 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
   eg.rwa.heatmap2<-Heatmap(features(kexp)[rownames(eg.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm"))
  eg.rwa.heatmap3<- Heatmap(features(kexp)[rownames(eg.rpt.mt)]$gene_biotype,name="rpt_family",width=unit(5,"mm"))
 
-  print(eg.rwa.heatmap+eg.rwa.heatmap2+eg.rwa.heatmap3)
+  draw(eg.rwa.heatmap+eg.rwa.heatmap2+eg.rwa.heatmap3)
   readkey()
   #a single PDF with all images
   pdf(paste0(outputDir,"/GeneBundles_readCutoff_",cutoffMax,".pdf"))
@@ -283,10 +284,10 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
   title("Gene Bundles Raw CPM")
   plotPCA(g.bundles,cex=1.2)
   title("PCA Gene Bundles Raw CPM")
-  print(gwa.heatmap)
-  print(rh.rpt)
-  print(eg.gwa.heatmap)
-  print(eg.rwa.heatmap)
+  draw(gwa.heatmap)
+  draw(rh.rpt+rh.rpt2+rh.rpt3)
+  draw(eg.gwa.heatmap)
+  draw(eg.rwa.heatmap+eg.rwa.heatmap2+eg.rwa.heatmap3)
   dev.off()
 
 
@@ -359,7 +360,7 @@ print(plotRLE(g.bundles,outline=FALSE))
                    row_names_gp=gpar(fontsize=6),
                    column_names_gp=gpar(fontsize=8))
      
-   print(ruv.gwa.heatmap)
+   draw(ruv.gwa.heatmap)
    readkey()
 
 
@@ -427,7 +428,7 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
           width=unit(5,"mm"))
   }
 
-  print(rh.rpt+rh.rpt2+rh.rpt3)
+  draw(rh.rpt+rh.rpt2+rh.rpt3)
   readkey()
  
   #run edgeR GWA and RWA with RUV at gene level
@@ -500,7 +501,7 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
                    row_names_gp=gpar(fontsize=6),
                    column_names_gp=gpar(fontsize=8))
 
-  print(eg.ruv.gwa.heatmap)
+  draw(eg.ruv.gwa.heatmap)
   readkey()
 
   ##edgeR rwa analysis csv and heatmap
@@ -523,7 +524,7 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
   eg.rpt2<-Heatmap(features(kexp)[rownames(eg.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm")) 
   eg.rpt3<-Heatmap(features(kexp)[rownames(eg.rpt.mt)]$gene_biotype,name="rpt_family",width=unit(5,"mm"))
 
-  print(eg.rpt+eg.rpt2+eg.rpt3)
+  draw(eg.rpt+eg.rpt2+eg.rpt3)
   readkey()
   ###all repeats TPM
   all.rpt.mt<-as.matrix(all.rpts.tpm)
@@ -538,7 +539,7 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
                 column_names_gp=gpar(fontsize=8))
   all.eg.rpt2<-Heatmap(features(kexp)[rownames(all.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm"))
  all.eg.rpt3<-Heatmap(features(kexp)[rownames(all.rpt.mt)]$gene_biotype,name="rpt_family",width=unit(5,"mm"))
-  print(all.eg.rpt+all.eg.rpt2+all.eg.rpt3)
+  draw(all.eg.rpt+all.eg.rpt2+all.eg.rpt3)
   readkey()
 
   #print only 1 pdf with everything
@@ -550,16 +551,16 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
   volcanoplot(gwa.RUV$fit,coef=2,highlight=20,names=(gwa.RUV$limmaWithMeta$Gene.symbol))
    title("Top Normalized Limma Gene CPM")
   #plot heatmap
-   print(ruv.gwa.heatmap)
-   print(rh.rpt+rh.rpt2+rh.rpt3)
+   draw(ruv.gwa.heatmap)
+   draw(rh.rpt+rh.rpt2+rh.rpt3)
   #include edgeR RUV
    plotBCV(d2)
    title("All Gene RUV EdgeR Dispersions")
    plotBCV(d)
    title("All Repeat RUV EdgeR Dispersions")
-   print(eg.ruv.gwa.heatmap)
-   print(eg.rpt+eg.rpt2+eg.rpt3)
-   print(all.eg.rpt+all.eg.rpt2+all.eg.rpt3)
+   draw(eg.ruv.gwa.heatmap)
+   draw(eg.rpt+eg.rpt2+eg.rpt3)
+   draw(all.eg.rpt+all.eg.rpt2+all.eg.rpt3)
   # include some beeswarm
   dev.off()
 
