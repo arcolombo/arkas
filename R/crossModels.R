@@ -11,7 +11,7 @@
 #' @param saveReport boolean, if true then a txt and csv files are printed out to file, if false, then no report is printed out
 #' @import edgeR
 #' @import limma
-#' @import ComplexHeatmap
+#' @import ComplexHeatmap 
 #' @import circlize
 #' @importFrom pvclust pvclust
 #' @importFrom dendsort dendsort

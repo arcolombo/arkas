@@ -15,7 +15,6 @@ Depends:
     SummarizedExperiment,
     Rsamtools,
     beeswarm,
-    biomaRt,
     tools,
     ComplexHeatmap
 Imports:
@@ -29,7 +28,8 @@ Imports:
     circlize,
     pvclust,
     dendsort,
-    EDASeq
+    EDASeq,
+    biomaRt
 Suggests:
     knitr,
     roxygen2,
