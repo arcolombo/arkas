@@ -2,11 +2,14 @@
 title: "Crossing Experiments comparitively with limma/voom versus edgeR"
 author: "Anthony R. Colombo, Tim J. Triche, Jr."
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output:
+   html_vignette:
+   toc: true
+   number_sections: true
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Crossing Experiments comparitively with limma/voom versus edgeR}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  %\VignetteEncoding[utf8]{inputenc}
 ---
 
 #Introduction
