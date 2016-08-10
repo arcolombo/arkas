@@ -14,6 +14,8 @@ geneWiseAnalysis(kexp, design = NULL, how = c("cpm", "tpm"),
 
 \item{design}{a design matrix with 2nd coefficient as one to test}
 
+\item{how}{a character selection of tpm or cpm}
+
 \item{p.cutoff}{where to set the p-value cutoff for plots, etc. (0.05)}
 
 \item{fold.cutoff}{where to set the log2-FC cutoff for plots, etc. (1==2x)}

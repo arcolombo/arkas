@@ -14,6 +14,8 @@ fitBundles(kexp, design, bundleID = "gene_id", read.cutoff = 1, ...)
 \item{bundleID}{The ID to bundle on (default is gene_id)}
 
 \item{read.cutoff}{Exclude bundles where the maximum count is < this}
+
+\item{...}{any more}
 }
 \value{
 A list with elements (design, voomed, fit)

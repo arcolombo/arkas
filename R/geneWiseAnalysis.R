@@ -2,6 +2,7 @@
 #'
 #' @param kexp        a KallistoExperiment or SummarizedExperiment-like object
 #' @param design      a design matrix with 2nd coefficient as one to test
+#' @param how         a character selection of tpm or cpm
 #' @param p.cutoff    where to set the p-value cutoff for plots, etc. (0.05)
 #' @param fold.cutoff where to set the log2-FC cutoff for plots, etc. (1==2x)
 #' @param read.cutoff minimum read coverage (estimated) for a gene bundle 

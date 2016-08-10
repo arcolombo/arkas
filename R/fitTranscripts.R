@@ -4,7 +4,7 @@
 #' @param kexp        A KallistoExperiment
 #' @param design      A model matrix 
 #' @param read.cutoff Exclude transcripts where the maximum count is < this 
-#'
+#' @param ...          any additional parameters
 #' @return        A list with elements (design, voomed, fit)
 #'
 #' @export

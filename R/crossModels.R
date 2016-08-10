@@ -1,4 +1,5 @@
 #' Often times it is needed to cross compare edgeR results, limma/voom results across various filtering criteria and comparing normalized results and unnormalized results, comparing gene-level, and / or transcript level at various filtering criteria reproducibly. This function can run a cross model generation set across various filtering criteria. by default the design is a treatment factorization where the coeficient is the second column with an intercept term.
+#' @param kexp      a kalistoExperiemtn of something of this sort
 #' @param crossLevel character option of tx_id, or gene_id which will compare at the transcript or gene level collapse. 
 #' @param cutoffMax integer, this will be the maximum read.cutoff that will compare each read.cutoff up to the max, i.e. from 1<=cutoffMax thresholding.
 #' @param dataType character either normalized or unnormalized data to compare. if normalized is selected, then ruv is ran to only compare across normalized results.

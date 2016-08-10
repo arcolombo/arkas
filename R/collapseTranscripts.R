@@ -4,7 +4,7 @@
 #'
 #' @param kexp          A KallistoExperiment (or something very much like it)
 #' @param read.cutoff   Discard transcripts and/or bundles w/ < this many reads
-#'
+#' @param ...           any more parameters to add
 #' @importFrom matrixStats rowMaxs
 #' 
 #' @return              a matrix of filtered transcript counts 

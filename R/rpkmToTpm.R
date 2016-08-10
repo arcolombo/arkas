@@ -11,7 +11,7 @@
 #' and of course if RPKM == 0 then TPM == 0 as well.
 #' 
 #' @param rpkm    a matrix of RPKM or FPKM estimates
-#' 
+#' @param ...     any additional user input arguments 
 #' @return        a matrix of TPM estimates
 #'
 #' @seealso http://bioinformatics.oxfordjournals.org/content/26/4/493.full
@@ -23,7 +23,6 @@ rpkmToTpm <- function(rpkm, ...){
 
 #' @describeIn  rpkmToTpm
 #'
-#' @param rpkm  a vector of possibly-zero RPKM estimates
 .tpmBySample <- function(rpkm) { 
   tpm <- rpkm
   nonzero <- which(rpkm > 0)

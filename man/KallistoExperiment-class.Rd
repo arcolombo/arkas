@@ -21,6 +21,10 @@
 \S4method{features}{SummarizedExperiment0}(object) <- value
 }
 \arguments{
+\item{object}{a feature defined object}
+
+\item{names}{an object with names defined.}
+
 \item{object:}{something from which to retrieve covariates}
 
 \item{object:}{something to which covariates should be assigned}

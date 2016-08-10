@@ -10,6 +10,9 @@ eff_length(object)
 
 \S4method{eff_length}{KallistoExperiment}(object)
 }
+\arguments{
+\item{object}{a feature defined object}
+}
 \description{
 eff length generic
 }

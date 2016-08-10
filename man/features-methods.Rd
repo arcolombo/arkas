@@ -16,6 +16,13 @@ features(object) <- value
 
 \S4method{features}{KallistoExperiment}(object) <- value
 }
+\arguments{
+\item{object}{feature defined object}
+
+\item{value}{a value defined object}
+
+\item{object}{feature defined object}
+}
 \description{
 features generic
 

@@ -12,6 +12,8 @@ collapseTranscripts(kexp, read.cutoff = 1, ...)
 \item{kexp}{A KallistoExperiment (or something very much like it)}
 
 \item{read.cutoff}{Discard transcripts and/or bundles w/ < this many reads}
+
+\item{...}{any more parameters to add}
 }
 \value{
 a matrix of filtered transcript counts

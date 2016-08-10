@@ -17,6 +17,8 @@ parseFastqNames(allFiles, extension = "\\\\.fastq\\\\.gz", readPrefix = "R",
 \item{lanePrefix}{the lane indicator prefix, default is "L" per Illumina}
 
 \item{splitChar}{the character that is used to separate bits of information}
+
+\item{...}{any additional user input parameters}
 }
 \value{
 a data.frame with the sample stubs, read directions & filenames

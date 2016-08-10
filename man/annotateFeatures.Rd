@@ -16,6 +16,8 @@ annotateFeatures(kexp, level = c(NA, "gene", "transcript"),
 \item{what}{what data structure to return? (KallistoExperiment)}
 
 \item{verbose}{boolean, whether to print messages to screen default is silent}
+
+\item{...}{any more}
 }
 \value{
 a GRanges or a KallistoExperiment, depending on `what`

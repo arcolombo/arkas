@@ -15,6 +15,9 @@ tpm(object)
 
 \S4method{tpm}{KallistoExperiment}(object)
 }
+\arguments{
+\item{object}{a feature defined object}
+}
 \description{
 tpm generic
 }

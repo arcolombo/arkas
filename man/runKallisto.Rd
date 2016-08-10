@@ -43,6 +43,8 @@ runKallisto(sampleDir, indexName = NULL, fastaPath = ".",
 \item{extension}{string,  to pass the extension into pairFastqFiles()}
 
 \item{tarBall}{boolean, gzip the output folder directory}
+
+\item{...}{any additional arguments supplied by user}
 }
 \description{
 run kallisto with fastq.gz files on a freshly generated or existing index

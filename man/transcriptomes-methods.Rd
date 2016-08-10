@@ -10,6 +10,9 @@ transcriptomes(object)
 
 \S4method{transcriptomes}{KallistoExperiment}(object)
 }
+\arguments{
+\item{object}{feature defined object}
+}
 \description{
 transcriptome accessor
 }

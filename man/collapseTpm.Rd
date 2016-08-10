@@ -26,6 +26,8 @@ collapseTpm(kexp, bundleID = "gene_id", minTPM = 0.01,
 \item{gene_biotype}{Restrict to a specific mcols(kexp)$gene_biotype? (NULL)}
 
 \item{biotype_class}{Restrict to a specific mcols(kexp)$biotype_class? (No)}
+
+\item{...}{any more parameters to add}
 }
 \value{
 a matrix of TPMs by bundle for each sample

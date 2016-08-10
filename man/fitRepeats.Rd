@@ -10,6 +10,8 @@ fitRepeats(kexp, design, ...)
 \item{kexp}{kallisto experiment object}
 
 \item{design}{design matrix for modeling linear fit}
+
+\item{...}{any additional params}
 }
 \value{
 a limma list of linear model statistics

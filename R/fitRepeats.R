@@ -1,6 +1,7 @@
 #' repeat analysis is used for analysis of repeat regions from an annotated kexp
 #' @param kexp  kallisto experiment object
 #' @param design design matrix for modeling linear fit
+#' @param ...    any additional params
 #' @import edgeR
 #' @return a limma list of linear model statistics
 #' @export 

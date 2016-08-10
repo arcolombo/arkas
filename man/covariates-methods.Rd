@@ -22,6 +22,13 @@ covariates(object) <- value
 
 \S4method{pData}{KallistoExperiment,DataFrame}(object) <- value
 }
+\arguments{
+\item{object}{a feature defined object}
+
+\item{value}{a value to replace features}
+
+\item{object}{a feature defined object}
+}
 \description{
 covariates generic
 

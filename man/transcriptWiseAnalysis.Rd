@@ -29,6 +29,8 @@ transcriptWiseAnalysis(kexp, design, p.cutoff = 0.05, fold.cutoff = 1,
 \item{biotype_class}{optionally restrict to one or more biotype_class ...es}
 
 \item{adjustBy}{either none , BH, BY, holm for limma adjust type}
+
+\item{species}{character , either Homo.sapiens or Mus.musculus}
 }
 \description{
 Analysis of raw transcript abundance estimates.

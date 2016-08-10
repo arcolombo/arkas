@@ -13,6 +13,8 @@ fitTranscripts(kexp, design, read.cutoff = 1, ...)
 \item{design}{A model matrix}
 
 \item{read.cutoff}{Exclude transcripts where the maximum count is < this}
+
+\item{...}{any additional parameters}
 }
 \value{
 A list with elements (design, voomed, fit)

@@ -10,6 +10,7 @@
 #' @param gene_biotype optionally restrict to one or more gene_biotype classes 
 #' @param biotype_class optionally restrict to one or more biotype_class ...es
 #' @param adjustBy either none , BH, BY, holm for limma adjust type
+#' @param species    character , either Homo.sapiens or Mus.musculus
 #' @import edgeR 
 #' @import limma
 #'

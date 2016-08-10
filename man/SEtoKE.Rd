@@ -29,16 +29,6 @@ CountsAndFeaturesToKallistoExperiment(counts, features, transcriptomes, ...)
 \item{fraglen}{optional mean fragment length estimate for PE runs}
 
 \item{...}{Other stuff (such as covariates=covs and the like)}
-
-\item{SE}{SummarizedExperiment w/fully annotated rows (features)}
-
-\item{transcriptomes}{mandatory string or strings naming the transcriptomes}
-
-\item{counts}{matrix of transcript or bundle counts}
-
-\item{features}{GRanges of features with valid lengths}
-
-\item{transcriptomes}{mandatory string or strings naming the transcriptomes}
 }
 \value{
 a KallistoExperiment

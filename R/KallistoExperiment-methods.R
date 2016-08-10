@@ -1,4 +1,5 @@
 #' @rdname tpm-methods
+#' @param object a feature defined object
 #' @aliases counts,tpm
 setMethod("counts", "KallistoExperiment",
           function (object) return(assays(object)$est_counts))
@@ -18,6 +19,7 @@ setGeneric("covariates<-",
            function(object, value) standardGeneric("covariates<-"))
 
 #' @rdname covariates-methods
+#' @param object a feature defined object
 #' @aliases covariates
 setMethod("covariates", "KallistoExperiment",
           function (object) return(colData(object)))
@@ -27,6 +29,8 @@ setMethod("pData", "KallistoExperiment",
           function (object) return(colData(object)))
 
 #' @rdname covariates-methods
+#' @param object a feature defined object
+#' @param value a value to replace features
 #' @aliases covariates
 setReplaceMethod("covariates", "KallistoExperiment",
                  function (object, value) {
@@ -61,10 +65,13 @@ setGeneric("features", function(object) standardGeneric("features"))
 setGeneric("features<-", function(object, value) standardGeneric("features<-"))
 
 #' @rdname features-methods
+#' @param object feature defined object
 #' @aliases features
 setMethod("features", "KallistoExperiment", function (object) rowRanges(object))
 
 #' @rdname features-methods
+#' @param object feature defined object
+#' @param value a value defined object
 #' @aliases features
 setReplaceMethod("features", c("KallistoExperiment", "ANY"),
                 function(object, value) {
@@ -82,6 +89,7 @@ setReplaceMethod("features", c("KallistoExperiment", "ANY"),
 setGeneric("eff_length", function(object) standardGeneric("eff_length"))
 
 #' @rdname eff_length-methods
+#' @param object a feature defined object
 #' @aliases eff_length
 setMethod("eff_length", "KallistoExperiment",
           function (object) return(assays(object)$eff_length))
@@ -127,6 +135,7 @@ setGeneric("transcriptomes",
            function(object) standardGeneric("transcriptomes"))
 
 #' @rdname transcriptomes-methods
+#' @param object feature defined object
 #' @aliases transcriptomes
 setMethod("transcriptomes", "KallistoExperiment",
           function (object) return(object@transcriptomes))
@@ -143,3 +152,29 @@ setMethod("transcriptsBy", "KallistoExperiment",
 setMethod("mad", "KallistoExperiment", function(x) assays(x)$est_counts_mad)
 
 # FIXME: add method to retrieve normalization factors if ERCC spike-ins used 
+
+
+
+#' Convert a KallistoExperiment to a SummarizedExperiment without losing data
+#' @name as
+#' @export
+setAs("KallistoExperiment", "SummarizedExperiment", 
+      function(from) {
+        metadata(from)$transcriptomes <- transcriptomes(from)
+        metadata(from)$kallistoVersion <- kallistoVersion(from)
+        SummarizedExperiment(assays(from), rowRanges=rowRanges(from), 
+                             colData=colData(from), metadata=metadata(from))
+      })
+
+
+
+#' Convert suitably annotated SummarizedExperiment back to a KallistoExperiment
+#' @name as
+#' @export
+setAs("SummarizedExperiment", "KallistoExperiment", 
+      function(from) {
+        txomes <- metadata(from)$transcriptomes
+        kversion <- metadata(from)$kallistoVersion
+        new("KallistoExperiment", from, 
+            kallistoVersion=kversion, transcriptomes=txomes)
+      })
