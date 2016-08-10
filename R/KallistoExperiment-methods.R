@@ -155,3 +155,30 @@ setMethod("transcriptsBy", "KallistoExperiment",
 setMethod("mad", "KallistoExperiment", function(x) assays(x)$est_counts_mad)
 
 # FIXME: add method to retrieve normalization factors if ERCC spike-ins used 
+
+#' @describeIn KallistoExperiment
+#'
+#' Convert a KallistoExperiment to a SummarizedExperiment without losing data
+#' 
+#' @export
+setAs("KallistoExperiment", "SummarizedExperiment", 
+      function(from) {
+        metadata(from)$transcriptomes <- transcriptomes(from)
+        metadata(from)$kallistoVersion <- kallistoVersion(from)
+        SummarizedExperiment(assays(from), rowRanges=rowRanges(from), 
+                             colData=colData(from), metadata=metadata(from))
+      })
+
+#' @describeIn KallistoExperiment
+#'
+#' Convert suitably annotated SummarizedExperiment back to a KallistoExperiment
+#' 
+#' @export
+setAs("SummarizedExperiment", "KallistoExperiment", 
+      function(from) {
+        txomes <- metadata(from)$transcriptomes
+        kversion <- metadata(from)$kallistoVersion
+        new("KallistoExperiment", from, 
+            kallistoVersion=kversion, transcriptomes=txomes)
+      })
+
