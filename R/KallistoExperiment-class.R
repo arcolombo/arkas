@@ -1,11 +1,10 @@
 #' A SummarizedExperiment subclass that stores multiple Kallisto runs 
 #' 
-#' FIXME: add RUVg-derived ERCC-calibrated normalization factors in metadata
 #'
 #' @slot transcriptomes   Transcriptomes against which reads were pseudoaligned
 #' @slot kallistoVersion  The version of Kallisto used to pseudoalign the reads
 #'
-#' @export
+#' @export 
 setClass("KallistoExperiment",
          representation(transcriptomes="character", 
                         kallistoVersion="character"),
@@ -20,7 +19,6 @@ setClass("KallistoExperiment",
   }
 } # }}}
 
-## FIXME: clone kallistoVersion, transcriptomes into metadata/exptData
 setValidity("KallistoExperiment", function(object) { # {{{
   msg <- validMsg(NULL, NULL)
   msg <- .checkAssayNames(object, c("est_counts", "eff_length"))
