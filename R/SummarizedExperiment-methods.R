@@ -28,7 +28,7 @@ setReplaceMethod("covariates", c("ANY", "ANY"),
 #'
 #' @export
 setMethod("features", "SummarizedExperiment0", 
-          function (x) rowRanges(x))
+          function (object) rowRanges(object))
 
 #' @describeIn KallistoExperiment 
 #'
@@ -46,6 +46,8 @@ setReplaceMethod("features", c("RangedSummarizedExperiment", "ANY"),
 
 #' @describeIn KallistoExperiment 
 #'
+#' @param   object: something to which features should be assigned
+#' @param   value: the features to assign (usually a GRanges or GRangesList)
 #' @export
 setReplaceMethod("features", c("SummarizedExperiment0", "ANY"), 
                  function(object, value) {

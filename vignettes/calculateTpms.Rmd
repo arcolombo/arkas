@@ -1,0 +1,73 @@
+---
+title: "Arkas: Calculate TPMs in Much Less Time"
+author: "Timothy Triche Jr., Anthony Colombo, Harold Pimmentel"
+output:
+  html_vignette:
+  toc: true
+  number_sections: true
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Arkas: Repetitive Elements Quantification In Much Less Time}
+  \usepackage[utf8]{inputenc}
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+---
+
+
+
+
+
+
+```{r load_NS}
+suppressPackageStartupMessages(library(arkas))
+library(arkasData)
+suppressPackageStartupMessages(library(TxDbLite))
+samples<-c("n1","n2","n4","s1","s2","s4")
+pathBase<-system.file("extdata",package="arkasData")
+merged <- mergeKallisto(samples, outputPath=pathBase)
+assays(merged)
+kallistoVersion(merged)
+transcriptomes(merged)
+tail(tpm(merged))
+
+
+```
+
+#Calculating TPM
+Arkas can calculate TPMs using the effective length, or an accessor tpm().
+Here we only show a TPM calculation for one sample named 'n1', but it is a uniform process and can easily be applied to many samples.
+For this demo we do see two outliers which an absolute difference of greater than 0.3 which is by defintion a true calculation error.  By looking at the raw values derived from calcTpm(), tpm() and the raw kallisto derived .tsv number, each of the values are very close and it appears to be a rounding issue.  The calculation was numerically precise for 213780/213782  which has high accuracy overall.
+
+```{r error_check,fig.height=9,fig.width=7}
+ n1Tsv<-read.csv(paste0(pathBase,"/n1/abundance.tsv"),header=TRUE,sep="\t")
+ head(n1Tsv)
+ xx2<-n1Tsv$est_counts
+ leng<-n1Tsv$eff_length
+ xx2<-as.matrix(xx2)
+ leng<-as.matrix(leng)
+ colnames(xx2)<-"n1"
+ colnames(leng)<-"n1"
+ test1<-calcTpm(xx2,leng)
+ err<-abs(test1-n1Tsv$tpm)
+ err2<-abs(tpm(merged)[,1]-n1Tsv$tpm)
+
+ plot(err)
+ title("calcTpm N1 absolute Errors")
+ plot(err2)
+ title("tpm() N1 absolute Errors")
+```
+
+##Comparing Outliers 
+Here we look at the calculated TPM errors greater than 0.3
+
+```{r comparison}
+ rownames(err)<-n1Tsv$target_id
+ highErrs<-as.matrix(err[which(err>0.3),])
+ rownames(test1)<-n1Tsv$target_id
+ n1Tsv[n1Tsv$target_id%in%rownames(highErrs),] #kallisto dervied
+
+ test1[rownames(test1)%in%rownames(highErrs),] #arkas::calcTpm()
+ tpp<-tpm(merged)
+ tpp[rownames(tpp)%in%rownames(highErrs),1] #arkas::tpm()
+
+```
+

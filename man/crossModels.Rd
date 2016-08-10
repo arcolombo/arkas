@@ -6,7 +6,7 @@
 \usage{
 crossModels(kexp, crossLevel = c("tx_id", "gene_id"), cutoffMax = 3,
   dataType = c("normalized", "unnormalized"), outputDir = ".",
-  design = NULL, p.val = 0.05, adjustBy = "BH",
+  design = NULL, setP = 0.05, adjustBy = "BH",
   species = c("Homo.sapiens", "Mus.musculus"), numberSelected = 200,
   saveReport = FALSE)
 }
@@ -21,7 +21,7 @@ crossModels(kexp, crossLevel = c("tx_id", "gene_id"), cutoffMax = 3,
 
 \item{design}{a matrix with a treatment level contrasts, does not yet support group-means factorization}
 
-\item{p.val}{numeric for linear fitting}
+\item{setP}{numeric for linear fitting}
 
 \item{adjustBy}{character either BH,none,BY,holm}
 

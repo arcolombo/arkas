@@ -2,28 +2,74 @@
 % Please edit documentation in R/KallistoExperiment-class.R, R/KallistoExperiment-methods.R, R/SummarizedExperiment-methods.R
 \docType{class}
 \name{KallistoExperiment-class}
+\alias{(}
+\alias{),}
+\alias{+}
+\alias{-}
+\alias{<-}
+\alias{Kallisto}
+\alias{KallistoExperiment}
 \alias{KallistoExperiment-class}
+\alias{KallistoExperiment-method}
+\alias{KallistoExperiment.}
+\alias{Obtain}
+\alias{Retrieve}
+\alias{\code{}
+\alias{a}
+\alias{alignment}
+\alias{annotations}
+\alias{as}
+\alias{computed}
 \alias{counts,KallistoExperiment-method}
 \alias{covariates,ANY-method}
 \alias{covariates,KallistoExperiment-method}
 \alias{covariates<-,ANY-method}
 \alias{covariates<-,KallistoExperiment-method}
 \alias{eff_length,KallistoExperiment-method}
+\alias{effective}
+\alias{exp(rate}
 \alias{features,KallistoExperiment-method}
 \alias{features,SummarizedExperiment0-method}
 \alias{features<-,KallistoExperiment-method}
 \alias{features<-,RangedSummarizedExperiment-method}
 \alias{features<-,SummarizedExperiment0-method}
+\alias{for}
+\alias{from}
+\alias{https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-expression-units/}
+\alias{in}
+\alias{kallistoVersion,}
 \alias{kallistoVersion,KallistoExperiment-method}
+\alias{lengths}
+\alias{log(1e6))}
+\alias{log(counts(object))}
+\alias{log(eff_length(object));}
+\alias{log(sum(exp(rate)))}
 \alias{mad,KallistoExperiment-method}
+\alias{matrix}
+\alias{of}
 \alias{pData,KallistoExperiment-method}
 \alias{pData<-,KallistoExperiment,DataFrame-method}
+\alias{per-row}
+\alias{precomputed}
+\alias{rate}
+\alias{shown}
+\alias{specifically,}
+\alias{the}
+\alias{tpm}
 \alias{tpm,KallistoExperiment-method}
+\alias{transcript}
 \alias{transcriptomes,KallistoExperiment-method}
 \alias{transcriptsBy,KallistoExperiment-method}
+\alias{used}
+\alias{version}
+\alias{}}
 \title{A SummarizedExperiment subclass that stores multiple Kallisto runs}
 \usage{
 \S4method{counts}{KallistoExperiment}(object)
+
+covariates(object)
+
+covariates(object) <- value
 
 \S4method{covariates}{KallistoExperiment}(object)
 
@@ -33,15 +79,25 @@
 
 \S4method{pData}{KallistoExperiment,DataFrame}(object) <- value
 
+features(object) <- value
+
 \S4method{features}{KallistoExperiment}(x)
 
 \S4method{features}{KallistoExperiment}(object) <- value
 
+eff_length(object)
+
 \S4method{eff_length}{KallistoExperiment}(object)
+
+tpm(object)
 
 \S4method{tpm}{KallistoExperiment}(object)
 
+kallistoVersion(object)
+
 \S4method{kallistoVersion}{KallistoExperiment}(object)
+
+transcriptomes(object)
 
 \S4method{transcriptomes}{KallistoExperiment}(object)
 
@@ -60,6 +116,22 @@
 \S4method{features}{SummarizedExperiment0}(object) <- value
 }
 \arguments{
+\item{object}{for which features are defined}
+
+\item{object:}{something from which to retrieve covariates to Retrieve the estimated count matrix from a KallistoExperiment.}
+
+\item{object:}{something to which features should be assigned}
+
+\item{value:}{the features to assign (usually a GRanges or GRangesList)}
+
+\item{object:}{something to which features should be assigned}
+
+\item{value:}{the features to assign (usually a GRanges or GRangesList)}
+
+\item{object:}{something to which features should be assigned}
+
+\item{value:}{the features to assign (usually a GRanges or GRangesList)}
+
 \item{object:}{something from which to retrieve covariates}
 
 \item{object:}{something to which covariates should be assigned}
@@ -67,6 +139,10 @@
 \item{value:}{the covariates to assign (usually a data.frame or DataFrame)}
 
 \item{object:}{something from which features should be obtained}
+
+\item{object:}{something to which features should be assigned}
+
+\item{value:}{the features to assign (usually a GRanges or GRangesList)}
 
 \item{object:}{something to which features should be assigned}
 
@@ -81,35 +157,32 @@ the object, perhaps with updated feature annotations
 }
 \description{
 FIXME: add RUVg-derived ERCC-calibrated normalization factors in metadata
+
+new generics for arkas covariates definition
+
+generics arkas defined covariates setter
+
+set in GenomicFeatures, which we have to import anyways setGeneric("features", function(object) standardGeneric("features"))
+
+eff_length generic
+
+tpm generic
+
+kallistoVersion generic
+
+transcriptomes generic
 }
 \section{Methods (by generic)}{
 \itemize{
 \item \code{counts}: Retrieve the estimated count matrix from a KallistoExperiment.
 
-\item \code{covariates}: Retrieve the sample covariates from a KallistoExperiment.
+\item \code{pData}: Retrieve the pData matrix from a KallistoExperiment.
 
-\item \code{pData}: Retrieve the sample covariates from a KallistoExperiment.
+\item \code{covariates<-}: 
 
-\item \code{covariates<-}: Assign the sample covariates for a KallistoExperiment.
-
-\item \code{pData<-}: Convenience method for people used to ExpressionSet, to set per-sample data.
-
-\item \code{features}: Retrieve the per-row annotations for a KallistoExperiment.
+\item \code{pData<-}: 
 
 \item \code{features<-}: Assign per-row annotations to a KallistoExperiment.
-
-\item \code{eff_length}: Retrieve the matrix of effective transcript lengths from a KallistoExperiment
-
-\item \code{tpm}: Obtain tpm from the precomputed matrix ( computed as shown in 
-https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-expression-units/ ), specifically,
-
-\code{ rate <- log(counts(object)) - log(eff_length(object)); }
-
-\code{ tpm <- exp(rate - log(sum(exp(rate))) + log(1e6)) }
-
-\item \code{kallistoVersion}: Retrieve the version of Kallisto used for alignment from a KallistoExperiment
-
-\item \code{transcriptomes}: Retrieve the transcriptomes used for annotation from a KallistoExperiment
 
 \item \code{transcriptsBy}: Fetch transcripts for a gene, or all transcripts bundled by gene.
 

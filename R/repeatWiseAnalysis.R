@@ -10,7 +10,7 @@
 #' @param adjustBy    character none, BH,BY, or holm for FDR procedures 
 #' @import edgeR 
 #' @import limma
-#' @import biomaRt
+#' @importFrom biomaRt getBM useMart
 #'
 #' @importFrom matrixStats rowSds 
 #' 

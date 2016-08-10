@@ -15,7 +15,6 @@
 #' @param transcriptomes  mandatory string or strings naming the transcriptomes 
 #' @param covariates      optional data.frame or DataFrame if SE is not present
 #' @param fraglen         optional mean fragment length estimate for PE runs
-#' @param ...             Other stuff (arguments passed to KallistoExperiment)
 #' 
 #' @return a KallistoExperiment
 #'
@@ -23,7 +22,7 @@
 #' 
 #' @export 
 SEtoKE <- function(SE=NULL, counts=NULL, features=NULL, covariates=NULL,
-                   transcriptomes=NULL, fraglen=200, ...) { 
+                   transcriptomes=NULL, fraglen=200) { 
 
   if (is.null(SE)) {
     stopifnot(!is.null(counts) && !is.null(features))

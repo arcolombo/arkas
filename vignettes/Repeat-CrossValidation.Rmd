@@ -78,8 +78,8 @@ The authors of edgeR recommend filtering out genes with very low counts, and
 collapseBundles() enforces it by default (minimum 1 read in at least 1 sample).
 The authors also recommend computing and plotting their dispersion estimates. 
 
-```{r}
-library(edgeR)
+```{r, fig.height=9, fig.width=7}
+
 geneCounts <- collapseBundles(NS, bundleID="gene_id")
 d <- DGEList(counts=geneCounts, group=NS$senescent)
 d <- calcNormFactors(d)
@@ -122,7 +122,7 @@ course any attempt to suggest that priors should exist from the corpus of 300+
 years of scientific endeavor tends to face resistance from the hidebound. And 
 there's always the minor issue of the marginalization paradox for Bayesians...)
 
-```{r}
+```
 library(VennDiagram)
 getVenn <- function(voom, edgeR) {
   grid.newpage()
@@ -135,19 +135,19 @@ getVenn <- function(voom, edgeR) {
 
 At p <= 0.1, we get:
 
-```{r}
+```
 getVenn(voom_fdr01, edgeR_fdr01)
 ```
 
 At p <= 0.05, we get:
 
-```{r}
+```
 getVenn(voom_fdr005, edgeR_fdr005)
 ```
 
 And at p <= 0.01, we get:
 
-```{r}
+```
 getVenn(voom_fdr001, edgeR_fdr001)
 ```
 
@@ -212,7 +212,7 @@ par(mfrow=c(3,3))
 for (ensg in moreHugeDiffs) getBeeswarm(ensg, mat=geneTpms)
 
 ```
-
+#Sleuth Comparisons
 At this point it is up to the user or analyst to determine what they're 
 looking for.  I will revisit this topic and look at how these differences 
 influence the interpretation of the results downstream, e.g. for pathway 
@@ -220,7 +220,7 @@ analysis.  But it seems pretty clear that each has strengths and weaknesses.
 
 We might want to look at a few of these in Sleuth.  Let's do that:
 
-```{r}
+```
 
 # see ?withSleuth
 library(sleuth)

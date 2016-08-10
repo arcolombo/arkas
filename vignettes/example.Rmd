@@ -1,0 +1,76 @@
+---
+title: "Arkas: Repetitive Elements Quantification In Much Less Time"
+author: "Timothy Triche Jr., Anthony Colombo, Harold Pimmentel"
+output:
+  html_vignette:
+  toc: true
+  number_sections: true
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Arkas: Repetitive Elements Quantification In Much Less Time}
+  \usepackage[utf8]{inputenc}
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+---
+
+#Introduction Kallisto
+Arkas integrates kallisto into the R environment, so kallisto must be installed prior to Arkas calls.  Arkas can also be used downstream of kallisto data production specifically for model comparisons.
+
+```
+library(arkas)
+library(TxDbLite)
+dataIsInstalled <- suppressPackageStartupMessages(require(arkasData))
+if(!dataIsInstalled){ 
+  message("You need to install the arkasData package.")
+  message("Try biocLite(\"ramsinghlab/arkasData\") then come back.")
+  stop("Go ahead, we'll wait!")
+} 
+
+pathBase <- system.file("extdata", "", package="arkasData")
+fastaPath <- paste0(pathBase, "/fasta")
+fastqPath <- paste0(pathBase, "/fastq/demoFastqDir/")
+samples <- c(MrN="MrN", MrT="MrT") ## normally set by appSession
+fastaFiles <- c( "ERCC.fa.gz", ## spike-in controls  
+                 "Homo_sapiens.RepBase.20_05.merged.fa.gz")
+
+## build an index if it isn't already there (in artemisData, it is)
+indexName <- indexKallisto(fastaFiles=fastaFiles, fastaPath=fastaPath,makeUnique=TRUE)$indexName
+
+## run pseudoalignments 
+library(parallel)
+results <- mclapply(samples, 
+                    runKallisto,
+                    indexName=indexName,
+                    fastqPath=fastqPath,
+                    fastaPath=fastaPath,
+                    bootstraps=100,
+                    outputPath="/data/output")
+```
+
+#Heatmaps of Repetitive Elements
+Heatmaps can be used to plot repeat elements. Here we plot the top 25 repeats with the highest standard deviation
+```{r repeat_heat,fig.height=9,fig.width=7}
+suppressPackageStartupMessages(library(arkas))
+library(arkasData)
+suppressPackageStartupMessages(library(TxDbLite))
+samples<-c("n1","n2","n4","s1","s2","s4")
+pathBase<-system.file("extdata",package="arkasData")
+merged <- mergeKallisto(samples, outputPath=pathBase)
+assays(merged)
+kallistoVersion(merged)
+transcriptomes(merged)
+tail(tpm(merged))
+
+
+## plot repeat element txn using (counts/bootstrap MADs) as "effect size"
+
+bySd <- function(x, k=25) {
+   sds<-vector()
+  for(i in 1:nrow(x)){
+   sds[i]<-sd(x[i,],na.rm=TRUE)
+   }
+  x[rev(order(sds))[seq_len(k)],]
+}
+inX<-tpm(merged)
+Heatmap(log(1+bySd(inX[213665:213782,])),
+        column_title="Repeat transcription, teratoma vs. normal")
+```
