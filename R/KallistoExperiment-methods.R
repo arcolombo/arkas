@@ -152,8 +152,6 @@ setMethod("mad", "KallistoExperiment", function(x) assays(x)$est_counts_mad)
 
 # FIXME: add method to retrieve normalization factors if ERCC spike-ins used 
 
-
-
 #' Convert a KallistoExperiment to a SummarizedExperiment without losing data
 #' @name as
 #' 
@@ -164,8 +162,6 @@ setAs("KallistoExperiment", "SummarizedExperiment",
         SummarizedExperiment(assays(from), rowRanges=rowRanges(from), 
                              colData=colData(from), metadata=metadata(from))
       })
-
-
 
 #' Convert suitably annotated SummarizedExperiment back to a KallistoExperiment
 #' @name as
