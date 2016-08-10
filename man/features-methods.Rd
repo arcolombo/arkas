@@ -20,8 +20,6 @@ features(object) <- value
 \item{object}{feature defined object}
 
 \item{value}{a value defined object}
-
-\item{object}{feature defined object}
 }
 \description{
 features generic

@@ -12,4 +12,4 @@ suppressPackageStartupMessages(library(artemisData))
 demo("example", package="arkas")
 ```
 
-![repeat expression](demo/example.png "Plot generated from example code")    
+![repeat expression](inst/extdata/example.png "Plot generated from example code")    

@@ -61,4 +61,13 @@ If the user desires, RUV is not required, by default arkas always uses TMM Norma
 crossModels(NS,crossLevel="gene_id",design=design,cutoffMax=3,dataType="unnormalized",species="Homo.sapiens",numberSelected=100)
 ```
 
+# Coercion into SummarizedExperiment and KallistoExperiment
+Arkas can cast a kallistoExperiment class into SummarizedExperiment and vice versa
+```{r coercion}
 
+SE <- as(NS, "SummarizedExperiment")
+
+kexp <- as(SE, "KallistoExperiment")
+
+identical(kexp, SE)
+```

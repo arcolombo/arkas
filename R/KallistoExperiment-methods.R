@@ -19,7 +19,6 @@ setGeneric("covariates<-",
            function(object, value) standardGeneric("covariates<-"))
 
 #' @rdname covariates-methods
-#' @param object a feature defined object
 #' @aliases covariates
 setMethod("covariates", "KallistoExperiment",
           function (object) return(colData(object)))
@@ -65,7 +64,6 @@ setGeneric("features", function(object) standardGeneric("features"))
 setGeneric("features<-", function(object, value) standardGeneric("features<-"))
 
 #' @rdname features-methods
-#' @param object feature defined object
 #' @aliases features
 setMethod("features", "KallistoExperiment", function (object) rowRanges(object))
 
@@ -123,6 +121,7 @@ setGeneric("kallistoVersion",
            function(object) standardGeneric("kallistoVersion"))
 
 #' @rdname kallistoVersion-methods
+#' @param object a kallisto experiment
 #' @aliases kallistoVersion
 setMethod("kallistoVersion", "KallistoExperiment",
           function (object) return(object@kallistoVersion))
@@ -157,7 +156,7 @@ setMethod("mad", "KallistoExperiment", function(x) assays(x)$est_counts_mad)
 
 #' Convert a KallistoExperiment to a SummarizedExperiment without losing data
 #' @name as
-#' @export
+#' 
 setAs("KallistoExperiment", "SummarizedExperiment", 
       function(from) {
         metadata(from)$transcriptomes <- transcriptomes(from)
@@ -170,7 +169,7 @@ setAs("KallistoExperiment", "SummarizedExperiment",
 
 #' Convert suitably annotated SummarizedExperiment back to a KallistoExperiment
 #' @name as
-#' @export
+#' 
 setAs("SummarizedExperiment", "KallistoExperiment", 
       function(from) {
         txomes <- metadata(from)$transcriptomes

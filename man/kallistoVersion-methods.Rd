@@ -10,6 +10,9 @@ kallistoVersion(object)
 
 \S4method{kallistoVersion}{KallistoExperiment}(object)
 }
+\arguments{
+\item{object}{a kallisto experiment}
+}
 \description{
 kallisto version accessor
 }
