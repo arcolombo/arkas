@@ -154,7 +154,7 @@ setMethod("mad", "KallistoExperiment", function(x) assays(x)$est_counts_mad)
 
 #' Convert a KallistoExperiment to a SummarizedExperiment without losing data
 #' @name as
-#' @export
+#'
 setAs("KallistoExperiment", "SummarizedExperiment", 
       function(from) {
         metadata(from)$transcriptomes <- transcriptomes(from)
@@ -165,7 +165,7 @@ setAs("KallistoExperiment", "SummarizedExperiment",
 
 #' Convert suitably annotated SummarizedExperiment back to a KallistoExperiment
 #' @name as
-#' @export 
+#' 
 setAs("SummarizedExperiment", "KallistoExperiment", 
       function(from) {
         txomes <- metadata(from)$transcriptomes

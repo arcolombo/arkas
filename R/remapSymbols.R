@@ -2,13 +2,13 @@
 #' 
 #' @param x     the matrix or kexp
 #' @param what  "transcript" or "gene" level reannotation
-#' 
+#' @importFrom biomaRt getBM useMart
 #' @return      x, with updated $gene_name or rownames
 #'
 #' @export
 remapSymbols <- function(x, what=c("transcript","gene")) { 
 
-  library("biomaRt")
+  #library("biomaRt")
   what <- match.arg(what)
   if (what == "gene" && !any(grep("ENS.*G", rownames(x)))) {
     message("You specified gene-to-name mapping, but rownames(x) aren't ENSGs!")

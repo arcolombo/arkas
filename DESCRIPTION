@@ -5,36 +5,35 @@ Version: 0.44.5
 Date: 2016-07-28
 Author: Tim Triche, Jr., Anthony Colombo, Harold Pimentel
 Depends:
-    parallel,
-    jsonlite,
-    qusage,
-    ggplot2,
     edgeR,
     limma,
     TxDbLite,
     SummarizedExperiment,
     Rsamtools,
-    beeswarm,
     tools,
     ComplexHeatmap
 Imports:
     rhdf5,
     matrixStats,
     GenomicRanges,
-    SummarizedExperiment,
     nat.utils,
-    Matrix,
     RUVSeq,
     circlize,
     pvclust,
     dendsort,
     EDASeq,
-    biomaRt
+    biomaRt,
+    BiocGenerics,
+    jsonlite
 Suggests:
     knitr,
     roxygen2,
     EnsDbLite.Hsapiens.83,
-    RepDbLite.Hsapiens.2012
+    RepDbLite.Hsapiens.2012,
+    qusage,
+    Matrix,
+    beeswarm,
+    parallel
 VignetteBuilder: knitr
 Maintainer: Tim Triche, Jr. <tim.triche@gmail.com>
 Description: This package wraps various aspects of workflow automation 
