@@ -7,8 +7,8 @@
 fitRepeats<-function(kexp,design,...){
 
     rps<-list()
-    idx<-which(features(kexp)$biotype_class=="repeat")
-    repFeatures<-features(kexp)[idx]
+    idx<-which(rowRanges(kexp)$biotype_class=="repeat")
+    repFeatures<-rowRanges(kexp)[idx]
     repeatNames<-as.character(seqnames(repFeatures))
     tt<-rownames(counts(kexp)) %in% repeatNames
     repKexp<-counts(kexp)[tt,]

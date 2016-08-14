@@ -85,7 +85,7 @@ transcriptWiseAnalysis <- function(kexp, design, p.cutoff=0.05, fold.cutoff=1,
   res$gene_biotype <- gene_biotype
   res$tx_biotype <- tx_biotype
 
-  res$limmaWithMeta<-cbind(res$top,features(kexp)[rownames(res$top)]$gene_name,features(kexp)[rownames(res$top)]$gene_id )
+  res$limmaWithMeta<-cbind(res$top,rowRanges(kexp)[rownames(res$top)]$gene_name,rowRanges(kexp)[rownames(res$top)]$gene_id )
   colnames(res$limmaWithMeta)[ncol(res$top)+1]<-"gene.name"
   colnames(res$limmaWithMeta)[ncol(res$top)+2]<-"gene.id"
 

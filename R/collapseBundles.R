@@ -5,7 +5,7 @@
 #' refer to 'Details' for some thought exercises about the nature of 'genes'. 
 #' 
 #' @param kexp          A KallistoExperiment (or something very much like it)
-#' @param bundleID      The column (in mcols(features(kexp))) of the bundle IDs
+#' @param bundleID      The column (in mcols(rowRanges(kexp))) of the bundle IDs
 #' @param read.cutoff   Discard transcripts and bundles with < this many counts 
 #' @param discardjoined Discard bundles with IDs "joined" by a ";"?  (TRUE) 
 #' 
@@ -27,8 +27,8 @@ collapseBundles <- function(kexp, bundleID="gene_id",
 
   message("For the time being, only summing of bundles is supported")
   
-  bundleable <- !is.na(mcols(features(kexp))[[bundleID]]) 
-  feats <- features(kexp)[bundleable] 
+  bundleable <- !is.na(mcols(rowRanges(kexp))[[bundleID]]) 
+  feats <- rowRanges(kexp)[bundleable] 
   cts <- split.data.frame(counts(kexp)[bundleable, ], mcols(feats)[[bundleID]])
   cts <- cts[ sapply(cts, function(x) max(x) >= read.cutoff) ]
   cts <- lapply(cts, function(x) x[ rowSums(x) >= read.cutoff, ])

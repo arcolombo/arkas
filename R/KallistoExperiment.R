@@ -1,3 +1,9 @@
+# alias rowRanges
+features <- rowRanges
+
+# alias colData
+covariates <- colData
+
 #' Initializes a KallistoExperiment and performs some rudimentary checks.
 #' Many of the arguments CAN be NULL; determination of which is required 
 #' is done at run-time.  A KallistoExperiment must contain at least the 
@@ -16,8 +22,6 @@
 #' @param features              the row-wise annotations for the object
 #' @param kallistoVersion       version of Kallisto used to run the experiment
 #' @param est_counts_mad        matrix of count MADs summarizing bootstrap runs 
-#' 
-#' @seealso SEtoKE
 #' 
 #' @export 
 KallistoExperiment <- function(est_counts=NULL,

@@ -21,7 +21,7 @@ ruvNormalization(kexp, k = 1, spikeIns = FALSE, p.cutoff = 1,
 
 \item{read.cutoff}{, integer here we employ a read cutoff that filters out any rows where the rowSums falls under this category.}
 
-\item{byLevel}{a string character which must match the names of the meta-columns of the features(kexp), this collapses the count data by this feature term, and performs filtering}
+\item{byLevel}{a string character which must match the names of the meta-columns of the rowRanges(kexp), this collapses the count data by this feature term, and performs filtering}
 
 \item{controlNumber}{integer, this is the amount of negative controls to use to normalize; the higher the number the more stable your normalization but higher chance of including a false negative as a negative control; the lower the number the lower the chance of false negative, but not as stable normalization.}
 }

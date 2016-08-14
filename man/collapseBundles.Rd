@@ -14,7 +14,7 @@ collapseBundles(kexp, bundleID = "gene_id", read.cutoff = 1,
 \arguments{
 \item{kexp}{A KallistoExperiment (or something very much like it)}
 
-\item{bundleID}{The column (in mcols(features(kexp))) of the bundle IDs}
+\item{bundleID}{The column (in mcols(rowRanges(kexp))) of the bundle IDs}
 
 \item{read.cutoff}{Discard transcripts and bundles with < this many counts}
 

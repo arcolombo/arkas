@@ -77,7 +77,7 @@ geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
   topGenes <- rownames(res$top)
   res$topGenes <- topGenes
 
-  res$features <- features(kexp)
+  res$rowRanges <- rowRanges(kexp)
   res$species <- species
   if (fitOnly) return(res) # otherwise keep going
 
@@ -93,7 +93,7 @@ geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
 
   # FIXME: switch this part to qusage and keep it optional  
   res <- .formatLimmaWithMeta(res,converted,kexp)
-  res$features <- features(kexp)
+  res$rowRanges <- rowRanges(kexp)
   return(res)
 
 # }}}main
@@ -163,8 +163,8 @@ geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
   colnames(limmad)[9]<-"ensembl_id"
   colnames(limmad)[10]<-"Gene.title" #supporting Advaita
   #grab the meta data matching the ensembl gene ids from limma
-  Index <- mcols(features(kexp))$gene_id %in% limmad[,9] 
-  newFeatures <- mcols(features(kexp))[Index,]
+  Index <- mcols(rowRanges(kexp))$gene_id %in% limmad[,9] 
+  newFeatures <- mcols(rowRanges(kexp))[Index,]
   Features<-newFeatures[c(4,8:9)] #grabbing gene_id, gene_biotype and biotype_class
   uniqueFeatures<-Features[!duplicated(Features$gene_id),]
   limmad[,11]<-NA
