@@ -5,12 +5,8 @@ Version: 0.44.9
 Date: 2016-08-13
 Author: Tim Triche, Jr., Anthony Colombo, Harold Pimentel
 Depends:
-    edgeR,
-    limma,
     SummarizedExperiment,
-    Rsamtools,
-    tools,
-    ComplexHeatmap
+    tools
 Imports:
     rhdf5,
     matrixStats,
@@ -24,7 +20,10 @@ Imports:
     biomaRt,
     BiocGenerics,
     jsonlite,
-    TxDbLite
+    TxDbLite,
+    edgeR,
+    limma,
+    ComplexHeatmap
 Suggests:
     knitr,
     roxygen2,

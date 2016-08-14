@@ -10,9 +10,17 @@
 #' @param species character Homo.sapiens or Mus.musculus
 #' @param numberSelected integer, this is the number of the highest ranked adj.P.Val genes to print into a heatmap, the max amount is the number of genes returned from an analysis.
 #' @param saveReport boolean, if true then a txt and csv files are printed out to file, if false, then no report is printed out
-#' @import edgeR
-#' @import limma
-#' @import ComplexHeatmap 
+#' @importFrom edgeR DGEList
+#' @importFrom edgeR calcNormFactors
+#' @importFrom edgeR estimateGLMCommonDisp
+#' @importFrom  edgeR estimateGLMTrendedDisp
+#' @importFrom edgeR estimateGLMTagwiseDisp
+#' @importFrom edgeR  estimateGLMRobustDisp
+#' @importFrom limma voom
+#' @importFrom limma ebayes
+#' @importFrom limma lmFit
+#' @importFrom ComplexHeatmap Heatmap
+#' @importFrom ComplexHeatmap draw
 #' @import circlize
 #' @importFrom pvclust pvclust
 #' @importFrom dendsort dendsort

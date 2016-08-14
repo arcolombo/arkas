@@ -43,15 +43,15 @@ setGeneric("transcriptomes",
 setMethod("transcriptomes", "KallistoExperiment",
           function (object) return(object@transcriptomes))
 
-#' @export
-setMethod("transcriptsBy", "KallistoExperiment",
-          function(x, by="gene", ...) {
-            if (by == "gene") { 
-              split(x, mcols(x)$gene_name)
-            } else { 
-              return(x[mcols(x)$gene_name == by, ])
-            }
-          })
+##' @export
+#setMethod("transcriptsBy", "KallistoExperiment",
+ #         function(x, by="gene", ...) {
+  #          if (by == "gene") { 
+   #           split(x, mcols(x)$gene_name)
+    #        } else { 
+     #         return(x[mcols(x)$gene_name == by, ])
+      #      }
+       #   })
 
 setMethod("mad", "KallistoExperiment", function(x) assays(x)$est_counts_mad)
 

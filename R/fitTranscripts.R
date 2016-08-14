@@ -6,7 +6,11 @@
 #' @param read.cutoff Exclude transcripts where the maximum count is < this 
 #' @param ...          any additional parameters
 #' @return        A list with elements (design, voomed, fit)
-#'
+#' @importFrom edgeR DGEList
+#' @importFrom edgeR calcNormFactors
+#' @importFrom limma voom
+#' @importFrom limma ebayes
+#' @importFrom limma lmFit
 #' @export
 fitTranscripts <- function(kexp, design, read.cutoff=1, ...) { 
 

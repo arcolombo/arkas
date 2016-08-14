@@ -7,8 +7,6 @@
 #' @param kmer            integer, integer 3-31 of kmer size,default 31 
 #' @param makeUnique boolean, true will auto-correct existing dupes flexible
 #' @import tools
-#' @import TxDbLite
-#' @import Rsamtools
 #' @importFrom TxDbLite createAnnotationPackage
 #' @importFrom TxDbLite findDupes
 #' @export

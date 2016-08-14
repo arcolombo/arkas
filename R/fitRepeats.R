@@ -2,7 +2,11 @@
 #' @param kexp  kallisto experiment object
 #' @param design design matrix for modeling linear fit
 #' @param ...    any additional params
-#' @import edgeR
+#' @importFrom edgeR DGEList
+#' @importFrom edgeR calcNormFactors
+#' @importFrom limma voom
+#' @importFrom limma ebayes
+#' @importFrom limma lmFit
 #' @return a limma list of linear model statistics
 #' @export 
 fitRepeats<-function(kexp,design,...){

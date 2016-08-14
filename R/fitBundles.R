@@ -6,7 +6,11 @@
 #' @param read.cutoff Exclude bundles where the maximum count is < this 
 #' @param ...         any more         
 #' @return            A list with elements (design, voomed, fit)
-#'
+#' @importFrom edgeR DGEList
+#' @importFrom edgeR calcNormFactors
+#' @importFrom limma voom
+#' @importFrom limma ebayes
+#' @importFrom limma lmFit
 #' @export
 fitBundles <- function(kexp, design, bundleID="gene_id", read.cutoff=1, ...) { 
 

@@ -9,8 +9,11 @@
 #' @param species     which species? (Homo.sapiens, Mus.musculus are two currently supported
 #' @param fitOnly     exit after fitting the EBayes linear model?  (FALSE)
 #' @param adjustBy    character none, BH,BY, or holm for FDR procedures 
-#' @import edgeR 
-#' @import limma
+#' @importFrom edgeR DGEList
+#' @importFrom edgeR calcNormFactors
+#' @importFrom limma voom
+#' @importFrom limma ebayes
+#' @importFrom limma lmFit
 #' @importFrom biomaRt getBM
 #' @importFrom biomaRt useMart
 #'
@@ -104,9 +107,8 @@ geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
 ###the help####################
 
 .convertEntrezID<-function(resValues=NULL,commonNomen=NULL) {  # {{{
- #import biomaRt
- 
-   #if more species are added then getBM will have to be turned into a funciton
+
+    #if more species are added then getBM will have to be turned into a funciton
 
 #resValues must be ensG ids or ensT ids, characters only
 
