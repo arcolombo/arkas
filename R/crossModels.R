@@ -167,10 +167,10 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
                   column_title=paste0("Top Repeats TMM P.Val ",setP," ",adjustBy," cut ",cutoffMax),
                  row_names_gp=gpar(fontsize=6),
                  column_names_gp=gpar(fontsize=8)) 
- rh.rpt2<-Heatmap(features(kexp)[rownames(rpt.mt)]$tx_biotype,
+ rh.rpt2<-Heatmap(rowRanges(kexp)[rownames(rpt.mt)]$tx_biotype,
           name="tx_biotype",
           width=unit(5,"mm"))
- rh.rpt3<- Heatmap(features(kexp)[rownames(rpt.mt)]$gene_biotype,
+ rh.rpt3<- Heatmap(rowRanges(kexp)[rownames(rpt.mt)]$gene_biotype,
           name="rpt_family",
           width=unit(5,"mm"))
   } else {
@@ -179,10 +179,10 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
           column_title=paste0("Top Repeats TMM P.Val ",setP," cut at ",cutoffMax," ",adjustBy),
 
           row_names_gp=gpar(fontsize=6))
-  rh.rpt2<-Heatmap(features(kexp)[rownames(rpt.mt)]$tx_biotype,
+  rh.rpt2<-Heatmap(rowRanges(kexp)[rownames(rpt.mt)]$tx_biotype,
           name="tx_biotype",
           width=unit(5,"mm"))
-  rh.rpt3<-Heatmap(features(kexp)[rownames(rpt.mt)]$gene_biotype,
+  rh.rpt3<-Heatmap(rowRanges(kexp)[rownames(rpt.mt)]$gene_biotype,
           name="rpt_family",
           width=unit(5,"mm"))
   }
@@ -218,8 +218,8 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
 
   gn.fit<-glmFit(d2,design)
   gn.lrt<-glmLRT(gn.fit,coef=2) #assumes the coef is 2nd column, no multigroups supported yet
-  gn.Tags<-topTags(gn.lrt,p=setP,n=nrow(kexp))[[1]]
-  gn.feats<-mcols(features(kexp)[features(kexp)$gene_id %in% rownames(gn.Tags)])
+  gn.Tags<-topTags(gn.lrt,p=p.val,n=nrow(kexp))[[1]]
+  gn.feats<-mcols(rowRanges(kexp)[rowRanges(kexp)$gene_id %in% rownames(gn.Tags)])
   gn.key<-gn.feats[,c(4,5)]
   gn.key<-gn.key[!duplicated(gn.key$gene_id),]
 
@@ -281,8 +281,8 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
                 column_title=paste0("EdgeR Top TMM Repeats TPM  P.Val ",setP," cut ",cutoffMax),
                 row_names_gp=gpar(fontsize=8),
                 column_names_gp=gpar(fontsize=8))
-  eg.rwa.heatmap2<-Heatmap(features(kexp)[rownames(eg.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm"))
- eg.rwa.heatmap3<- Heatmap(features(kexp)[rownames(eg.rpt.mt)]$gene_biotype,name="rpt_family",width=unit(5,"mm"))
+  eg.rwa.heatmap2<-Heatmap(rowRanges(kexp)[rownames(eg.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm"))
+ eg.rwa.heatmap3<- Heatmap(rowRanges(kexp)[rownames(eg.rpt.mt)]$gene_biotype,name="rpt_family",width=unit(5,"mm"))
 
   draw(eg.rwa.heatmap+eg.rwa.heatmap2+eg.rwa.heatmap3)
   readkey()
@@ -423,10 +423,10 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
                   column_title=paste0("RUV Repeats P.Val ",setP," ",adjustBy," cut ",cutoffMax),
                  row_names_gp=gpar(fontsize=6),
                  column_names_gp=gpar(fontsize=8))
-  rh.rpt2<-Heatmap(features(kexp)[rownames(rpt.mt)]$tx_biotype,
+  rh.rpt2<-Heatmap(rowRanges(kexp)[rownames(rpt.mt)]$tx_biotype,
           name="tx_biotype",
           width=unit(5,"mm"))
-  rh.rpt3<-Heatmap(features(kexp)[rownames(rpt.mt)]$gene_biotype,
+  rh.rpt3<-Heatmap(rowRanges(kexp)[rownames(rpt.mt)]$gene_biotype,
           name="rpt_family",
           width=unit(5,"mm"))
   } else {
@@ -434,10 +434,10 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
           name="log(1+tpm)",
           column_title=paste0("RUV Repeats P.Val ",setP," cut at ",cutoffMax," ",adjustBy),
           row_names_gp=gpar(fontsize=6))
-  rh.rpt2<-Heatmap(features(kexp)[rownames(rpt.mt)]$tx_biotype,
+  rh.rpt2<-Heatmap(rowRanges(kexp)[rownames(rpt.mt)]$tx_biotype,
           name="tx_biotype",
           width=unit(5,"mm"))
-  rh.rpt3<-Heatmap(features(kexp)[rownames(rpt.mt)]$gene_biotype,
+  rh.rpt3<-Heatmap(rowRanges(kexp)[rownames(rpt.mt)]$gene_biotype,
           name="rpt_family",
           width=unit(5,"mm"))
   }
@@ -472,8 +472,8 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
  
   gn.fit<-glmFit(d2,ruvDesign)
   gn.lrt<-glmLRT(gn.fit,coef=2) #assumes the coef is 2nd column, no multigroups supported yet
-  gn.Tags<-topTags(gn.lrt,p=setP,n=nrow(kexp),adjust.method=adjustBy)[[1]]
-  gn.feats<-mcols(features(kexp)[features(kexp)$gene_id %in% rownames(gn.Tags)])
+  gn.Tags<-topTags(gn.lrt,p=p.val,n=nrow(kexp),adjust.method=adjustBy)[[1]]
+  gn.feats<-mcols(rowRanges(kexp)[rowRanges(kexp)$gene_id %in% rownames(gn.Tags)])
   gn.key<-gn.feats[,c(4,5)]
   gn.key<-gn.key[!duplicated(gn.key$gene_id),]
 
@@ -536,8 +536,8 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
                 column_title=paste0("EdgeR Top Repeats TPM  P.Val ",setP," cut ",cutoffMax),
                 row_names_gp=gpar(fontsize=8),
                 column_names_gp=gpar(fontsize=8))
-  eg.rpt2<-Heatmap(features(kexp)[rownames(eg.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm")) 
-  eg.rpt3<-Heatmap(features(kexp)[rownames(eg.rpt.mt)]$gene_biotype,name="rpt_family",width=unit(5,"mm"))
+  eg.rpt2<-Heatmap(rowRanges(kexp)[rownames(eg.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm")) 
+  eg.rpt3<-Heatmap(rowRanges(kexp)[rownames(eg.rpt.mt)]$gene_biotype,name="rpt_family",width=unit(5,"mm"))
 
   draw(eg.rpt+eg.rpt2+eg.rpt3)
   readkey()
@@ -552,8 +552,8 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
                 column_title=paste0("EdgeR All Repeats TPM  P.Val ",setP," cut ",cutoffMax),
                 row_names_gp=gpar(fontsize=8),
                 column_names_gp=gpar(fontsize=8))
-  all.eg.rpt2<-Heatmap(features(kexp)[rownames(all.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm"))
- all.eg.rpt3<-Heatmap(features(kexp)[rownames(all.rpt.mt)]$gene_biotype,name="rpt_family",width=unit(5,"mm"))
+  all.eg.rpt2<-Heatmap(rowRanges(kexp)[rownames(all.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm"))
+ all.eg.rpt3<-Heatmap(rowRanges(kexp)[rownames(all.rpt.mt)]$gene_biotype,name="rpt_family",width=unit(5,"mm"))
   draw(all.eg.rpt+all.eg.rpt2+all.eg.rpt3)
   readkey()
 

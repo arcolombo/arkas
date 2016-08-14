@@ -75,7 +75,7 @@ repeatWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
   topGenes <- rownames(res$top)
   res$topGenes <- topGenes
 
-  res$features <- features(kexp)
+  res$features <- rowRanges(kexp)
   res$species <- species
   return(res)
 

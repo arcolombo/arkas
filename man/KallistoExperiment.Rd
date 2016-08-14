@@ -33,7 +33,4 @@ KallistoExperiment(est_counts = NULL, eff_length = NULL,
 \description{
 FIXME: add Harold's quasi-normalized TPM method for tx-level comparisons.
 }
-\seealso{
-SEtoKE
-}
 

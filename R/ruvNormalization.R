@@ -6,7 +6,7 @@
 #' @param p.cutoff  numeric  a p value cutoff it should be fixed at 1 or 2 becuaes you need to find insignificant negative controls
 #' @param inSilico for when spikeIns is flagged as FALSE, inSilcio must be a vector names of in silico genes which are constant across samples apriori. housekeeping genes will do fine.  the insilico vector can be derived here if it is unknown by taking the bottom quartile, bottom 10 percent ranked by P.Value, of significant genes after running a raw DE analysis.
 #' @param read.cutoff , integer here we employ a read cutoff that filters out any rows where the rowSums falls under this category.  
-#' @param byLevel a string character which must match the names of the meta-columns of the features(kexp), this collapses the count data by this feature term, and performs filtering
+#' @param byLevel a string character which must match the names of the meta-columns of the rowRanges(kexp), this collapses the count data by this feature term, and performs filtering
 #' @param controlNumber integer, this is the amount of negative controls to use to normalize; the higher the number the more stable your normalization but higher chance of including a false negative as a negative control; the lower the number the lower the chance of false negative, but not as stable normalization.
 #' @importFrom RUVSeq RUVg
 #' @export 

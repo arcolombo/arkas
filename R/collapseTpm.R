@@ -5,7 +5,7 @@
 #' refer to 'Details' for some thought exercises about the nature of 'genes'. 
 #' 
 #' @param kexp          A KallistoExperiment (or something very much like it)
-#' @param bundleID      The column (in mcols(features(kexp))) of the bundle IDs
+#' @param bundleID      The column (in mcols(rowRanges(kexp))) of the bundle IDs
 #' @param minTPM        Discard transcripts/bundles with < this many TPMs (0.01)
 #' @param discardjoined Discard bundles with IDs "joined" by a ";"? (TRUE) 
 #' @param tx_biotype    Restrict to a specific mcols(kexp)$tx_biotype? (NULL)
