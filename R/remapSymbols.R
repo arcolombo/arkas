@@ -4,7 +4,7 @@
 #' @param what  "transcript" or "gene" level reannotation
 #' @importFrom biomaRt getBM useMart
 #' @return      x, with updated $gene_name or rownames
-#'
+#' @importFrom TxDbLite getSupportedAbbreviations 
 #' @export
 remapSymbols <- function(x, what=c("transcript","gene")) { 
 
@@ -16,7 +16,7 @@ remapSymbols <- function(x, what=c("transcript","gene")) {
 
   species <- "hsapiens"
   if (is(x, "RangedSummarizedExperiment")) {
-    for (sp in tolower(TxDbLite::getSupportedAbbreviations())) {
+    for (sp in tolower(getSupportedAbbreviations())) {
       if (grepl(sp, ignore.case=TRUE, transcriptomes(x))) species <- sp
     }
   } else { 

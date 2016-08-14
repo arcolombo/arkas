@@ -33,7 +33,7 @@ setGeneric("kallistoVersion",
 
 #' @export
 setMethod("kallistoVersion", "KallistoExperiment",
-          function (object) return(object@kallistoVersion))
+      function (object) return(object@kallistoVersion))
 
 #' @export
 setGeneric("transcriptomes", 

@@ -7,7 +7,6 @@ Author: Tim Triche, Jr., Anthony Colombo, Harold Pimentel
 Depends:
     edgeR,
     limma,
-    TxDbLite,
     SummarizedExperiment,
     Rsamtools,
     tools,
@@ -24,7 +23,8 @@ Imports:
     EDASeq,
     biomaRt,
     BiocGenerics,
-    jsonlite
+    jsonlite,
+    TxDbLite
 Suggests:
     knitr,
     roxygen2,

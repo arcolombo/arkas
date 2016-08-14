@@ -8,8 +8,8 @@
 #' @param ...           any more
 #' @return              a GRanges or a KallistoExperiment, depending on `what`
 #'
-#' @import TxDbLite
-#'
+#' @importFrom TxDbLite getSupportedAbbreviations
+#' @importFrom TxDbLite getOrgDetails
 #' @export
 annotateFeatures <- function(kexp, 
                              level=c(NA, "gene", "transcript"), 

@@ -9,7 +9,8 @@
 #' @import tools
 #' @import TxDbLite
 #' @import Rsamtools
-#' 
+#' @importFrom TxDbLite createAnnotationPackage
+#' @importFrom TxDbLite findDupes
 #' @export
 indexKallisto <- function(fastaFiles, fastaPath, fastaTxDbLite=TRUE, 
                           collapse="_mergedWith_", kmer=31,makeUnique=TRUE) { 
@@ -70,7 +71,7 @@ indexKallisto <- function(fastaFiles, fastaPath, fastaTxDbLite=TRUE,
     if (fastaTxDbLite) {
       for (fastaFile in fastaFiles) { 
         if (!.checkForAnnotation(fastaFile, fastaPath)) {
-          TxDbLite::createAnnotationPackage(fastaFile) 
+          createAnnotationPackage(fastaFile) 
         }
       }
     }
@@ -82,11 +83,12 @@ indexKallisto <- function(fastaFiles, fastaPath, fastaTxDbLite=TRUE,
 
 }
 
-#' @import TxDbLite
+#' @importFrom TxDbLite getAnnotationType
+#' @importFrom TxDbLite getTxDbLiteName
 .checkForAnnotation <- function(fastaFile, fastaPath=".") {
-  type <- TxDbLite::getAnnotationType(fastaFile)
+  type <- getAnnotationType(fastaFile)
   if (!is.null(type)) {
-    txDbLiteName <- TxDbLite::getTxDbLiteName(fastaFile)
+    txDbLiteName <- getTxDbLiteName(fastaFile)
     if (file.exists(paste(txDbLiteName, "sqlite", sep="."))) {
       return(TRUE)
     } else if (suppressWarnings(require(txDbLiteName, character.only=TRUE))) {
@@ -98,7 +100,7 @@ indexKallisto <- function(fastaFiles, fastaPath, fastaTxDbLite=TRUE,
   return(TRUE)
 }
 
-#' @import TxDbLite
+#' @importFrom TxDbLite getFastaStub
 .getIndexName <- function(fastaFiles, collapse="_mergedWith_") {
   cleanNames <- function(x) unique(sort(getFastaStub(x)))
   return(paste0(paste(cleanNames(fastaFiles), collapse=collapse), 

@@ -57,7 +57,7 @@ fetchKallisto <- function(sampleDir=".",
   return(res)
 }
 
-#' @import TxDbLite
+#' @importFrom TxDbLite getTxDbLiteName
 .extractRuninfo <- function(hdf5, collapse, transcriptomes=NULL) { # {{{
 
   aux <- h5read(hdf5, "/aux")
