@@ -1,4 +1,4 @@
-#' annotate features (genes or transcripts) against (say) EnsemblDb
+#' annotate rowRanges (genes or transcripts) against (say) EnsemblDb
 #' this is becoming the default dispatcher for almost all annotation
 #' 
 #' @param kexp          a kexp
@@ -69,5 +69,5 @@ annotateFeatures <- function(kexp,
 
   }
   if (what == "KallistoExperiment") return(kexp)
-  if (what == "GRanges") return(features(kexp))
+  if (what == "GRanges") return(rowRanges(kexp))
 }

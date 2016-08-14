@@ -2,7 +2,7 @@
 % Please edit documentation in R/annotateFeatures.R
 \name{annotateFeatures}
 \alias{annotateFeatures}
-\title{annotate features (genes or transcripts) against (say) EnsemblDb
+\title{annotate rowRanges (genes or transcripts) against (say) EnsemblDb
 this is becoming the default dispatcher for almost all annotation}
 \usage{
 annotateFeatures(kexp, level = c(NA, "gene", "transcript"),
@@ -21,7 +21,7 @@ annotateFeatures(kexp, level = c(NA, "gene", "transcript"),
 a GRanges or a KallistoExperiment, depending on `what`
 }
 \description{
-annotate features (genes or transcripts) against (say) EnsemblDb
+annotate rowRanges (genes or transcripts) against (say) EnsemblDb
 this is becoming the default dispatcher for almost all annotation
 }
 

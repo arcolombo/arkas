@@ -105,10 +105,10 @@ mergeKallisto <- function(outputDirs=NULL,
                              ...)
   colnames(kexp) <- kexp$ID
   if(!is.null(transcriptomes) && annotate == TRUE) {
-    feats <- features(kexp)
+    feats <- rowRanges(kexp)
     mapped <- annotateFeatures(kexp, level="transcript", what="GRanges") 
     feats[names(mapped)] <- mapped
-    features(kexp) <- feats
+    rowRanges(kexp) <- feats
   }
   return(kexp)
 }

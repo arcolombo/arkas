@@ -15,7 +15,7 @@ collapseTpm(kexp, bundleID = "gene_id", minTPM = 0.01,
 \arguments{
 \item{kexp}{A KallistoExperiment (or something very much like it)}
 
-\item{bundleID}{The column (in mcols(features(kexp))) of the bundle IDs}
+\item{bundleID}{The column (in mcols(rowRanges(kexp))) of the bundle IDs}
 
 \item{minTPM}{Discard transcripts/bundles with < this many TPMs (0.01)}
 
