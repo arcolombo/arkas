@@ -3,8 +3,16 @@
 #'
 #' @slot transcriptomes   Transcriptomes against which reads were pseudoaligned
 #' @slot kallistoVersion  The version of Kallisto used to pseudoalign the reads
+#' @name KallistoExperiment-class
+#' @section Slots: 
+#'  \describe{
+#'    \item{\code{transcriptomes}:}{ character class \code{"character"}, containing data from transcriptomes}
+#'    \item{\code{kallistoVersion}:}{Object of class \code{"character"}, containing data that needs to go in kallistoVersion.}
+#'  }  
 #' 
 #'  
+#'
+#' @rdname KallistoExperiment-class  
 #' @export 
 setClass("KallistoExperiment",
          representation(transcriptomes="character", 
