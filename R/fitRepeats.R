@@ -5,7 +5,7 @@
 #' @importFrom edgeR DGEList
 #' @importFrom edgeR calcNormFactors
 #' @importFrom limma voom
-#' @importFrom limma ebayes
+#' @importFrom limma eBayes
 #' @importFrom limma lmFit
 #' @return a limma list of linear model statistics
 #' @export 

@@ -24,6 +24,7 @@ First we need to read in the results from quantifying each of the matched pairs.
 
 
 ```{r}
+library(arkas)
 suppressPackageStartupMessages(library(arkasData))
 outputPath <- system.file("extdata", "", package="arkasData")
 samples <- list.files(outputPath, pattern="^[ns][124]$")
@@ -43,7 +44,7 @@ we will sum the abundances of the transcripts to get the abundance of each gene.
 
 
 ```{r}
-NS <- annotateFeatures(NS) # loads TxDbLite libs
+
 # Sample names are [condition][subject], e.g. s1 or n4
 NS$senescent <- as.factor(substr(colnames(NS), 1, 1))
 NS$subject <- as.factor(substr(colnames(NS), 2, 2))
@@ -63,7 +64,7 @@ In any event, a little convenience function retrieves our hits at each p cutoff.
 res <- fitBundles(NS, design=NS_design)
 voomResults <- res$fit
 
-getHits <- function(fit, p) rownames(topTable(fit, p=p, coef=2, n=nrow(NS)))
+getHits <- function(fit, p) rownames(limma::topTable(fit, p=p, coef=2, n=nrow(NS)))
 
 voom_fdr01 <- getHits(voomResults, p=0.1)
 voom_fdr005 <- getHits(voomResults, p=0.05)
@@ -81,22 +82,22 @@ The authors also recommend computing and plotting their dispersion estimates.
 ```{r, fig.height=9, fig.width=7}
 
 geneCounts <- collapseBundles(NS, bundleID="gene_id")
-d <- DGEList(counts=geneCounts, group=NS$senescent)
-d <- calcNormFactors(d)
-d <- estimateGLMTrendedDisp(d, NS_design)
-d <- estimateGLMTagwiseDisp(d, NS_design)
-d <- estimateGLMRobustDisp(d, NS_design) # superb, but slow!
-plotBCV(d)
+d <- edgeR::DGEList(counts=geneCounts, group=NS$senescent)
+d <- edgeR::calcNormFactors(d)
+d <- edgeR::estimateGLMTrendedDisp(d, NS_design)
+d <- edgeR::estimateGLMTagwiseDisp(d, NS_design)
+d <- edgeR::estimateGLMRobustDisp(d, NS_design) # superb, but slow!
+edgeR::plotBCV(d)
 ```
 
 The robust dispersion estimate seems to help a great deal (although it's slow).
 We will use the same approach and cutoffs to get edgeR hits as for limma/voom.
 
 ```{r}
-fit <- glmFit(d, NS_design)
-edgeResults <- glmLRT(fit, coef=2)
+fit <- edgeR::glmFit(d, NS_design)
+edgeResults <- edgeR::glmLRT(fit, coef=2)
 
-getEdgeR <- function(fit, p) rownames(topTags(fit, p=p, n=nrow(NS)))
+getEdgeR <- function(fit, p) rownames(edgeR::topTags(fit, p=p, n=nrow(NS)))
 
 edgeR_fdr01 <- getEdgeR(edgeResults, p=0.1)
 edgeR_fdr005 <- getEdgeR(edgeResults, p=0.05)
@@ -157,7 +158,7 @@ odds ratio of 22.06, which is enormous).  What is going on here?  Let's see.
 First let us look at some of these huge B-values:
 
 ```{r}
-topVoom <- topTable(voomResults, n=nrow(NS), coef=2)
+topVoom <- limma::topTable(voomResults, n=nrow(NS), coef=2)
 voomOnly_fdr001 <- setdiff(voom_fdr001, edgeR_fdr001)
 topVoom[voomOnly_fdr001, "B"]
 ```
@@ -193,7 +194,7 @@ for (ensg in hugeDiffs) getBeeswarm(ensg, mat=geneTpms)
 Conversely, what does edgeR favor?
 
 ```{r}
-topEdgeR <- topTags(edgeResults, n=nrow(NS))
+topEdgeR <- edgeR::topTags(edgeResults, n=nrow(NS))[[1]]
 edgeOnly_fdr001 <- setdiff(edgeR_fdr001, voom_fdr001)
 topEdgeR[edgeOnly_fdr001, "LR"]
 ```

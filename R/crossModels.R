@@ -15,19 +15,20 @@
 #' @importFrom edgeR estimateGLMCommonDisp
 #' @importFrom  edgeR estimateGLMTrendedDisp
 #' @importFrom edgeR estimateGLMTagwiseDisp
-#' @importFrom edgeR  estimateGLMRobustDisp
+#' @importFrom edgeR  estimateGLMRobustDisp glmFit glmLRT
+#' @importFrom edgeR topTags
+#' @importFrom limma topTable
 #' @importFrom limma voom
-#' @importFrom limma ebayes
+#' @importFrom limma eBayes
 #' @importFrom limma lmFit
-#' @importFrom ComplexHeatmap Heatmap
-#' @importFrom ComplexHeatmap draw
+#' @import ComplexHeatmap 
+#' @importFrom grid unit gpar
 #' @import circlize
 #' @importFrom pvclust pvclust
 #' @importFrom dendsort dendsort
 #' @importFrom EDASeq plotRLE
 #' @importFrom EDASeq plotPCA
 #' @importFrom RUVSeq RUVg
-#' @importFrom grid gpar
 #' @importFrom grDevices dev.off pdf
 #' @importFrom graphics title
 #' @importFrom utils data read.delim write.csv write.table

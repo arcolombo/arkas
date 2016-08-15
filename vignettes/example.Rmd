@@ -71,6 +71,6 @@ bySd <- function(x, k=25) {
   x[rev(order(sds))[seq_len(k)],]
 }
 inX<-tpm(merged)
-Heatmap(log(1+bySd(inX[213665:213782,])),
+ComplexHeatmap::Heatmap(log(1+bySd(inX[213665:213782,])),
         column_title="Repeat transcription, teratoma vs. normal")
 ```

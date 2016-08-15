@@ -9,7 +9,7 @@
 #' @importFrom edgeR DGEList
 #' @importFrom edgeR calcNormFactors
 #' @importFrom limma voom
-#' @importFrom limma ebayes
+#' @importFrom limma eBayes
 #' @importFrom limma lmFit
 #' @export
 fitBundles <- function(kexp, design, bundleID="gene_id", read.cutoff=1, ...) { 

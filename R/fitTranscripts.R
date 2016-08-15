@@ -9,7 +9,7 @@
 #' @importFrom edgeR DGEList
 #' @importFrom edgeR calcNormFactors
 #' @importFrom limma voom
-#' @importFrom limma ebayes
+#' @importFrom limma eBayes
 #' @importFrom limma lmFit
 #' @export
 fitTranscripts <- function(kexp, design, read.cutoff=1, ...) { 

@@ -12,8 +12,9 @@
 #' @importFrom edgeR DGEList
 #' @importFrom edgeR calcNormFactors
 #' @importFrom limma voom
-#' @importFrom limma ebayes
+#' @importFrom limma eBayes
 #' @importFrom limma lmFit
+#' @importFrom limma topTable
 #' @importFrom biomaRt getBM
 #' @importFrom biomaRt useMart
 #'

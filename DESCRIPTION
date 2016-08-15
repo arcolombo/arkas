@@ -23,7 +23,9 @@ Imports:
     TxDbLite,
     edgeR,
     limma,
-    ComplexHeatmap
+    ComplexHeatmap,
+    IRanges,
+    GenomeInfoDb
 Suggests:
     knitr,
     roxygen2,

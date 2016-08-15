@@ -14,8 +14,9 @@
 #' @importFrom edgeR DGEList
 #' @importFrom edgeR calcNormFactors
 #' @importFrom limma voom
-#' @importFrom limma ebayes
+#' @importFrom limma eBayes
 #' @importFrom limma lmFit
+#' @importFrom limma topTable
 #' @export
 transcriptWiseAnalysis <- function(kexp, design, p.cutoff=0.05, fold.cutoff=1, 
                                    coef=2,read.cutoff=1,tx_biotype=NULL, gene_biotype=NULL,

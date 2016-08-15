@@ -8,8 +8,12 @@
 #' @param read.cutoff minimum read coverage (estimated) for a gene bundle 
 #' @param species     which species? (Homo.sapiens, Mus.musculus are two currently supported
 #' @param adjustBy    character none, BH,BY, or holm for FDR procedures 
-#' @import edgeR 
-#' @import limma
+#' @importFrom edgeR DGEList
+#' @importFrom edgeR calcNormFactors
+#' @importFrom limma voom
+#' @importFrom limma eBayes
+#' @importFrom limma lmFit
+#' @importFrom limma topTable
 #' @importFrom biomaRt getBM useMart
 #'
 #' @importFrom matrixStats rowSds 

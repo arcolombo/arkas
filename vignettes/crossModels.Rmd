@@ -69,5 +69,5 @@ SE <- as(NS, "SummarizedExperiment")
 
 kexp <- as(SE, "KallistoExperiment")
 
-identical(kexp, SE)
+identical(kexp,as(SE,"KallistoExperiment"))
 ```
