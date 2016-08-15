@@ -11,7 +11,6 @@
 #'  }  
 #' 
 #'  
-#'
 #' @rdname KallistoExperiment-class  
 #' @export 
 setClass("KallistoExperiment",

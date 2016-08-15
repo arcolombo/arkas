@@ -1,17 +1,16 @@
 #' @export
 #' @rdname KallistoExperiment-class
-#' @aliases counts KallistoExperiment
 setMethod("counts", "KallistoExperiment",
           function (object) return(assays(object)$est_counts))
 
 #' @export
-#' @aliases pData KallistoExperiment
 #' @rdname KallistoExperiment-class
 setMethod("pData", "KallistoExperiment",
           function (object) return(colData(object)))
 
 #' @export
-#' @aliases pData KallistoExperiment
+#' @param value this is the replacement value for object
+#' @aliases pData
 #' @rdname KallistoExperiment-class
 setReplaceMethod("pData", c("KallistoExperiment", "DataFrame"),
                  function (object, value) {
@@ -25,7 +24,7 @@ setReplaceMethod("pData", c("KallistoExperiment", "DataFrame"),
 setGeneric("eff_length", function(object) standardGeneric("eff_length"))
 
 #' @rdname KallistoExperiment-class
-#' @aliases eff_length KallistoExperiment
+#' @aliases eff_length KallistoExperiment-method
 #' @export
 setMethod("eff_length", "KallistoExperiment",
           function (object) return(assays(object)$eff_length))
@@ -36,18 +35,19 @@ setMethod("eff_length", "KallistoExperiment",
 setGeneric("tpm", function(object) standardGeneric("tpm"))
 
 #' @rdname KallistoExperiment-class
-#' @aliases tpm KallistoExperiment
+#' @aliases tpm KallistoExperiment-method
 #' @export
 setMethod("tpm", "KallistoExperiment",
           function (object) return(assays(object)$tpm))   
 #' finds the kallistoVersion used in quantification
 #' @name KallistoExperiment-class
 #' @rdname KallistoExperiment-class
+#'
 #' @export
 setGeneric("kallistoVersion", 
            function(object) standardGeneric("kallistoVersion"))
 #' @rdname KallistoExperiment-class
-#' @aliases kallistoVersion KallistoExperiment
+#' @aliases kallistoVersion KallistoExperiment-method
 #' @export
 setMethod("kallistoVersion", "KallistoExperiment",
       function (object) return(object@kallistoVersion))
@@ -61,7 +61,7 @@ setMethod("kallistoVersion", "KallistoExperiment",
 setGeneric("transcriptomes", 
            function(object) standardGeneric("transcriptomes"))
 #' @rdname KallistoExperiment-class
-#' @aliases transcriptomes KallistoExperiment
+#' @aliases transcriptomes KallistoExperiment-method
 #' @export
 setMethod("transcriptomes", "KallistoExperiment",
           function (object) return(object@transcriptomes))
@@ -83,8 +83,9 @@ setMethod("transcriptomes", "KallistoExperiment",
 #' @export
 setGeneric("mabDev", function(object) standardGeneric("mabDev"))
 
-#' @aliases mabDev KallistoExperiment
+
 #' @rdname KallistoExperiment-class
+#' @aliases mabDev KallistoExperiment-method
 #' @export
 setMethod("mabDev", "KallistoExperiment", function(object) assays(object)$est_counts_mad)
 
