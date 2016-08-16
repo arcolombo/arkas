@@ -10,9 +10,13 @@
 #' @param gene_biotype optionally restrict to one or more gene_biotype classes 
 #' @param biotype_class optionally restrict to one or more biotype_class ...es
 #' @param adjustBy either none , BH, BY, holm for limma adjust type
-#' @import edgeR 
-#' @import limma
-#'
+#' @param species    character , either Homo.sapiens or Mus.musculus
+#' @importFrom edgeR DGEList
+#' @importFrom edgeR calcNormFactors
+#' @importFrom limma voom
+#' @importFrom limma eBayes
+#' @importFrom limma lmFit
+#' @importFrom limma topTable
 #' @export
 transcriptWiseAnalysis <- function(kexp, design, p.cutoff=0.05, fold.cutoff=1, 
                                    coef=2,read.cutoff=1,tx_biotype=NULL, gene_biotype=NULL,

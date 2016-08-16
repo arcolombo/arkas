@@ -22,6 +22,8 @@ pairFastqFiles(path = ".", extension = "\\\\.fastq\\\\.gz",
 \item{splitChar}{split character or string, usually "_" for Illumina}
 
 \item{...}{other arguments, passed on to helper functions}
+
+\item{fragments}{fragments to bind toward}
 }
 \value{
 a vector of paired FASTQ files for runKallisto

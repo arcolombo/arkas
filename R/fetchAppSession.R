@@ -3,7 +3,7 @@
 #' @param jsonFile  character, the name and/or path to the JSON file
 #'
 #' @return list     the appSession created from that JSON file 
-#'
+#' @importFrom jsonlite fromJSON
 #' @export
 fetchAppSession <- function(jsonFile) {
   appSession <- fromJSON(jsonFile)

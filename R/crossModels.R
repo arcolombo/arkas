@@ -1,24 +1,37 @@
 #' Often times it is needed to cross compare edgeR results, limma/voom results across various filtering criteria and comparing normalized results and unnormalized results, comparing gene-level, and / or transcript level at various filtering criteria reproducibly. This function can run a cross model generation set across various filtering criteria. by default the design is a treatment factorization where the coeficient is the second column with an intercept term.
+#' @param kexp      a kalistoExperiemtn of something of this sort
 #' @param crossLevel character option of tx_id, or gene_id which will compare at the transcript or gene level collapse. 
 #' @param cutoffMax integer, this will be the maximum read.cutoff that will compare each read.cutoff up to the max, i.e. from 1<=cutoffMax thresholding.
 #' @param dataType character either normalized or unnormalized data to compare. if normalized is selected, then ruv is ran to only compare across normalized results.
 #' @param outputDir a character path to save all the pdfs printed, includes limma volcano plots, heatmaps.
 #' @param design  a matrix with a treatment level contrasts, does not yet support group-means factorization
-#' @param p.val numeric for linear fitting
+#' @param setP numeric for linear fitting
 #' @param adjustBy character either BH,none,BY,holm
 #' @param species character Homo.sapiens or Mus.musculus
 #' @param numberSelected integer, this is the number of the highest ranked adj.P.Val genes to print into a heatmap, the max amount is the number of genes returned from an analysis.
 #' @param saveReport boolean, if true then a txt and csv files are printed out to file, if false, then no report is printed out
-#' @import edgeR
-#' @import limma
-#' @import ComplexHeatmap
+#' @importFrom edgeR DGEList
+#' @importFrom edgeR calcNormFactors
+#' @importFrom edgeR estimateGLMCommonDisp
+#' @importFrom  edgeR estimateGLMTrendedDisp
+#' @importFrom edgeR estimateGLMTagwiseDisp
+#' @importFrom edgeR  estimateGLMRobustDisp glmFit glmLRT
+#' @importFrom edgeR topTags
+#' @importFrom limma topTable
+#' @importFrom limma voom
+#' @importFrom limma eBayes
+#' @importFrom limma lmFit
+#' @import ComplexHeatmap 
+#' @importFrom grid unit gpar
 #' @import circlize
 #' @importFrom pvclust pvclust
 #' @importFrom dendsort dendsort
 #' @importFrom EDASeq plotRLE
 #' @importFrom EDASeq plotPCA
 #' @importFrom RUVSeq RUVg
-#' @importFrom grid gpar
+#' @importFrom grDevices dev.off pdf
+#' @importFrom graphics title
+#' @importFrom utils data read.delim write.csv write.table
 #' @export
 #' @return returns several images plotted.
 crossModels<-function(kexp,
@@ -27,12 +40,13 @@ crossModels<-function(kexp,
                       dataType=c("normalized","unnormalized"),
                       outputDir=".",
                       design=NULL, 
-                      p.val=0.05, 
+                      setP=0.05, 
                       adjustBy="BH",
                       species=c("Homo.sapiens","Mus.musculus"),
                       numberSelected=200,
                       saveReport=FALSE){
-   
+  
+ 
  readkey<-function()
 {
     cat ("Press [enter] to continue")
@@ -74,10 +88,10 @@ bySd <- function(x, k=500) {
  title("PCA Gene Bundles Raw CPM")
  readkey()
  
-  gwa<-geneWiseAnalysis(kexp,design=design,how="cpm",p.cutoff=p.val,read.cutoff=cutoffMax,species=species,fitOnly=FALSE,adjustBy=adjustBy)
+  gwa<-geneWiseAnalysis(kexp,design=design,how="cpm",p.cutoff=setP,read.cutoff=cutoffMax,species=species,fitOnly=FALSE,adjustBy=adjustBy)
    #gwa NO RUV heatmap
   if(saveReport==TRUE){
-  write.csv(gwa$limmaWithMeta[order(gwa$limmaWithMeta$adj.P.Val),],file=paste0(outputDir,"/gwaLimmaTMM_pval_",p.val,"_readCutoff_",cutoffMax,".csv"),
+  write.csv(gwa$limmaWithMeta[order(gwa$limmaWithMeta$adj.P.Val),],file=paste0(outputDir,"/gwaLimmaTMM_pval_",setP,"_readCutoff_",cutoffMax,".csv"),
   row.names=FALSE)
   }#print to file
   
@@ -109,7 +123,7 @@ bySd <- function(x, k=500) {
                    name="log(1+tpm)",
                    cluster_rows=dend,
                    cluster_columns=x.pv$hclust,
-                   column_title=paste0("Limma Gene TMM Scaled P.Val ",p.val," cutoff ",cutoffMax),
+                   column_title=paste0("Limma Gene TMM Scaled P.Val ",setP," cutoff ",cutoffMax),
                    row_names_gp=gpar(fontsize=6),
                    column_names_gp=gpar(fontsize=8))
 
@@ -128,14 +142,14 @@ bySd <- function(x, k=500) {
   RWA<-repeatWiseAnalysis(kexp,
                       design=design,
                        how="cpm",
-                       p.cutoff=p.val,
+                       p.cutoff=setP,
                        fold.cutoff=1,
                        read.cutoff=cutoffMax,
                        species=species,
                        adjustBy=adjustBy)
   if(saveReport==TRUE){
   write.csv(RWA$top,
-              file=paste0(outputDir,"/limmaTMMrepeatWiseAnalysis_pval_",p.val,"_cutoff_",cutoffMax,".csv"),
+              file=paste0(outputDir,"/limmaTMMrepeatWiseAnalysis_pval_",setP,"_cutoff_",cutoffMax,".csv"),
               row.names=FALSE)
    } #print to file
 
@@ -160,7 +174,7 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
                   name="log(1+tpm)",
                   cluster_rows=rpt.dend,
                   cluster_columns=rpt.pv$hclust,
-                  column_title=paste0("Top Repeats TMM P.Val ",p.val," ",adjustBy," cut ",cutoffMax),
+                  column_title=paste0("Top Repeats TMM P.Val ",setP," ",adjustBy," cut ",cutoffMax),
                  row_names_gp=gpar(fontsize=6),
                  column_names_gp=gpar(fontsize=8)) 
  rh.rpt2<-Heatmap(rowRanges(kexp)[rownames(rpt.mt)]$tx_biotype,
@@ -172,7 +186,8 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
   } else {
   rh.rpt<-Heatmap(log(1+rpt.mt),
           name="log(1+tpm)",
-          column_title=paste0("Top Repeats TMM P.Val ",p.val," cut at ",cutoffMax," ",adjustBy),
+          column_title=paste0("Top Repeats TMM P.Val ",setP," cut at ",cutoffMax," ",adjustBy),
+
           row_names_gp=gpar(fontsize=6))
   rh.rpt2<-Heatmap(rowRanges(kexp)[rownames(rpt.mt)]$tx_biotype,
           name="tx_biotype",
@@ -213,17 +228,17 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
 
   gn.fit<-glmFit(d2,design)
   gn.lrt<-glmLRT(gn.fit,coef=2) #assumes the coef is 2nd column, no multigroups supported yet
-  gn.Tags<-topTags(gn.lrt,p=p.val,n=nrow(kexp))[[1]]
+  gn.Tags<-topTags(gn.lrt,p=setP,n=nrow(kexp))[[1]]
   gn.feats<-mcols(rowRanges(kexp)[rowRanges(kexp)$gene_id %in% rownames(gn.Tags)])
   gn.key<-gn.feats[,c(4,5)]
   gn.key<-gn.key[!duplicated(gn.key$gene_id),]
 
   rpt.fit<-glmFit(d,design)
   rpt.lrt<-glmLRT(rpt.fit,coef=2)
-  rpt.Tags<-topTags(rpt.lrt,p=p.val,n=nrow(kexp))[[1]]
+  rpt.Tags<-topTags(rpt.lrt,p=setP,n=nrow(kexp))[[1]]
   if(saveReport==TRUE){
-  write.table(gn.Tags,file=paste0(outputDir,"/TMM.gwa.edgeR.pval_",p.val,"_cut_",cutoffMax,"_",adjustBy,".txt"),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
-   write.table(rpt.Tags,file=paste0(outputDir,"/TMM.rwa.edgeR.pval_",p.val,"_cut_",cutoffMax,"_",adjustBy,".txt"),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
+  write.table(gn.Tags,file=paste0(outputDir,"/TMM.gwa.edgeR.pval_",setP,"_cut_",cutoffMax,"_",adjustBy,".txt"),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
+   write.table(rpt.Tags,file=paste0(outputDir,"/TMM.rwa.edgeR.pval_",setP,"_cut_",cutoffMax,"_",adjustBy,".txt"),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
   }
  
    edgeR.targets<-rownames(gn.Tags)[1:numberSelected]
@@ -250,12 +265,11 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
                    name="log(1+tpm)",
                    cluster_rows=eg.dend,
                    cluster_columns=eg.x.pv$hclust,
-                   column_title=paste0("EdgeR Gene TMM P.Val ",p.val," cutoff ",cutoffMax," top ",numberSelected),
+                   column_title=paste0("EdgeR Gene TMM P.Val ",setP," cutoff ",cutoffMax," top ",numberSelected), 
                    row_names_gp=gpar(fontsize=6),
                    column_names_gp=gpar(fontsize=8))
-
-  draw(eg.gwa.heatmap)
-  readkey()
+                   draw(eg.gwa.heatmap)
+                   readkey()
 
 
 
@@ -274,7 +288,7 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
   eg.rpt.mt<-as.matrix(eg.df.rpt)
 
   eg.rwa.heatmap<-Heatmap(log(1+eg.rpt.mt),name="log(1+tpm)",
-                column_title=paste0("EdgeR Top TMM Repeats TPM  P.Val ",p.val," cut ",cutoffMax),
+                column_title=paste0("EdgeR Top TMM Repeats TPM  P.Val ",setP," cut ",cutoffMax),
                 row_names_gp=gpar(fontsize=8),
                 column_names_gp=gpar(fontsize=8))
   eg.rwa.heatmap2<-Heatmap(rowRanges(kexp)[rownames(eg.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm"))
@@ -318,18 +332,18 @@ print(plotRLE(g.bundles,outline=FALSE))
   gwa.RUV<-geneWiseAnalysis(kexp,
                             design=ruvDesign,
                             how="cpm",
-                            p.cutoff=p.val,
+                            p.cutoff=setP,
                             read.cutoff=cutoffMax,
                             species=species,
                             fitOnly=FALSE,
                             adjustBy=adjustBy)
   #gwa RUV heatmap
   if(saveReport==TRUE){
-  write.table(in.sili,file=paste0(outputDir,"/neg.insilico_",p.val,"_cut_",cutoffMax,".txt"),quote=FALSE,sep="\t")
-  write.csv(gwa.RUV$limmaWithMeta[order(gwa.RUV$limmaWithMeta$adj.P.Val),],file=paste0(outputDir,"/gwaRUV_pval_",p.val,"_readCutoff_",cutoffMax,".csv"),
+  write.table(in.sili,file=paste0(outputDir,"/neg.insilico_",setP,"_cut_",cutoffMax,".txt"),quote=FALSE,sep="\t")
+  write.csv(gwa.RUV$limmaWithMeta[order(gwa.RUV$limmaWithMeta$adj.P.Val),],file=paste0(outputDir,"/gwaRUV_pval_",setP,"_readCutoff_",cutoffMax,".csv"),
   row.names=FALSE)
   write.table(ruvDesign,
-              file=paste0(outputDir,"/ruvDesign_pval_",p.val,"_cut_",cutoffMax,".txt"),
+              file=paste0(outputDir,"/ruvDesign_pval_",setP,"_cut_",cutoffMax,".txt"),
               quote=FALSE,sep="\t")
   } #print to file
   #prepare gwa.RUV into heatmap, by gene name
@@ -363,7 +377,7 @@ print(plotRLE(g.bundles,outline=FALSE))
                    name="log(1+tpm)",
                    cluster_rows=dend,
                    cluster_columns=x.pv$hclust,
-                   column_title=paste0("Limma Gene Normalized P.Val ",p.val," cutoff ",cutoffMax),
+                   column_title=paste0("Limma Gene Normalized P.Val ",setP," cutoff ",cutoffMax),
                    row_names_gp=gpar(fontsize=6),
                    column_names_gp=gpar(fontsize=8))
      
@@ -383,7 +397,7 @@ print(plotRLE(g.bundles,outline=FALSE))
   ruvRWA<-repeatWiseAnalysis(kexp,
                       design=ruvDesign,
                        how="cpm",
-                       p.cutoff=p.val,
+                       p.cutoff=setP,
                        fold.cutoff=1,
                        read.cutoff=cutoffMax,
                        species=species,
@@ -391,7 +405,7 @@ print(plotRLE(g.bundles,outline=FALSE))
   
   if(saveReport==TRUE){
   write.csv(ruvRWA$top,
-              file=paste0(outputDir,"/NormalizedrepeatWiseAnalysis_pval_",p.val,"_cutoff_",cutoffMax,".csv"),
+              file=paste0(outputDir,"/NormalizedrepeatWiseAnalysis_pval_",setP,"_cutoff_",cutoffMax,".csv"),
               row.names=FALSE)
   }
    #create a heatmap of normalized repeats
@@ -416,7 +430,7 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
                   name="log(1+tpm)",
                   cluster_rows=rpt.dend,
                   cluster_columns=rpt.pv$hclust,
-                  column_title=paste0("RUV Repeats P.Val ",p.val," ",adjustBy," cut ",cutoffMax),
+                  column_title=paste0("RUV Repeats P.Val ",setP," ",adjustBy," cut ",cutoffMax),
                  row_names_gp=gpar(fontsize=6),
                  column_names_gp=gpar(fontsize=8))
   rh.rpt2<-Heatmap(rowRanges(kexp)[rownames(rpt.mt)]$tx_biotype,
@@ -428,7 +442,7 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
   } else {
   rh.rpt<-Heatmap(log(1+rpt.mt),
           name="log(1+tpm)",
-          column_title=paste0("RUV Repeats P.Val ",p.val," cut at ",cutoffMax," ",adjustBy),
+          column_title=paste0("RUV Repeats P.Val ",setP," cut at ",cutoffMax," ",adjustBy),
           row_names_gp=gpar(fontsize=6))
   rh.rpt2<-Heatmap(rowRanges(kexp)[rownames(rpt.mt)]$tx_biotype,
           name="tx_biotype",
@@ -468,18 +482,18 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
  
   gn.fit<-glmFit(d2,ruvDesign)
   gn.lrt<-glmLRT(gn.fit,coef=2) #assumes the coef is 2nd column, no multigroups supported yet
-  gn.Tags<-topTags(gn.lrt,p=p.val,n=nrow(kexp),adjust.method=adjustBy)[[1]]
+  gn.Tags<-topTags(gn.lrt,p=setP,n=nrow(kexp),adjust.method=adjustBy)[[1]]
   gn.feats<-mcols(rowRanges(kexp)[rowRanges(kexp)$gene_id %in% rownames(gn.Tags)])
   gn.key<-gn.feats[,c(4,5)]
   gn.key<-gn.key[!duplicated(gn.key$gene_id),]
 
   rpt.fit<-glmFit(d,ruvDesign)
   rpt.lrt<-glmLRT(rpt.fit,coef=2)
-  rpt.Tags<-topTags(rpt.lrt,p=p.val,n=nrow(kexp))[[1]]
+  rpt.Tags<-topTags(rpt.lrt,p=setP,n=nrow(kexp))[[1]]
   
   if(saveReport==TRUE){
-  write.table(gn.Tags,file=paste0(outputDir,"/Normalized.gwa.edgeR.pval_",p.val,"_cut_",cutoffMax,"_",adjustBy,".txt"),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
-   write.table(rpt.Tags,file=paste0(outputDir,"/Normalized.rwa.edgeR.pval_",p.val,"_cut_",cutoffMax,"_",adjustBy,".txt"),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
+  write.table(gn.Tags,file=paste0(outputDir,"/Normalized.gwa.edgeR.pval_",setP,"_cut_",cutoffMax,"_",adjustBy,".txt"),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
+   write.table(rpt.Tags,file=paste0(outputDir,"/Normalized.rwa.edgeR.pval_",setP,"_cut_",cutoffMax,"_",adjustBy,".txt"),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
   }
  
   #edgeR heatmap
@@ -508,7 +522,7 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
                    name="log(1+tpm)",
                    cluster_rows=eg.dend,
                    cluster_columns=eg.x.pv$hclust,
-                   column_title=paste0("EdgeR Gene Normalized P.Val ",p.val," cutoff ",cutoffMax," top ",numberSelected),
+                   column_title=paste0("EdgeR Gene Normalized P.Val ",setP," cutoff ",cutoffMax," top ",numberSelected),
                    row_names_gp=gpar(fontsize=6),
                    column_names_gp=gpar(fontsize=8))
 
@@ -529,7 +543,7 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
   eg.rpt.mt<-as.matrix(eg.df.rpt)
 
   eg.rpt<-Heatmap(log(1+eg.rpt.mt),name="log(1+tpm)",
-                column_title=paste0("EdgeR Top Repeats TPM  P.Val ",p.val," cut ",cutoffMax),
+                column_title=paste0("EdgeR Top Repeats TPM  P.Val ",setP," cut ",cutoffMax),
                 row_names_gp=gpar(fontsize=8),
                 column_names_gp=gpar(fontsize=8))
   eg.rpt2<-Heatmap(rowRanges(kexp)[rownames(eg.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm")) 
@@ -545,7 +559,7 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
 
   all.eg.rpt<-Heatmap(log(1+all.rpt.mt),name="log(1+tpm)",
                 cluster_rows=dend,
-                column_title=paste0("EdgeR All Repeats TPM  P.Val ",p.val," cut ",cutoffMax),
+                column_title=paste0("EdgeR All Repeats TPM  P.Val ",setP," cut ",cutoffMax),
                 row_names_gp=gpar(fontsize=8),
                 column_names_gp=gpar(fontsize=8))
   all.eg.rpt2<-Heatmap(rowRanges(kexp)[rownames(all.rpt.mt)]$tx_biotype,name="tx_biotype",width=unit(5,"mm"))

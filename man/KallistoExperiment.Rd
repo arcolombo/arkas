@@ -13,8 +13,7 @@ which underlies as(SE, "KallistoExperiment"), does exactly that.}
 \usage{
 KallistoExperiment(est_counts = NULL, eff_length = NULL,
   transcriptomes = NULL, covariates = DataFrame(),
-  features = GRangesList(), kallistoVersion = "", est_counts_mad = NULL,
-  ...)
+  features = GRangesList(), kallistoVersion = "", est_counts_mad = NULL)
 }
 \arguments{
 \item{est_counts}{matrix of estimated counts}

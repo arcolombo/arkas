@@ -11,7 +11,7 @@
 #' @param tx_biotype    Restrict to a specific mcols(kexp)$tx_biotype? (NULL)
 #' @param gene_biotype  Restrict to a specific mcols(kexp)$gene_biotype? (NULL)
 #' @param biotype_class  Restrict to a specific mcols(kexp)$biotype_class? (No)
-#' 
+#' @param ...           any more parameters to add
 #' @details This function sums transcripts per million (TPM) of each transcript
 #' within bundle of transcripts ("bundle" being a user-defined identifier, often
 #' but not always a 'gene', sometimes a biotype or a class of repeat elements).

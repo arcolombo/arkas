@@ -6,11 +6,13 @@
 \usage{
 crossModels(kexp, crossLevel = c("tx_id", "gene_id"), cutoffMax = 3,
   dataType = c("normalized", "unnormalized"), outputDir = ".",
-  design = NULL, p.val = 0.05, adjustBy = "BH",
+  design = NULL, setP = 0.05, adjustBy = "BH",
   species = c("Homo.sapiens", "Mus.musculus"), numberSelected = 200,
   saveReport = FALSE)
 }
 \arguments{
+\item{kexp}{a kalistoExperiemtn of something of this sort}
+
 \item{crossLevel}{character option of tx_id, or gene_id which will compare at the transcript or gene level collapse.}
 
 \item{cutoffMax}{integer, this will be the maximum read.cutoff that will compare each read.cutoff up to the max, i.e. from 1<=cutoffMax thresholding.}
@@ -21,7 +23,7 @@ crossModels(kexp, crossLevel = c("tx_id", "gene_id"), cutoffMax = 3,
 
 \item{design}{a matrix with a treatment level contrasts, does not yet support group-means factorization}
 
-\item{p.val}{numeric for linear fitting}
+\item{setP}{numeric for linear fitting}
 
 \item{adjustBy}{character either BH,none,BY,holm}
 

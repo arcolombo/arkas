@@ -1,7 +1,12 @@
 #' repeat analysis is used for analysis of repeat regions from an annotated kexp
 #' @param kexp  kallisto experiment object
 #' @param design design matrix for modeling linear fit
-#' @import edgeR
+#' @param ...    any additional params
+#' @importFrom edgeR DGEList
+#' @importFrom edgeR calcNormFactors
+#' @importFrom limma voom
+#' @importFrom limma eBayes
+#' @importFrom limma lmFit
 #' @return a limma list of linear model statistics
 #' @export 
 fitRepeats<-function(kexp,design,...){

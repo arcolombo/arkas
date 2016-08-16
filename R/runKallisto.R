@@ -16,6 +16,7 @@
 #' @param collapse    string to name multi-FASTA indices ("_mergedWith_")
 #' @param extension   string,  to pass the extension into pairFastqFiles()
 #' @param tarBall     boolean, gzip the output folder directory
+#' @param ...         any additional arguments supplied by user
 #' @export
 runKallisto <- function(sampleDir, 
                         indexName=NULL, 

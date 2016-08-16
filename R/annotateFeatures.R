@@ -5,10 +5,11 @@
 #' @param level         at what level has the data been summarized? (guess)
 #' @param what          what data structure to return? (KallistoExperiment)
 #' @param verbose       boolean, whether to print messages to screen default is silent
+#' @param ...           any more
 #' @return              a GRanges or a KallistoExperiment, depending on `what`
 #'
-#' @import TxDbLite
-#'
+#' @importFrom TxDbLite getSupportedAbbreviations
+#' @importFrom TxDbLite getOrgDetails
 #' @export
 annotateFeatures <- function(kexp, 
                              level=c(NA, "gene", "transcript"), 

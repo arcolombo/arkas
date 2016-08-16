@@ -1,0 +1,256 @@
+---
+title: "Arkas: Calculate TPMs in Much Less Time"
+author: "Timothy Triche Jr., Anthony Colombo, Harold Pimmentel"
+output:
+  html_vignette:
+  toc: true
+  number_sections: true
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Arkas: Repetitive Elements Quantification In Much Less Time}
+  \usepackage[utf8]{inputenc}
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+---
+
+
+
+
+
+
+```{r load_NS}
+suppressPackageStartupMessages(library(arkas))
+library(arkasData)
+suppressPackageStartupMessages(library(TxDbLite))
+samples<-c("n1","n2","n4","s1","s2","s4")
+pathBase<-system.file("extdata",package="arkasData")
+merged <- mergeKallisto(samples, outputPath=pathBase)
+assays(merged)
+kallistoVersion(merged)
+transcriptomes(merged)
+tail(tpm(merged))
+
+
+```
+
+#Calculating TPM
+Arkas can calculate TPMs using the effective length, or an accessor tpm().
+Here we only show a TPM calculation for one sample named 'n1', but it is a uniform process and can easily be applied to many samples.
+For this demo we do see two outliers which an absolute difference of greater than 0.3 which is by defintion a true calculation error.  By looking at the raw values derived from calcTpm(), tpm() and the raw kallisto derived .tsv number, each of the values are very close and it appears to be a rounding issue.  The calculation was numerically precise for 213780/213782  which has high accuracy overall.
+
+```{r error_check,fig.height=9,fig.width=7}
+ n1Tsv<-read.csv(paste0(pathBase,"/n1/abundance.tsv"),header=TRUE,sep="\t")
+ head(n1Tsv)
+ xx2<-n1Tsv$est_counts
+ leng<-n1Tsv$eff_length
+ xx2<-as.matrix(xx2)
+ leng<-as.matrix(leng)
+ colnames(xx2)<-"n1"
+ colnames(leng)<-"n1"
+ test1<-calcTpm(xx2,leng)
+ err<-abs(test1-n1Tsv$tpm)
+ err2<-abs(tpm(merged)[,1]-n1Tsv$tpm)
+
+ plot(err)
+ title("calcTpm N1 absolute Errors")
+ plot(err2)
+ title("tpm() N1 absolute Errors")
+```
+
+##Comparing Outliers 
+Here we look at the calculated TPM errors greater than 0.3
+
+```{r comparison}
+ rownames(err)<-n1Tsv$target_id
+ highErrs<-as.matrix(err[which(err>0.3),])
+ rownames(test1)<-n1Tsv$target_id
+ n1Tsv[n1Tsv$target_id%in%rownames(highErrs),] #kallisto dervied
+
+ test1[rownames(test1)%in%rownames(highErrs),] #arkas::calcTpm()
+ tpp<-tpm(merged)
+ tpp[rownames(tpp)%in%rownames(highErrs),1] #arkas::tpm()
+
+```
+
+##Calculating N2 
+
+
+```{r n2_error_check,fig.height=9,fig.width=7}
+ n2Tsv<-read.csv(paste0(pathBase,"/n2/abundance.tsv"),header=TRUE,sep="\t")
+ head(n2Tsv)
+ xx2<-n2Tsv$est_counts
+ leng<-n2Tsv$eff_length
+ xx2<-as.matrix(xx2)
+ leng<-as.matrix(leng)
+ colnames(xx2)<-"n2"
+ colnames(leng)<-"n2"
+ test1<-calcTpm(xx2,leng)
+ err<-abs(test1-n2Tsv$tpm)
+ err2<-abs(tpm(merged)[,2]-n2Tsv$tpm)
+
+ plot(err)
+ title("calcTpm N2 absolute Errors")
+ plot(err2)
+ title("tpm() N2 absolute Errors")
+```
+
+##Comparing Outliers For N2
+Here we look at the calculated TPM errors greater than 0.3
+
+```{r n2_comparison}
+ rownames(err)<-n2Tsv$target_id
+ highErrs<-as.matrix(err[which(err>0.3),])
+ rownames(test1)<-n2Tsv$target_id
+ n2Tsv[n2Tsv$target_id%in%rownames(highErrs),] #kallisto dervied
+
+ test1[rownames(test1)%in%rownames(highErrs),] #arkas::calcTpm()
+ tpp<-tpm(merged)
+ tpp[rownames(tpp)%in%rownames(highErrs),2] #arkas::tpm()
+
+```
+
+##For N4
+
+```{r n4_error_check,fig.height=9,fig.width=7}
+ n4Tsv<-read.csv(paste0(pathBase,"/n4/abundance.tsv"),header=TRUE,sep="\t")
+ head(n4Tsv)
+ xx2<-n4Tsv$est_counts
+ leng<-n4Tsv$eff_length
+ xx2<-as.matrix(xx2)
+ leng<-as.matrix(leng)
+ colnames(xx2)<-"n4"
+ colnames(leng)<-"n4"
+ test1<-calcTpm(xx2,leng)
+ err<-abs(test1-n4Tsv$tpm)
+ err2<-abs(tpm(merged)[,3]-n4Tsv$tpm)
+
+ plot(err)
+ title("calcTpm N4 absolute Errors")
+ plot(err2)
+ title("tpm() N4 absolute Errors")
+```
+
+##Comparing Outliers For N4
+Here we look at the calculated TPM errors greater than 0.3
+
+```{r n4_comparison}
+ rownames(err)<-n4Tsv$target_id
+ highErrs<-as.matrix(err[which(err>0.3),])
+ rownames(test1)<-n4Tsv$target_id
+ n4Tsv[n4Tsv$target_id%in%rownames(highErrs),] #kallisto dervied
+
+ test1[rownames(test1)%in%rownames(highErrs),] #arkas::calcTpm()
+ tpp<-tpm(merged)
+ tpp[rownames(tpp)%in%rownames(highErrs),3] #arkas::tpm()
+
+```
+
+##S1 Error Checking
+
+
+```{r s1_error_check,fig.height=9,fig.width=7}
+ s1Tsv<-read.csv(paste0(pathBase,"/s1/abundance.tsv"),header=TRUE,sep="\t")
+ head(s1Tsv)
+ xx2<-s1Tsv$est_counts
+ leng<-s1Tsv$eff_length
+ xx2<-as.matrix(xx2)
+ leng<-as.matrix(leng)
+ colnames(xx2)<-"s1"
+ colnames(leng)<-"s1"
+ test1<-calcTpm(xx2,leng)
+ err<-abs(test1-s1Tsv$tpm)
+ err2<-abs(tpm(merged)[,4]-s1Tsv$tpm)
+
+ plot(err)
+ title("calcTpm S1 absolute Errors")
+ plot(err2)
+ title("tpm() S1 absolute Errors")
+```
+ 
+##Comparing Outliers 
+Here we look at the calculated TPM errors greater than 0.3
+
+```{r s1_comparison}
+ rownames(err)<-s1Tsv$target_id
+ highErrs<-as.matrix(err[which(err>0.3),])
+ rownames(test1)<-s1Tsv$target_id
+ s1Tsv[s1Tsv$target_id%in%rownames(highErrs),] #kallisto dervied
+
+ test1[rownames(test1)%in%rownames(highErrs),] #arkas::calcTpm()
+ tpp<-tpm(merged)
+ tpp[rownames(tpp)%in%rownames(highErrs),4] #arkas::tpm()
+ 
+```
+
+##S2 Error Checking
+
+```{r s2_error_check,fig.height=9,fig.width=7}
+ s2Tsv<-read.csv(paste0(pathBase,"/s2/abundance.tsv"),header=TRUE,sep="\t")
+ head(s2Tsv)
+ xx2<-s2Tsv$est_counts
+ leng<-s2Tsv$eff_length
+ xx2<-as.matrix(xx2)
+ leng<-as.matrix(leng)
+ colnames(xx2)<-"s2"
+ colnames(leng)<-"s2"
+ test1<-calcTpm(xx2,leng)
+ err<-abs(test1-s2Tsv$tpm)
+ err2<-abs(tpm(merged)[,5]-n2Tsv$tpm)
+ 
+ plot(err)
+ title("calcTpm S2 absolute Errors")
+ plot(err2)
+ title("tpm() S2 absolute Errors")
+```
+
+##Comparing Outliers For S2
+Here we look at the calculated TPM errors greater than 0.3
+
+```{r s2_comparison}
+ rownames(err)<-s2Tsv$target_id
+ highErrs<-as.matrix(err[which(err>0.3),])
+ rownames(test1)<-s2Tsv$target_id
+ s2Tsv[s2Tsv$target_id%in%rownames(highErrs),] #kallisto dervied
+ 
+ test1[rownames(test1)%in%rownames(highErrs),] #arkas::calcTpm()
+ tpp<-tpm(merged)
+ tpp[rownames(tpp)%in%rownames(highErrs),5] #arkas::tpm()
+
+```
+
+
+##S4 Error Checking
+
+```{r s4_error_check,fig.height=9,fig.width=7}
+ s4Tsv<-read.csv(paste0(pathBase,"/s4/abundance.tsv"),header=TRUE,sep="\t")
+ head(s4Tsv)
+ xx2<-s4Tsv$est_counts
+ leng<-s4Tsv$eff_length
+ xx2<-as.matrix(xx2)
+ leng<-as.matrix(leng)
+ colnames(xx2)<-"s4"
+ colnames(leng)<-"s4"
+ test1<-calcTpm(xx2,leng)
+ err<-abs(test1-s4Tsv$tpm)
+ err2<-abs(tpm(merged)[,6]-s4Tsv$tpm)
+ 
+ plot(err)
+ title("calcTpm S4 absolute Errors")
+ plot(err2)
+ title("tpm() S4 absolute Errors")
+```
+
+##Comparing Outliers For S4
+Here we look at the calculated TPM errors greater than 0.3
+
+```{r s4_comparison}
+ rownames(err)<-s4Tsv$target_id
+ highErrs<-as.matrix(err[which(err>0.3),])
+ rownames(test1)<-s4Tsv$target_id
+ s4Tsv[s4Tsv$target_id%in%rownames(highErrs),] #kallisto dervied
+ 
+ test1[rownames(test1)%in%rownames(highErrs),] #arkas::calcTpm()
+ tpp<-tpm(merged)
+ tpp[rownames(tpp)%in%rownames(highErrs),6] #arkas::tpm()
+
+```
+

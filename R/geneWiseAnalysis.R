@@ -2,15 +2,21 @@
 #'
 #' @param kexp        a KallistoExperiment or SummarizedExperiment-like object
 #' @param design      a design matrix with 2nd coefficient as one to test
+#' @param how         a character selection of tpm or cpm
 #' @param p.cutoff    where to set the p-value cutoff for plots, etc. (0.05)
 #' @param fold.cutoff where to set the log2-FC cutoff for plots, etc. (1==2x)
 #' @param read.cutoff minimum read coverage (estimated) for a gene bundle 
 #' @param species     which species? (Homo.sapiens, Mus.musculus are two currently supported
 #' @param fitOnly     exit after fitting the EBayes linear model?  (FALSE)
 #' @param adjustBy    character none, BH,BY, or holm for FDR procedures 
-#' @import edgeR 
-#' @import limma
-#' @import biomaRt
+#' @importFrom edgeR DGEList
+#' @importFrom edgeR calcNormFactors
+#' @importFrom limma voom
+#' @importFrom limma eBayes
+#' @importFrom limma lmFit
+#' @importFrom limma topTable
+#' @importFrom biomaRt getBM
+#' @importFrom biomaRt useMart
 #'
 #' @importFrom matrixStats rowSds 
 #' 
@@ -102,9 +108,8 @@ geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
 ###the help####################
 
 .convertEntrezID<-function(resValues=NULL,commonNomen=NULL) {  # {{{
- #import biomaRt
- 
-   #if more species are added then getBM will have to be turned into a funciton
+
+    #if more species are added then getBM will have to be turned into a funciton
 
 #resValues must be ensG ids or ensT ids, characters only
 

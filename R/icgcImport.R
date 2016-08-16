@@ -7,7 +7,6 @@
 #' @param transcriptome   what transcriptome these were derived from 
 #' @param level           At what level shall features be annotated? (gene)
 #' @param cols            Which columns matter in the data? (see function code)
-#' @param ...             Other stuff (such as covariates=covs and the like)
 #' 
 #' @return                KallistoExperiment with derived effective lengths
 #'
@@ -16,8 +15,7 @@
 #' @export
 icgcImport <- function(counts=NULL, filename=NULL, filepath=".", transcriptome,
                        level=c("gene","transcript"),
-                       cols=c("submitted_sample_id","gene_id","raw_read_count"),
-                       ...) { 
+                       cols=c("submitted_sample_id","gene_id","raw_read_count")) { 
 
   fullpath <- paste(path.expand(filepath), filename, sep="/")
 

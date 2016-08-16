@@ -2,13 +2,13 @@
 #' 
 #' @param x     the matrix or kexp
 #' @param what  "transcript" or "gene" level reannotation
-#' 
+#' @importFrom biomaRt getBM useMart
 #' @return      x, with updated $gene_name or rownames
-#'
+#' @importFrom TxDbLite getSupportedAbbreviations 
 #' @export
 remapSymbols <- function(x, what=c("transcript","gene")) { 
 
-  library("biomaRt")
+  #library("biomaRt")
   what <- match.arg(what)
   if (what == "gene" && !any(grep("ENS.*G", rownames(x)))) {
     message("You specified gene-to-name mapping, but rownames(x) aren't ENSGs!")
@@ -16,7 +16,7 @@ remapSymbols <- function(x, what=c("transcript","gene")) {
 
   species <- "hsapiens"
   if (is(x, "RangedSummarizedExperiment")) {
-    for (sp in tolower(TxDbLite::getSupportedAbbreviations())) {
+    for (sp in tolower(getSupportedAbbreviations())) {
       if (grepl(sp, ignore.case=TRUE, transcriptomes(x))) species <- sp
     }
   } else { 

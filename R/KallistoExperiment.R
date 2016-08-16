@@ -30,8 +30,7 @@ KallistoExperiment <- function(est_counts=NULL,
                                covariates=DataFrame(),
                                features=GRangesList(),
                                kallistoVersion="",
-                               est_counts_mad=NULL,
-                               ...) {
+                               est_counts_mad=NULL) {
 
   ## we can compute tpm without eff_len, IFF the transcripts are annotated 
   ## however, that job is best left to a separate helper function for hygiene

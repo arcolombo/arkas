@@ -54,7 +54,7 @@ pairFastqFiles <- function(path=".",
 #' @describeIn pairFastqFiles
 #
 #' helper function to try and weed through various possible extensions 
-#'
+#' @param fragments fragments to bind toward
 #' @return a data.frame of paired FASTQ filenames 
 #'
 .findPairings <- function(fragments, ...) { # {{{ 

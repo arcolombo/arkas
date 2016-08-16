@@ -12,7 +12,7 @@ rpkmToTpm(rpkm, ...)
 \arguments{
 \item{rpkm}{a matrix of RPKM or FPKM estimates}
 
-\item{rpkm}{a vector of possibly-zero RPKM estimates}
+\item{...}{any additional user input arguments}
 }
 \value{
 a matrix of TPM estimates

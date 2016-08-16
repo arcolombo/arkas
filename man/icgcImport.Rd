@@ -7,7 +7,7 @@ right now, this means only accepting gene-level summaries; may change later.}
 \usage{
 icgcImport(counts = NULL, filename = NULL, filepath = ".", transcriptome,
   level = c("gene", "transcript"), cols = c("submitted_sample_id",
-  "gene_id", "raw_read_count"), ...)
+  "gene_id", "raw_read_count"))
 }
 \arguments{
 \item{counts}{A matrix of counts (else provide filename)}
@@ -21,8 +21,6 @@ icgcImport(counts = NULL, filename = NULL, filepath = ".", transcriptome,
 \item{level}{At what level shall features be annotated? (gene)}
 
 \item{cols}{Which columns matter in the data? (see function code)}
-
-\item{...}{Other stuff (such as covariates=covs and the like)}
 }
 \value{
 KallistoExperiment with derived effective lengths
