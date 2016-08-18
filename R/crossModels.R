@@ -222,14 +222,14 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
 
   gn.fit<-glmFit(d2,design)
   gn.lrt<-glmLRT(gn.fit,coef=2) #assumes the coef is 2nd column, no multigroups supported yet
-  gn.Tags<-topTags(gn.lrt,p=setP,n=nrow(kexp))[[1]]
+  gn.Tags<-topTags(gn.lrt,p.value=setP,n=nrow(kexp))[[1]]
   gn.feats<-mcols(rowRanges(kexp)[rowRanges(kexp)$gene_id %in% rownames(gn.Tags)])
   gn.key<-gn.feats[,c(4,5)]
   gn.key<-gn.key[!duplicated(gn.key$gene_id),]
 
   rpt.fit<-glmFit(d,design)
   rpt.lrt<-glmLRT(rpt.fit,coef=2)
-  rpt.Tags<-topTags(rpt.lrt,p=setP,n=nrow(kexp))[[1]]
+  rpt.Tags<-topTags(rpt.lrt,p.value=setP,n=nrow(kexp))[[1]]
   if(saveReport==TRUE){
   write.table(gn.Tags,file=paste0(outputDir,"/TMM.gwa.edgeR.pval_",setP,"_cut_",cutoffMax,"_",adjustBy,".txt"),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
    write.table(rpt.Tags,file=paste0(outputDir,"/TMM.rwa.edgeR.pval_",setP,"_cut_",cutoffMax,"_",adjustBy,".txt"),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
@@ -476,14 +476,14 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
  
   gn.fit<-glmFit(d2,ruvDesign)
   gn.lrt<-glmLRT(gn.fit,coef=2) #assumes the coef is 2nd column, no multigroups supported yet
-  gn.Tags<-topTags(gn.lrt,p=setP,n=nrow(kexp),adjust.method=adjustBy)[[1]]
+  gn.Tags<-topTags(gn.lrt,p.value=setP,n=nrow(kexp),adjust.method=adjustBy)[[1]]
   gn.feats<-mcols(rowRanges(kexp)[rowRanges(kexp)$gene_id %in% rownames(gn.Tags)])
   gn.key<-gn.feats[,c(4,5)]
   gn.key<-gn.key[!duplicated(gn.key$gene_id),]
 
   rpt.fit<-glmFit(d,ruvDesign)
   rpt.lrt<-glmLRT(rpt.fit,coef=2)
-  rpt.Tags<-topTags(rpt.lrt,p=setP,n=nrow(kexp))[[1]]
+  rpt.Tags<-topTags(rpt.lrt,p.value=setP,n=nrow(kexp))[[1]]
   
   if(saveReport==TRUE){
   write.table(gn.Tags,file=paste0(outputDir,"/Normalized.gwa.edgeR.pval_",setP,"_cut_",cutoffMax,"_",adjustBy,".txt"),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")

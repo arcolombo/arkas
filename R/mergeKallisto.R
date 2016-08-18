@@ -32,6 +32,7 @@ mergeKallisto <- function(outputDirs=NULL,
                           summarize=FALSE,
                           ...) { 
 
+  
   if (is.null(outputDirs) & is.null(covariates)) {
     stop("At least one of outputDirs or covariates must be non-null to proceed")
   } 

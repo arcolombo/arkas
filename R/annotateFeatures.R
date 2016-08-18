@@ -1,4 +1,4 @@
-#' annotate rowRanges (genes or transcripts) against (say) EnsemblDb
+#' annotate rowRanges genes or transcripts against (say) EnsemblDb
 #' this is becoming the default dispatcher for almost all annotation
 #' 
 #' @param kexp          a kexp
@@ -10,6 +10,7 @@
 #'
 #' @importFrom TxDbLite getSupportedAbbreviations
 #' @importFrom TxDbLite getOrgDetails
+#' @importFrom GenomicFeatures genes transcripts
 #' @export
 annotateFeatures <- function(kexp, 
                              level=c(NA, "gene", "transcript"), 
