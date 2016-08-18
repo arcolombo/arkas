@@ -7,6 +7,7 @@ output:
       number_sections: true
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteDepends{arkasData}
   %\VignetteIndexEntry{Arkas: Raw Reads To Pathway Analsyes In Much Less Time}
   \usepackage[utf8]{inputenc}
 date: "`r format(Sys.time(), '%d %B, %Y')`"
@@ -78,9 +79,9 @@ In order to run gene-wise analysis, Arkas requires that the merged KallistoExper
 ```{r}
 library(SummarizedExperiment)
 library(GenomicRanges)
+library(arkasData)
 suppressPackageStartupMessages(library(TxDbLite))
 suppressWarnings(suppressPackageStartupMessages(library(arkas)))
-suppressPackageStartupMessages(library(arkasData))
 jsonFile <- system.file("extdata", "NS.JSON", package="arkas")
 appSession <- fetchAppSession(jsonFile)
 names(appSession$samples) <- appSession$samples

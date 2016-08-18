@@ -1,22 +1,35 @@
-#' @export
+#' @title estimated counts
+#' @description returns the estimated counts of a quantified experiment
 #' @rdname KallistoExperiment-class
+#' 
 setMethod("counts", "KallistoExperiment",
           function (object) return(assays(object)$est_counts))
-
-#' @export
+#' @title Phenotypic data
+#' @description returns the phenotypic data associated with a KallistoExperiment object
+#' 
 #' @rdname KallistoExperiment-class
 setMethod("pData", "KallistoExperiment",
           function (object) return(colData(object)))
 
-#' @export
+#' @title Phenotypic data replacement
+#' @description a replacement function specific to phenotypic data
 #' @param value this is the replacement value for object
-#' @aliases pData
+#' 
 #' @rdname KallistoExperiment-class
+#' 
 setReplaceMethod("pData", c("KallistoExperiment", "DataFrame"),
                  function (object, value) {
                    colData(object) <- value
                    return(object)
                  })
+
+setGeneric("pData<-",function(object,value) standardGeneric("pData<-"))
+setMethod("pData<-",c("KallistoExperiment", "DataFrame"),
+            function(object,value){
+             colData(object)<-value
+             return(object)
+             })
+
 #' finds the effective length of a transcript entry
 #' @name KallistoExperiment-class
 #' @rdname KallistoExperiment-class

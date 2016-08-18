@@ -7,6 +7,8 @@ output:
   number_sections: true
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteDepends{arkasData}
+  %\VignetteDepends{ComplexHeatmap}
   %\VignetteIndexEntry{Arkas: Repetitive Elements Quantification In Much Less Time}
   \usepackage[utf8]{inputenc}
 date: "`r format(Sys.time(), '%d %B, %Y')`"
@@ -18,12 +20,7 @@ Arkas integrates kallisto into the R environment, so kallisto must be installed 
 ```
 library(arkas)
 library(TxDbLite)
-dataIsInstalled <- suppressPackageStartupMessages(require(arkasData))
-if(!dataIsInstalled){ 
-  message("You need to install the arkasData package.")
-  message("Try biocLite(\"ramsinghlab/arkasData\") then come back.")
-  stop("Go ahead, we'll wait!")
-} 
+library(arkasData)
 
 pathBase <- system.file("extdata", "", package="arkasData")
 fastaPath <- paste0(pathBase, "/fasta")
