@@ -17,10 +17,8 @@
 #' @importFrom edgeR estimateGLMTagwiseDisp
 #' @importFrom edgeR  estimateGLMRobustDisp glmFit glmLRT
 #' @importFrom edgeR topTags
-#' @importFrom limma topTable
-#' @importFrom limma voom
-#' @importFrom limma eBayes
-#' @importFrom limma lmFit
+#' @importFrom limma topTable voom eBayes lmFit
+#' @import BiocGenerics
 #' @import ComplexHeatmap 
 #' @importFrom grid unit gpar
 #' @import circlize

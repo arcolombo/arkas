@@ -14,18 +14,19 @@ Imports:
     nat.utils,
     RUVSeq,
     circlize,
+    BiocGenerics,
     pvclust,
     dendsort,
     EDASeq,
     biomaRt,
-    BiocGenerics,
     jsonlite,
     TxDbLite,
     edgeR,
     limma,
     ComplexHeatmap,
     IRanges,
-    GenomeInfoDb
+    GenomeInfoDb,
+    methods
 Suggests:
     knitr,
     roxygen2,

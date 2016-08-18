@@ -20,7 +20,6 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 
 ```{r load_NS}
 suppressPackageStartupMessages(library(arkas))
-library(arkasData)
 suppressPackageStartupMessages(library(TxDbLite))
 samples<-c("n1","n2","n4","s1","s2","s4")
 pathBase<-system.file("extdata",package="arkasData")

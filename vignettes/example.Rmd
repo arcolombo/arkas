@@ -20,7 +20,7 @@ Arkas integrates kallisto into the R environment, so kallisto must be installed 
 ```
 library(arkas)
 library(TxDbLite)
-library(arkasData)
+
 
 pathBase <- system.file("extdata", "", package="arkasData")
 fastaPath <- paste0(pathBase, "/fasta")
@@ -47,7 +47,7 @@ results <- mclapply(samples,
 Heatmaps can be used to plot repeat elements. Here we plot the top 25 repeats with the highest standard deviation
 ```{r repeat_heat,fig.height=9,fig.width=7}
 suppressPackageStartupMessages(library(arkas))
-library(arkasData)
+
 suppressPackageStartupMessages(library(TxDbLite))
 samples<-c("n1","n2","n4","s1","s2","s4")
 pathBase<-system.file("extdata",package="arkasData")
