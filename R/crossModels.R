@@ -11,13 +11,8 @@
 #' @param numberSelected integer, this is the number of the highest ranked adj.P.Val genes to print into a heatmap, the max amount is the number of genes returned from an analysis.
 #' @param saveReport boolean, if true then a txt and csv files are printed out to file, if false, then no report is printed out
 #' @importFrom edgeR DGEList
-#' @importFrom edgeR calcNormFactors
-#' @importFrom edgeR estimateGLMCommonDisp
-#' @importFrom  edgeR estimateGLMTrendedDisp
-#' @importFrom edgeR estimateGLMTagwiseDisp
-#' @importFrom edgeR  estimateGLMRobustDisp glmFit glmLRT
-#' @importFrom edgeR topTags
-#' @importFrom limma topTable voom eBayes lmFit
+#' @importFrom edgeR calcNormFactors estimateGLMCommonDisp estimateGLMTrendedDisp estimateGLMTagwiseDisp estimateGLMRobustDisp glmFit glmLRT topTags plotBCV
+#' @importFrom limma topTable voom eBayes lmFit volcanoplot
 #' @import BiocGenerics
 #' @import ComplexHeatmap 
 #' @importFrom grid unit gpar
@@ -30,6 +25,7 @@
 #' @importFrom grDevices dev.off pdf
 #' @importFrom graphics title
 #' @importFrom utils data read.delim write.csv write.table
+#' @importFrom stats hclust dist
 #' @export
 #' @return returns several images plotted.
 crossModels<-function(kexp,
@@ -51,13 +47,13 @@ crossModels<-function(kexp,
     line <- readline()
 }
 
-bySd <- function(x, k=500) { 
-   sds<-vector() 
-  for(i in 1:nrow(x)){
-   sds[i]<-sd(x[i,],na.rm=TRUE)
-   }
-  x[rev(order(sds))[seq_len(k)],]
-}
+#bySd <- function(x, k=500) { 
+#   sds<-vector() 
+#  for(i in 1:nrow(x)){
+#   sds[i]<-sd(x[i,],na.rm=TRUE)
+#   }
+#  x[rev(order(sds))[seq_len(k)],]
+#}
 
 
 
