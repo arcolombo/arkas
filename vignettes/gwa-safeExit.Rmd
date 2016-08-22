@@ -7,6 +7,7 @@ output:
       number_sections: true
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteDepends{arkasData}
   %\VignetteIndexEntry{Arkas: Rapid Gene Level Analysis}
   \usepackage[utf8]{inputenc}
 date: "`r format(Sys.time(), '%d %B, %Y')`"
@@ -21,7 +22,7 @@ this shows a custom adjust
 ```{r}
 library(arkas)
 library(TxDbLite)
-suppressPackageStartupMessages(library(arkasData))
+
 outputPath <- system.file("extdata", "", package="arkasData")
 samples <- list.files(outputPath, pattern="^[ns][124]$")
 covs <- data.frame(outputDir=samples,
@@ -48,9 +49,7 @@ the MDS data set had 0 DE returned from rwa.
 The mds data will return 0 DE for repeat level analyses, and is a great example of flexible FDR searching.
 Here users can input any adjust method, and it will run until it finds the selected fdr procedure or the next conservative one. 
 ```{r}
-library(arkas)
-library(TxDbLite)
-suppressPackageStartupMessages(library(arkasData))
+
 outputPath <- system.file("extdata", "annotatedKexp", package="arkasData")
 
 load(paste0(outputPath,"/mds.RData"))

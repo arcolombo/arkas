@@ -19,7 +19,8 @@
 #' @param parallel        boolean: try to run the merge in parallel? (TRUE)
 #' @param summarize       boolean: summarize bootstraps if found? (FALSE) 
 #' @param ...             further arguments for KallistoExperiment constructor
-#' 
+#' @importFrom parallel mclapply
+#' @importFrom S4Vectors DataFrame 
 #' @export
 mergeKallisto <- function(outputDirs=NULL,
                           outputPath=".",
@@ -31,6 +32,7 @@ mergeKallisto <- function(outputDirs=NULL,
                           summarize=FALSE,
                           ...) { 
 
+  
   if (is.null(outputDirs) & is.null(covariates)) {
     stop("At least one of outputDirs or covariates must be non-null to proceed")
   } 

@@ -7,7 +7,7 @@
 #' @param splitChar   the character that is used to separate bits of information
 #' @param ...         any additional user input parameters
 #' @return  a data.frame with the sample stubs, read directions & filenames 
-#'
+#' @import BiocGenerics
 #' @export
 parseFastqNames <- function(allFiles, 
                              extension="\\.fastq\\.gz", 

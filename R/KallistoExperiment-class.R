@@ -9,8 +9,8 @@
 #'    \item{\code{transcriptomes}:}{ character class \code{"character"}, containing data from transcriptomes}
 #'    \item{\code{kallistoVersion}:}{Object of class \code{"character"}, containing data that needs to go in kallistoVersion.}
 #'  }  
-#' 
-#'  
+#' @import SummarizedExperiment 
+#' @import methods  
 #' @rdname KallistoExperiment-class  
 #' @export 
 setClass("KallistoExperiment",

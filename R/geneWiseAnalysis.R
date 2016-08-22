@@ -17,7 +17,7 @@
 #' @importFrom limma topTable
 #' @importFrom biomaRt getBM
 #' @importFrom biomaRt useMart
-#'
+#' @importFrom S4Vectors metadata
 #' @importFrom matrixStats rowSds 
 #' 
 #' @details           If no design matrix is found, the function will look in 

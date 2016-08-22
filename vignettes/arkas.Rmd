@@ -7,6 +7,7 @@ output:
   number_sections: true
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteDepends{arkasData}
   %\VignetteIndexEntry{Arkas: Repetitive Elements Quantification In Much Less Time}
   \usepackage[utf8]{inputenc}   
 date: "`r format(Sys.time(), '%d %B, %Y')`"
@@ -42,7 +43,6 @@ Kallisto source must be built locally by indexing the reference files.  There ca
 
 ```
 suppressWarnings(suppressPackageStartupMessages(library(arkas)))    
-suppressPackageStartupMessages(library(arkasData))       
 suppressPackageStartupMessages(library(TxDbLite))      
 pathBase<-system.file("extdata",package="arkasData")       
 FastaPath <- paste0(pathBase, "/fasta")
@@ -72,7 +72,6 @@ There are duplicated sequence names in your FASTA files:
 
 ```
 suppressWarnings(suppressPackageStartupMessages(library(arkas)))
-suppressPackageStartupMessages(library(arkasData))
 suppressPackageStartupMessages(library(TxDbLite))
 pathBase<-system.file("extdata",package="arkasData")
 FastaPath <- paste0(pathBase, "/fasta")
@@ -112,7 +111,7 @@ Arkas runs kallisto pseudo-alignment quantification into a KallistoExperiment ob
 
 ```{r merged_process}
 suppressPackageStartupMessages(library(arkas))
-library(arkasData)
+
 suppressPackageStartupMessages(library(TxDbLite))
 samples<-c("n1","n2","n4","s1","s2","s4")
 pathBase<-system.file("extdata",package="arkasData")

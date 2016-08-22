@@ -7,6 +7,8 @@ output:
   number_sections: true
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteDepends{arkasData}
+  %\VignetteDepends{ComplexHeatmap}
   %\VignetteIndexEntry{Arkas: Repetitive Elements Quantification In Much Less Time}
   \usepackage[utf8]{inputenc}
 date: "`r format(Sys.time(), '%d %B, %Y')`"
@@ -18,12 +20,7 @@ Arkas integrates kallisto into the R environment, so kallisto must be installed 
 ```
 library(arkas)
 library(TxDbLite)
-dataIsInstalled <- suppressPackageStartupMessages(require(arkasData))
-if(!dataIsInstalled){ 
-  message("You need to install the arkasData package.")
-  message("Try biocLite(\"ramsinghlab/arkasData\") then come back.")
-  stop("Go ahead, we'll wait!")
-} 
+
 
 pathBase <- system.file("extdata", "", package="arkasData")
 fastaPath <- paste0(pathBase, "/fasta")
@@ -50,7 +47,7 @@ results <- mclapply(samples,
 Heatmaps can be used to plot repeat elements. Here we plot the top 25 repeats with the highest standard deviation
 ```{r repeat_heat,fig.height=9,fig.width=7}
 suppressPackageStartupMessages(library(arkas))
-library(arkasData)
+
 suppressPackageStartupMessages(library(TxDbLite))
 samples<-c("n1","n2","n4","s1","s2","s4")
 pathBase<-system.file("extdata",package="arkasData")

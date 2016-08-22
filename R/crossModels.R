@@ -11,16 +11,9 @@
 #' @param numberSelected integer, this is the number of the highest ranked adj.P.Val genes to print into a heatmap, the max amount is the number of genes returned from an analysis.
 #' @param saveReport boolean, if true then a txt and csv files are printed out to file, if false, then no report is printed out
 #' @importFrom edgeR DGEList
-#' @importFrom edgeR calcNormFactors
-#' @importFrom edgeR estimateGLMCommonDisp
-#' @importFrom  edgeR estimateGLMTrendedDisp
-#' @importFrom edgeR estimateGLMTagwiseDisp
-#' @importFrom edgeR  estimateGLMRobustDisp glmFit glmLRT
-#' @importFrom edgeR topTags
-#' @importFrom limma topTable
-#' @importFrom limma voom
-#' @importFrom limma eBayes
-#' @importFrom limma lmFit
+#' @importFrom edgeR calcNormFactors estimateGLMCommonDisp estimateGLMTrendedDisp estimateGLMTagwiseDisp estimateGLMRobustDisp glmFit glmLRT topTags plotBCV
+#' @importFrom limma topTable voom eBayes lmFit volcanoplot
+#' @import BiocGenerics
 #' @import ComplexHeatmap 
 #' @importFrom grid unit gpar
 #' @import circlize
@@ -32,6 +25,7 @@
 #' @importFrom grDevices dev.off pdf
 #' @importFrom graphics title
 #' @importFrom utils data read.delim write.csv write.table
+#' @importFrom stats hclust dist
 #' @export
 #' @return returns several images plotted.
 crossModels<-function(kexp,
@@ -53,13 +47,13 @@ crossModels<-function(kexp,
     line <- readline()
 }
 
-bySd <- function(x, k=500) { 
-   sds<-vector() 
-  for(i in 1:nrow(x)){
-   sds[i]<-sd(x[i,],na.rm=TRUE)
-   }
-  x[rev(order(sds))[seq_len(k)],]
-}
+#bySd <- function(x, k=500) { 
+#   sds<-vector() 
+#  for(i in 1:nrow(x)){
+#   sds[i]<-sd(x[i,],na.rm=TRUE)
+#   }
+#  x[rev(order(sds))[seq_len(k)],]
+#}
 
 
 
@@ -228,14 +222,14 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
 
   gn.fit<-glmFit(d2,design)
   gn.lrt<-glmLRT(gn.fit,coef=2) #assumes the coef is 2nd column, no multigroups supported yet
-  gn.Tags<-topTags(gn.lrt,p=setP,n=nrow(kexp))[[1]]
+  gn.Tags<-topTags(gn.lrt,p.value=setP,n=nrow(kexp))[[1]]
   gn.feats<-mcols(rowRanges(kexp)[rowRanges(kexp)$gene_id %in% rownames(gn.Tags)])
   gn.key<-gn.feats[,c(4,5)]
   gn.key<-gn.key[!duplicated(gn.key$gene_id),]
 
   rpt.fit<-glmFit(d,design)
   rpt.lrt<-glmLRT(rpt.fit,coef=2)
-  rpt.Tags<-topTags(rpt.lrt,p=setP,n=nrow(kexp))[[1]]
+  rpt.Tags<-topTags(rpt.lrt,p.value=setP,n=nrow(kexp))[[1]]
   if(saveReport==TRUE){
   write.table(gn.Tags,file=paste0(outputDir,"/TMM.gwa.edgeR.pval_",setP,"_cut_",cutoffMax,"_",adjustBy,".txt"),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
    write.table(rpt.Tags,file=paste0(outputDir,"/TMM.rwa.edgeR.pval_",setP,"_cut_",cutoffMax,"_",adjustBy,".txt"),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")
@@ -482,14 +476,14 @@ rpt.dend<-dendsort(hclust(dist(log(1+rpt.mt))),isReverse=TRUE)
  
   gn.fit<-glmFit(d2,ruvDesign)
   gn.lrt<-glmLRT(gn.fit,coef=2) #assumes the coef is 2nd column, no multigroups supported yet
-  gn.Tags<-topTags(gn.lrt,p=setP,n=nrow(kexp),adjust.method=adjustBy)[[1]]
+  gn.Tags<-topTags(gn.lrt,p.value=setP,n=nrow(kexp),adjust.method=adjustBy)[[1]]
   gn.feats<-mcols(rowRanges(kexp)[rowRanges(kexp)$gene_id %in% rownames(gn.Tags)])
   gn.key<-gn.feats[,c(4,5)]
   gn.key<-gn.key[!duplicated(gn.key$gene_id),]
 
   rpt.fit<-glmFit(d,ruvDesign)
   rpt.lrt<-glmLRT(rpt.fit,coef=2)
-  rpt.Tags<-topTags(rpt.lrt,p=setP,n=nrow(kexp))[[1]]
+  rpt.Tags<-topTags(rpt.lrt,p.value=setP,n=nrow(kexp))[[1]]
   
   if(saveReport==TRUE){
   write.table(gn.Tags,file=paste0(outputDir,"/Normalized.gwa.edgeR.pval_",setP,"_cut_",cutoffMax,"_",adjustBy,".txt"),quote=FALSE,row.names=TRUE,col.names=TRUE,sep="\t")

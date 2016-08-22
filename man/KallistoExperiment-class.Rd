@@ -11,7 +11,6 @@
 \alias{kallistoVersion,KallistoExperiment-method}
 \alias{mabDev}
 \alias{mabDev,KallistoExperiment-method}
-\alias{pData}
 \alias{pData,KallistoExperiment-method}
 \alias{pData<-,KallistoExperiment,DataFrame-method}
 \alias{tpm}
@@ -53,6 +52,12 @@ mabDev(object)
 }
 \description{
 A SummarizedExperiment subclass that stores multiple Kallisto runs
+
+returns the estimated counts of a quantified experiment
+
+returns the phenotypic data associated with a KallistoExperiment object
+
+a replacement function specific to phenotypic data
 
 finds the effective length of a transcript entry
 

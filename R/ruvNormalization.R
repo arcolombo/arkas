@@ -9,6 +9,7 @@
 #' @param byLevel a string character which must match the names of the meta-columns of the rowRanges(kexp), this collapses the count data by this feature term, and performs filtering
 #' @param controlNumber integer, this is the amount of negative controls to use to normalize; the higher the number the more stable your normalization but higher chance of including a false negative as a negative control; the lower the number the lower the chance of false negative, but not as stable normalization.
 #' @importFrom RUVSeq RUVg
+#' @importFrom S4Vectors metadata
 #' @export 
 #' @return return a list object of the selected negative controls, and RUVg normalization design matrix weights
 
