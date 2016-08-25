@@ -8,6 +8,7 @@ setMethod("counts", "KallistoExperiment",
 #' @description returns the phenotypic data associated with a KallistoExperiment object
 #' 
 #' @rdname KallistoExperiment-class
+#' @export
 setMethod("pData", "KallistoExperiment",
           function (object) return(colData(object)))
 
@@ -16,7 +17,7 @@ setMethod("pData", "KallistoExperiment",
 #' @param value this is the replacement value for object
 #' 
 #' @rdname KallistoExperiment-class
-#' 
+#'
 setReplaceMethod("pData", c("KallistoExperiment", "DataFrame"),
                  function (object, value) {
                    colData(object) <- value
