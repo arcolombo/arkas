@@ -64,6 +64,13 @@ annotateFeatures <- function(kexp,
       message(length(missingRows), " features lack any annotations.")
       message("Leaving the metadata columns for the unannotated rows as-is.") 
       }
+        if(is.null(rowRanges(kexp)[missingRows]$copyNumber)==TRUE){
+       mightyMorphinPowerRanges<-as.data.frame(rowRanges(kexp))
+       mightyMorphinPowerRanges$copyNumber<-2
+        featsDF<-as.data.frame(feats)
+       id<-match(colnames(featsDF),colnames(mightyMorphinPowerRanges))
+       rowRanges(kexp)<-makeGRangesFromDataFrame(mightyMorphinPowerRanges[,id],keep.extra.columns=TRUE)
+      }
       feats <- suppressWarnings(c(feats, rowRanges(kexp)[missingRows]))
     }
     stopifnot(all(rownames(kexp) %in% names(feats)))
