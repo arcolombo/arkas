@@ -23,4 +23,3 @@ indexKallisto(fastaFiles, fastaPath, fastaTxDbLite = TRUE,
 \description{
 index transcriptome/transcriptomes
 }
-

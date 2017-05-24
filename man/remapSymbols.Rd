@@ -17,4 +17,3 @@ x, with updated $gene_name or rownames
 \description{
 update transcript-/gene-level annotations for a KallistoExperiment or matrix
 }
-

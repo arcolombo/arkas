@@ -15,4 +15,3 @@ the index name
 \description{
 extract the transcriptome index used for a Kallisto hdf5 file
 }
-

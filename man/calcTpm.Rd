@@ -17,4 +17,3 @@ either a vector or a matrix of TPMs (matches the args)
 \description{
 given a vector or matrix of est_counts and the same for eff_len, compute TPM
 }
-

@@ -39,4 +39,3 @@ returns several images plotted.
 \description{
 Often times it is needed to cross compare edgeR results, limma/voom results across various filtering criteria and comparing normalized results and unnormalized results, comparing gene-level, and / or transcript level at various filtering criteria reproducibly. This function can run a cross model generation set across various filtering criteria. by default the design is a treatment factorization where the coeficient is the second column with an intercept term.
 }
-

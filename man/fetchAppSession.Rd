@@ -15,4 +15,3 @@ list     the appSession created from that JSON file
 \description{
 fetch app session variables from BaseSpace JSON
 }
-

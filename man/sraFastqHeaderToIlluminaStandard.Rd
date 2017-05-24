@@ -26,4 +26,3 @@ a integer defining success or failure
 \description{
 this script prepares fastq files downloaded from SRADb R package or files downloaded from European Nucleic Acids ftp fastq downloads, which have sra fastq headers, and changes the sra headers to illumina standard headers as a preparatory step for uploading fastq files into the  cloud system,into an open account and to a project under an authorized user.  We assume that the user can import files from SRA or ENA, and use fastq-dump to convert SRA files into fastq files.  arkas does support fastq header conversions into BaseSpace standard nomenclature. this method will check the header of the fastq, if it is an sra header, then arkas will transform the header to illumina standard; further this script will also rename the fastq file itself to illumina standard, and prepare the fastq file for an upload to the basespace cloud using the script fastqFileUploadToBaseSpace.R , inputs must be gzipped.
 }
-

@@ -37,4 +37,3 @@ Downstream analysis of bundle-aggregated repeat elements
 If no design matrix is found, the function will look in 
                    exptData(kexp)$design. If that too is empty it fails.
 }
-

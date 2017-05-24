@@ -31,4 +31,3 @@ return a list object of the selected negative controls, and RUVg normalization d
 \description{
 RUVSeq methods allow for proper normalization by using a GLM to find the linear space of unwanted variance; it uses factor analysis to find the span of unwanted variance using ERCC expression negative controls, or in silico negative controls.  the advantage is that it does not assume a constant global normalization correction for constant assumed technical noise.  RUVg instead determines the linear space where the negative controls span.
 }
-

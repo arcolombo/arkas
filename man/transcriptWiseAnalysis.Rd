@@ -35,4 +35,3 @@ transcriptWiseAnalysis(kexp, design, p.cutoff = 0.05, fold.cutoff = 1,
 \description{
 Analysis of raw transcript abundance estimates.
 }
-

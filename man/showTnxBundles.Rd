@@ -24,4 +24,3 @@ and shows the transcript bundles for each gene.
 \seealso{
 collapseTranscripts
 }
-

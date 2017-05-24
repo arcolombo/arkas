@@ -21,4 +21,3 @@ fetchKallisto(sampleDir = ".", h5file = "abundance.h5",
 \description{
 fetch one sample's worth of Kallisto estimates, perhaps with bootstraps
 }
-

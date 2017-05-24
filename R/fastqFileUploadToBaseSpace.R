@@ -23,11 +23,11 @@ fastqFileUploadToBaseSpace<-function(illuminaDirPath=NULL, illuminafastqFile=NUL
   # dependencies: https://help.basespace.illumina.com/articles/descriptive/basespace-cli/ must be installed
     dirs<-paste0(illuminaDirPath,"/",illuminaDirs,"/")
     illuminafastqFile<-dir(dirs)[grepl(fastqFileSignature,dir(dirs))]
-    x0<-paste0(dirs,"/",dir(dirs)[grepl("R1",dir(dirs))]) #a vector , 2 entries if PE
+    x0<-paste0(dirs,dir(dirs)[grepl("R1",dir(dirs))]) #a vector , 2 entries if PE
     stopifnot(file.exists(x0)==TRUE)
     if(paired==TRUE){
       for(j in 2:length(illuminafastqFile)){
-        x1<-paste0(dirs,"/",illuminafastqFile[j])
+        x1<-paste0(dirs,illuminafastqFile[j])
         stopifnot(file.exists(x1)==TRUE)
         x0<-paste(x0,x1)
       } # looping over illuminafastqFile vector, should be 2 here if PE==TRUE
@@ -35,7 +35,7 @@ fastqFileUploadToBaseSpace<-function(illuminaDirPath=NULL, illuminafastqFile=NUL
     if(dryRun==FALSE){
       command<-paste0("bs upload sample -p ",basespaceProject," ",dirs,"/*.fastq.gz")
     } else { 
-      command<-paste0("bs upload sample --dry-run -p ",basespaceProject," ",dirs,"/*.fastq.gz")
+      command<-paste0("bs upload sample --dry-run -p ",basespaceProject," ",dirs,"*.fastq.gz")
     } #simulated upload for unit testing
     
     system(command) 

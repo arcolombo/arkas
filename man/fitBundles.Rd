@@ -23,4 +23,3 @@ A list with elements (design, voomed, fit)
 \description{
 encapsulate limma/voom analysis for consistency with ebrowser()
 }
-

@@ -63,4 +63,4 @@ Description: This package wraps various aspects of workflow automation
     integration, as when comparing in-house results to those of major
     genome and transcriptome sequencing projects such as TCGA and ICGC.
 License: GPL (>= 2)
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

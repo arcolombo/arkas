@@ -49,4 +49,3 @@ runKallisto(sampleDir, indexName = NULL, fastaPath = ".",
 \description{
 run kallisto with fastq.gz files on a freshly generated or existing index
 }
-

@@ -29,4 +29,3 @@ unannotatedTranscript
 A GRanges object with metacolumns used in annotations as follows:
 }
 \keyword{datasets}
-

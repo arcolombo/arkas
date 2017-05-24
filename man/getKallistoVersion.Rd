@@ -12,4 +12,3 @@ a string (the version of Kallisto that was found)
 \description{
 get the running version of Kallisto in the default path (if there is one)
 }
-

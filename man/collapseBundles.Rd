@@ -42,4 +42,3 @@ discarding transcripts (and bundles) that were not be detected in any sample.
 \seealso{
 collapseTranscripts
 }
-

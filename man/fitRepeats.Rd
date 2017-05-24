@@ -19,4 +19,3 @@ a limma list of linear model statistics
 \description{
 repeat analysis is used for analysis of repeat regions from an annotated kexp
 }
-

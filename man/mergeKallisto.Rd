@@ -39,4 +39,3 @@ provided that these fields are supported in the annotation resources.
 \details{
 FIXME: automatically determine which transcriptomes were used (in process!)
 }
-

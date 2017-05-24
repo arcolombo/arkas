@@ -26,4 +26,3 @@ per Bourgon et al, 2010, http://www.pnas.org/content/107/21/9546.long
 \seealso{
 collapseBundles
 }
-

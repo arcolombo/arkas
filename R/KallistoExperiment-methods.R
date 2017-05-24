@@ -105,31 +105,31 @@ setMethod("mabDev", "KallistoExperiment", function(object) assays(object)$est_co
 
 # FIXME: add method to retrieve normalization factors if ERCC spike-ins used 
 
-#' @export
-setAs("KallistoExperiment", "SummarizedExperiment", 
-      function(from) {
-        metanames <- names(from@metadata)
-        metaorder <- c("transcriptomes", "kallistoVersion", metanames)
-        from@metadata$transcriptomes <- from@transcriptomes
-        from@metadata$kallistoVersion <- from@kallistoVersion
-        from@metadata <- from@metadata[metaorder]
-        if (!identical(colnames(from@assays$data[[1]]),rownames(from@colData))){
-          for (i in names(from@assays$data)) {
-            colnames(from@assays$data[[i]]) <- rownames(from@colData)
-          }
-        }
-        SummarizedExperiment(assays=from@assays$data, 
-                             rowRanges=from@rowRanges,
-                             colData=from@colData, 
-                             metadata=from@metadata)
-      })
+##' @export
+#setAs("KallistoExperiment", "SummarizedExperiment", 
+#      function(from) {
+#        metanames <- names(from@metadata)
+#        metaorder <- c("transcriptomes", "kallistoVersion", metanames)
+#        from@metadata$transcriptomes <- from@transcriptomes
+#        from@metadata$kallistoVersion <- from@kallistoVersion
+#        from@metadata <- from@metadata[metaorder]
+#        if (!identical(colnames(from@assays$data[[1]]),rownames(from@colData))){
+#          for (i in names(from@assays$data)) {
+#            colnames(from@assays$data[[i]]) <- rownames(from@colData)
+#          }
+#        }
+#        SummarizedExperiment(assays=from@assays$data, 
+#                             rowRanges=from@rowRanges,
+#                             colData=from@colData, 
+#                             metadata=from@metadata)
+#      })
 
 
-#' @export
-setAs("SummarizedExperiment", "KallistoExperiment", 
-      function(from) {
-        txomes <- metadata(from)$transcriptomes
-        kversion <- metadata(from)$kallistoVersion
-        new("KallistoExperiment", from, 
-            kallistoVersion=kversion, transcriptomes=txomes)
-      })
+##' @export
+#setAs("SummarizedExperiment", "KallistoExperiment", 
+#      function(from) {
+#        txomes <- metadata(from)$transcriptomes
+#        kversion <- metadata(from)$kallistoVersion
+#        new("KallistoExperiment", from, 
+#            kallistoVersion=kversion, transcriptomes=txomes)
+#      })

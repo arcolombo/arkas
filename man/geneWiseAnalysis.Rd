@@ -40,4 +40,3 @@ Downstream analysis of bundle-aggregated transcript abundance estimates.
 If no design matrix is found, the function will look in 
                    metadata(kexp)$design. If that too is empty it fails.
 }
-

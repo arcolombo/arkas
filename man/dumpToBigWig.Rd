@@ -28,4 +28,3 @@ This function sums transcripts per million (TPM) of each transcript
 within bundles of transcripts and then writes out a wiggle track of TPM over
 exons using the information in the annotations argument.
 }
-

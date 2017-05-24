@@ -39,4 +39,3 @@ fastqFileUploadToBaseSpace(illuminaDirPath,
                           illuminaDirs=illuminaDirs)
 } 
 }
-

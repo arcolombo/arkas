@@ -26,4 +26,3 @@ a data.frame with the sample stubs, read directions & filenames
 \description{
 like it says: parse the chunks of FASTQ file names to get lanes, fwd/rev, &c
 }
-

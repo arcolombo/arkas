@@ -49,4 +49,3 @@ than the specified cutoff.  Since the default cutoff is 1TPM, this means
 discarding bundles where the total transcripts per million estimate is < 1.
 (Filtering tends to increase statistical power at given false-positive rate)
 }
-

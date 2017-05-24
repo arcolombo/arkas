@@ -20,4 +20,3 @@ the TSS for transcripts on chr1:22/X/Y/M to collapse by TSS,
 \description{
 groundwork for collapsing rows of a RangedSummarizedExperiment assay by TSS
 }
-

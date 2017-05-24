@@ -23,4 +23,3 @@ A list with elements (design, voomed, fit)
 encapsulate limma/voom analysis and TMM normalization at transcript level 
 FIXME: just farm it out to sleuth, e.g. as seen in ?artemisData::withSleuth
 }
-

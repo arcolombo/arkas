@@ -26,4 +26,3 @@ a GRanges or a KallistoExperiment, depending on `what`
 annotate rowRanges genes or transcripts against (say) EnsemblDb
 this is becoming the default dispatcher for almost all annotation
 }
-

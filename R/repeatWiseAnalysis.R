@@ -81,6 +81,13 @@ repeatWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
 
   res$features <- rowRanges(kexp)
   res$species <- species
+
+  id<-match(rownames(res$top),res$features$tx_id)
+  transcript_biotype<-res$features[id]$tx_biotype
+  gene_biotype<-res$features[id]$gene_biotype
+
+ res$limmaWithMeta<-cbind(res$top,transcript_biotype,gene_biotype)
+
   return(res)
 
 

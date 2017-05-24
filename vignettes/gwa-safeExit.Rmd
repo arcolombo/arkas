@@ -22,16 +22,20 @@ this shows a custom adjust
 ```{r}
 library(arkas)
 library(TxDbLite)
+library(arkasData)
+#outputPath <- system.file("extdata", "", package="arkasData")
+#samples <- list.files(outputPath, pattern="^[ns][124]$")
+#covs <- data.frame(outputDir=samples,
+#                   row.names=samples)
+#NN <- mergeKallisto(covariates=covs,
+#                    outputPath=outputPath)
+#
+#show(NN)
+#NN <- annotateFeatures(NN) # loads TxDbLite libs
 
-outputPath <- system.file("extdata", "", package="arkasData")
-samples <- list.files(outputPath, pattern="^[ns][124]$")
-covs <- data.frame(outputDir=samples,
-                   row.names=samples)
-NN <- mergeKallisto(covariates=covs,
-                    outputPath=outputPath)
-
-show(NN)
-NN <- annotateFeatures(NN) # loads TxDbLite libs
+outputPath<-system.file("extdata/annotatedKexp","",package="arkasData")
+load(paste0(outputPath,"NS.RData"))
+NN<-NS
 NN$norm <- as.factor(substr(colnames(NN), 1, 1))
 NN$subject <- as.factor(substr(colnames(NN), 2, 2))
 NN_design <- with(as(colData(NN), "data.frame"),

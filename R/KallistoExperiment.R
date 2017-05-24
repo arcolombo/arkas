@@ -22,7 +22,6 @@ covariates <- colData
 #' @param features              the row-wise annotations for the object
 #' @param kallistoVersion       version of Kallisto used to run the experiment
 #' @param est_counts_mad        matrix of count MADs summarizing bootstrap runs 
-#' 
 #' @export 
 KallistoExperiment <- function(est_counts=NULL,
                                eff_length=NULL,
