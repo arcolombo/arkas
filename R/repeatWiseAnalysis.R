@@ -29,7 +29,7 @@
 repeatWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
                              p.cutoff=0.05, fold.cutoff=1, read.cutoff=1,
                              species=c("Homo.sapiens", "Mus.musculus"),
-                              adjustBy="holm") {
+                              adjustBy="holm",coef=2) {
 
  ## this is really only meant for a KallistoExperiment
   if (!is(kexp, "KallistoExperiment")) {
@@ -59,7 +59,7 @@ repeatWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
   res <- fitRepeats(kexp, design)
   while( initialRank <=4 ) {
    message(paste0("fitting using FDR: ",adjustBy))
-  res$top <- with(res, topTable(fit, coef=2, p=p.cutoff,adjust.method=adjustBy, n=nrow(kexp)))
+  res$top <- with(res, topTable(fit, coef=coef, p=p.cutoff,adjust.method=adjustBy, n=nrow(kexp)))
 
       if(nrow(res$top)==0){
         message(paste0("no DE found for using FDR: ",adjustBy))

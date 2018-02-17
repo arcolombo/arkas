@@ -31,7 +31,7 @@
 geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"), 
                              p.cutoff=0.05, fold.cutoff=1, read.cutoff=1, 
                              species=c("Homo.sapiens", "Mus.musculus"),
-                             fitOnly=FALSE, adjustBy="holm") { 
+                             fitOnly=FALSE, adjustBy="holm",coef=2) { 
 
   ## this is really only meant for a KallistoExperiment
   if (!is(kexp, "KallistoExperiment")) {
@@ -62,7 +62,7 @@ geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
  
   while( initialRank <=4 ) {
       message(paste0("fitting using FDR: ",adjustBy))
-      res$top <- with(res, topTable(fit, coef=2, p=p.cutoff,adjust.method=adjustBy, n=nrow(kexp)))
+      res$top <- with(res, topTable(fit, coef=coef, p=p.cutoff,adjust.method=adjustBy, n=nrow(kexp)))
 
       if(nrow(res$top)<10 || any(abs(res$top$logFC) >=fold.cutoff)==FALSE ){
       
@@ -191,6 +191,6 @@ geneWiseAnalysis <- function(kexp, design=NULL, how=c("cpm","tpm"),
   dataset <- switch(match.arg(commonName),
                     human="hsapiens_gene_ensembl", 
                     mouse="mmusculus_gene_ensembl")
-  useMart("ENSEMBL_MART_ENSEMBL", dataset=dataset, host=host)
+  useMart(biomart="ENSEMBL_MART_ENSEMBL", dataset=dataset)#, host=host)
 
 } #}}}
